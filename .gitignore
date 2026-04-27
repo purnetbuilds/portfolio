@@ -2,4 +2,6 @@
 .DS_Store
 assets/.DS_Store
 assets/Thumbnails/.DS_Store
+assets/Mockups/.agents/
+assets/Mockups/skills-lock.json
 node_modules/

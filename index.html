@@ -483,11 +483,12 @@
     background-size: 28px 28px;
   }
   .bl-wcard-ascii {
-    position: absolute; inset: 20px;
+    position: absolute; top: 20px; left: 20px; right: 20px; bottom: 52px;
     color: rgba(255,255,255,0.38);
     font-family: var(--font-mono);
     font-size: 10px; line-height: 1.35; font-weight: 500;
     white-space: pre; overflow: hidden;
+    transition: opacity 350ms ease;
   }
   .bl-wcard-chip {
     position: absolute; top: 16px; right: 16px;
@@ -500,16 +501,33 @@
     color: #3DE67A;
     display: flex; align-items: center; gap: 5px;
   }
+  @keyframes blDotPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #3DE67A; }
+    50% { opacity: 0.4; box-shadow: 0 0 16px rgba(61,230,122,0.55); }
+  }
   .bl-wcard-chip .d {
     width: 5px; height: 5px; background: #3DE67A;
-    border-radius: 50%; box-shadow: 0 0 6px #3DE67A; flex-shrink: 0;
+    border-radius: 50%; flex-shrink: 0;
+    animation: blDotPulse 2s ease-in-out infinite;
   }
-  .bl-wcard-word {
-    position: absolute; bottom: 16px; left: 20px;
-    font-family: var(--font-display);
-    font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500;
-    font-style: italic; font-size: 44px; letter-spacing: -0.03em;
-    color: rgba(255,255,255,0.12); line-height: 1;
+  .bl-wcard-prog {
+    position: absolute; bottom: 14px; left: 20px; right: 20px;
+  }
+  .bl-wcard-prog-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28); margin-bottom: 6px;
+  }
+  .bl-wcard-prog-track {
+    height: 3px; background: rgba(255,255,255,0.08);
+    border-radius: 999px; overflow: hidden;
+  }
+  .bl-wcard-prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3DE67A 0%, #7B3CF7 100%);
+    width: 0%; border-radius: 999px;
+    transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Phone / desktop placeholders */
@@ -766,7 +784,9 @@
     <article class="wcard wcard--bl reveal">
       <div class="wcard-text">
         <div class="wcard-meta">
-          <span class="wcard-logo" style="background:var(--grad);font-family:var(--font-display);font-style:italic;font-variation-settings:'opsz' 144,'SOFT' 50,'wght' 700;font-size:14px;">BL</span>
+          <span class="wcard-logo" style="background:var(--grad);">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M9 3v6L5 16a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 16l-4-7V3"/><line x1="6.5" y1="13" x2="17.5" y2="13"/></svg>
+          </span>
           <span class="wcard-name">Build Lab</span>
           <span class="wcard-cat">AI Explorations</span>
         </div>
@@ -778,22 +798,17 @@
       </div>
       <div class="wcard-visual">
         <div class="bl-wcard-grid"></div>
-        <pre class="bl-wcard-ascii">&gt; init build-lab@2.26.0
-&gt; load prompt/v4.md     ok
-&gt; load design-tokens     ok
-&gt; scenario-expand       ×40
-&gt; edge-case-sweep        ok
-&gt; prototype.gen( ... )  ready
-
-  ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  81%
-  ┌─ v1 ─┐ ┌─ v2 ─┐ ┌─ v3 ─┐
-  │      │ │      │ │      │
-  │      │ │  ✓   │ │      │
-  └──────┘ └──────┘ └──────┘
-
-&gt; ship candidate v2.</pre>
+        <pre class="bl-wcard-ascii"></pre>
         <div class="bl-wcard-chip"><span class="d"></span> LIVE</div>
-        <div class="bl-wcard-word">shipping.</div>
+        <div class="bl-wcard-prog">
+          <div class="bl-wcard-prog-meta">
+            <span>build-lab@2.26.0</span>
+            <span class="bl-wcard-pct">0%</span>
+          </div>
+          <div class="bl-wcard-prog-track">
+            <div class="bl-wcard-prog-fill"></div>
+          </div>
+        </div>
       </div>
     </article>
 
@@ -801,8 +816,10 @@
     <article class="wcard wcard--rev reveal">
       <div class="wcard-text">
         <div class="wcard-meta">
-          <span class="wcard-logo" style="background:linear-gradient(135deg,#6A4BFF,#1F1A4A);">E</span>
-          <span class="wcard-name">Enterprise HR</span>
+          <span class="wcard-logo" style="background:linear-gradient(135deg,#6A4BFF,#1F1A4A);">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span class="wcard-name">Employee Experience</span>
           <span class="wcard-cat">Desktop</span>
         </div>
         <h3>Designed a multi-persona workspace balancing <span class="italic">productivity</span>, automation, and system scalability.</h3>
@@ -820,7 +837,9 @@
     <article class="wcard reveal">
       <div class="wcard-text">
         <div class="wcard-meta">
-          <span class="wcard-logo" style="background:linear-gradient(135deg,#10B981,#6A4BFF);">A</span>
+          <span class="wcard-logo" style="background:linear-gradient(135deg,#10B981,#6A4BFF);">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </span>
           <span class="wcard-name">Auto QA</span>
           <span class="wcard-cat">Desktop</span>
         </div>
@@ -839,7 +858,9 @@
     <article class="wcard wcard--rev reveal">
       <div class="wcard-text">
         <div class="wcard-meta">
-          <span class="wcard-logo" style="background:linear-gradient(135deg,#FF8C42,#FF6EC7);">W</span>
+          <span class="wcard-logo" style="background:linear-gradient(135deg,#FF8C42,#FF6EC7);">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
           <span class="wcard-name">WiseWay</span>
           <span class="wcard-cat">Mobile</span>
         </div>
@@ -1167,6 +1188,73 @@
       });
     }, { threshold: 0.15 });
     document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+  })();
+
+  // ── Build Lab terminal + progress bar
+  (function () {
+    const pre  = document.querySelector('.bl-wcard-ascii');
+    const fill = document.querySelector('.bl-wcard-prog-fill');
+    const pctEl = document.querySelector('.bl-wcard-pct');
+    if (!pre) return;
+
+    const LINES = [
+      '> init build-lab@2.26.0',
+      '> load prompt/v4.md          ok',
+      '> load design-tokens          ok',
+      '> install ai-core@3.1         ok',
+      '> scenario-expand            ×40',
+      '> edge-case-sweep             ok',
+      '> prototype.gen( ... )      ready',
+      '> run-test user-flow          ok',
+      '> diff --compare v1 v2        3Δ',
+      '> ship candidate v2          ...',
+      '> deploy staging             done',
+      '> lighthouse --perf           94',
+      '> a11y-check                  ok',
+      '> compress-assets            done',
+      '> push to prod             ✓ live',
+    ];
+    const DELAYS = [0,130,110,150,180,120,210,100,160,140,200,110,130,100,220];
+    const MAX_LINES = 13;
+    let idx = 0, visible = [];
+
+    function nextLine() {
+      if (idx >= LINES.length) {
+        setTimeout(() => {
+          pre.style.opacity = '0';
+          setTimeout(() => {
+            visible = []; idx = 0; pre.textContent = '';
+            pre.style.opacity = '1';
+            nextLine();
+          }, 370);
+        }, 1700);
+        return;
+      }
+      visible.push(LINES[idx]);
+      if (visible.length > MAX_LINES) visible.shift();
+      pre.textContent = visible.join('\n');
+      setTimeout(nextLine, DELAYS[idx++] ?? 140);
+    }
+    setTimeout(nextLine, 500);
+
+    if (!fill || !pctEl) return;
+    const STAGES = [24, 48, 67, 81, 91, 100, 18, 43, 72, 88, 95];
+    let si = 0;
+    function tickBar() {
+      const target = STAGES[si % STAGES.length];
+      const from   = parseInt(pctEl.textContent) || 0;
+      fill.style.width = target + '%';
+      const dur = 1000, t0 = performance.now();
+      (function count(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const e = p < 0.5 ? 2*p*p : -1 + (4 - 2*p)*p;
+        pctEl.textContent = Math.round(from + (target - from) * e) + '%';
+        if (p < 1) requestAnimationFrame(count);
+      })(t0);
+      si++;
+      setTimeout(tickBar, si % 3 === 0 ? 2400 : 1300);
+    }
+    setTimeout(tickBar, 800);
   })();
 
   // ── Nav hide on scroll down
