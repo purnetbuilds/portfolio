@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Contact — Purnet Moirangthem</title>
+<meta name="description" content="Get in touch with Purnet Moirangthem — product designer & builder." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F0B1E;
+    --ink-soft: #4A4363;
+    --paper: #FAFAF8;
+    --purple: #6A4BFF;
+    --lavender: #F0EBFF;
+    --lavender-soft: #F7F4FF;
+    --line: rgba(15,11,30,0.10);
+    --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --grad-purple: linear-gradient(120deg, #7B3CF7 0%, #FF6EC7 55%, #F4E84C 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", "SF Mono", monospace;
+    --max: 1320px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-mono);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; }
+  a, button { cursor: none; }
+  ::selection { background: var(--ink); color: var(--paper); }
+  :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
+
+  /* Cursor */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+  .cursor-dot { width: 4px; height: 4px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
+  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--paper); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+  body.cursor-light .cursor-dot { background: var(--ink); }
+  body.cursor-light .cursor-ring { border-color: var(--ink); }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 14px 14px 20px;
+    background: rgba(15,11,30,0.55);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+    transition: transform 400ms cubic-bezier(.2,.7,.3,1);
+  }
+  .nav.hidden { transform: translateY(-140%); }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 500;
+    font-size: 20px; letter-spacing: -0.02em; color: white;
+  }
+  .nav-mark {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--grad); font-family: var(--font-display);
+    font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 600;
+    color: var(--ink); display: grid; place-items: center; font-size: 14px;
+  }
+  .nav-links { display: flex; gap: 2px; list-style: none; }
+  .nav-links a {
+    padding: 10px 18px; font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    border-radius: 50px; transition: background 160ms; color: rgba(255,255,255,0.85);
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.12); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; background: white; color: var(--ink);
+    border-radius: 50px; font-size: 13px; font-weight: 500;
+    font-family: var(--font-mono); transition: opacity 150ms;
+  }
+  .nav-cta:hover { opacity: 0.88; }
+  .nav-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    background: var(--grad-purple);
+    background-size: 180% 180%;
+    animation: gradShift 22s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+    padding: 140px 40px 80px;
+    position: relative; overflow: hidden;
+  }
+  @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .hero-inner {
+    width: 100%; max-width: 900px;
+    display: flex; flex-direction: column; gap: 60px;
+  }
+  .hero-text { text-align: left; }
+  .hero-label {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75); margin-bottom: 24px;
+  }
+  .hero-label .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: white; box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(255,255,255,0); } }
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400;
+    font-size: clamp(40px, 6vw, 88px);
+    line-height: 1.0; letter-spacing: -0.032em;
+    color: white; text-wrap: balance;
+  }
+  .hero-h1 .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; }
+
+  /* Form card */
+  .form-card {
+    background: var(--ink);
+    border-radius: 24px;
+    padding: 56px 48px;
+    width: 100%;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-field { display: flex; flex-direction: column; gap: 10px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .form-field input,
+  .form-field textarea {
+    font-family: var(--font-mono); font-size: 15px; font-weight: 300;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 16px 18px;
+    color: white; outline: none;
+    transition: border-color 160ms, background 160ms;
+    resize: none;
+    -webkit-appearance: none;
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.10);
+  }
+  .form-field textarea { height: 160px; }
+  .form-footer { margin-top: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .form-note { font-family: var(--font-mono); font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.45); }
+
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px;
+    background: white; color: var(--ink);
+    border-radius: 50px; font-family: var(--font-mono);
+    font-size: 14px; font-weight: 500;
+    transition: opacity 160ms, transform 200ms;
+    cursor: none;
+  }
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-submit svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Thank-you state */
+  .form-thanks {
+    display: none; text-align: center;
+    padding: 40px 0;
+  }
+  .form-thanks .check {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--grad);
+    display: grid; place-items: center;
+    margin: 0 auto 24px;
+  }
+  .form-thanks .check svg { width: 24px; height: 24px; stroke: var(--ink); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .form-thanks h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 500;
+    font-size: 32px; letter-spacing: -0.02em; color: white; margin-bottom: 12px;
+  }
+  .form-thanks p { font-family: var(--font-mono); font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.6); }
+
+  /* Footer */
+  footer { background: var(--ink); color: var(--paper); padding: 64px 40px 40px; }
+  .foot-grid {
+    max-width: var(--max); margin: 0 auto;
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .foot-brand h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400;
+    font-size: 32px; line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 16px;
+  }
+  .foot-brand h3 .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .foot-brand p { font-family: var(--font-mono); font-size: 13px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.55); margin-bottom: 24px; }
+  .foot-socials { display: flex; gap: 8px; }
+  .foot-soc { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); display: grid; place-items: center; transition: background 200ms, transform 200ms; color: var(--paper); }
+  .foot-soc:hover { background: var(--grad); transform: translateY(-3px); color: var(--ink); }
+  .foot-soc svg { width: 17px; height: 17px; }
+  .foot-col h4 { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .foot-col a { font-family: var(--font-mono); font-size: 14px; color: rgba(255,255,255,0.85); transition: color 160ms; }
+  .foot-col a:hover { color: #FF6EC7; }
+  .foot-bottom { max-width: var(--max); margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.55); flex-wrap: wrap; gap: 16px; }
+  .foot-bottom .meta { display: flex; gap: 24px; }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .hero { padding: 120px 20px 60px; }
+    .form-card { padding: 36px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    footer { padding: 64px 20px 40px; }
+    .foot-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-brand" href="index.html">
+    <span class="nav-mark">P</span>
+    <span>Purnet</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#tools">Tools</a></li>
+    <li><a href="index.html#principles">Skills</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul>
+  <a class="nav-cta" href="contact.html">
+    Get in touch
+    <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label"><span class="dot"></span> Contact</div>
+      <h1 class="hero-h1">
+        Send me a <span class="italic">message.</span><br>
+        I'll get back to you<br>within the next 48 hours.
+      </h1>
+    </div>
+
+    <div class="form-card">
+      <form id="contactForm" novalidate>
+        <div class="form-grid" id="formFields">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          </div>
+          <div class="form-field full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="What's on your mind?" required></textarea>
+          </div>
+        </div>
+        <div class="form-footer">
+          <span class="form-note">Taking on select engagements for 2026.</span>
+          <button type="submit" class="btn-submit">
+            Send message
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </form>
+      <div class="form-thanks" id="formThanks">
+        <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h3>Message sent.</h3>
+        <p>Thanks for reaching out — I'll be in touch within 48 hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <h3>Have a project<br>in <span class="italic">mind?</span></h3>
+      <p>Taking on a small number of product-design engagements for 2026 — systems work, zero-to-one, or the messy middle.</p>
+      <div class="foot-socials">
+        <a class="foot-soc" href="#" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.2 6.4H3v11.2h6.35c2.54 0 4.3-1.3 4.3-3.36 0-1.54-.96-2.57-2.35-2.76 1.05-.27 1.79-1.2 1.79-2.4 0-1.75-1.52-2.68-3.89-2.68zm-.25 4.55h-3v-2.8h2.92c1.1 0 1.76.43 1.76 1.37 0 .99-.66 1.43-1.68 1.43zm.2 4.82h-3.2v-3.04h3.13c1.34 0 2.06.54 2.06 1.51 0 1.02-.7 1.53-1.99 1.53zM21 10.4h-5.5V9h5.5v1.4zm-2.75 1c-2.3 0-3.8 1.55-3.8 3.85 0 2.34 1.55 3.85 3.85 3.85 1.8 0 3.14-.87 3.55-2.35h-2.07c-.22.58-.78.92-1.48.92-1 0-1.67-.6-1.8-1.68H21.8c.05-.25.05-.5.05-.74 0-2.3-1.5-3.85-3.6-3.85zm-1.71 3.08c.18-.98.8-1.57 1.71-1.57s1.54.59 1.62 1.57H16.54z"/></svg></a>
+        <a class="foot-soc" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+        <a class="foot-soc" href="#" aria-label="Dribbble"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm7.94 5.53a10.1 10.1 0 0 1 2.27 6.29c-.34-.07-3.71-.76-7.1-.33-.08-.2-.15-.4-.24-.6-.21-.49-.43-.97-.66-1.42 3.77-1.54 5.5-3.75 5.73-3.94zm-1.85-1.62a19.3 19.3 0 0 1-5.24 3.8 46.2 46.2 0 0 0-3.76-5.86 10.07 10.07 0 0 1 9 2.06zM6.67 3.18A54.52 54.52 0 0 1 10.4 9.06c-4.73 1.26-8.9 1.23-9.36 1.22a10.11 10.11 0 0 1 5.63-7.1zM1.02 12.02v-.26c.44.01 5.36.07 10.4-1.44.29.56.56 1.14.8 1.72-.13.04-.27.08-.4.12-5.2 1.68-7.97 6.27-8.2 6.66a10.05 10.05 0 0 1-2.6-6.8zm3.76 8.03c.16-.33 2.01-3.89 7.7-5.87l.07-.02a42.1 42.1 0 0 1 2.16 7.68 10.03 10.03 0 0 1-9.93-1.79zm11.72 1.04a43.3 43.3 0 0 0-1.97-7.17c3.2-.51 6 .32 6.35.44a10.05 10.05 0 0 1-4.38 6.73z"/></svg></a>
+        <a class="foot-soc" href="mailto:hello@purnet.design" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#tools">Tools</a></li>
+        <li><a href="index.html#principles">Skills</a></li>
+        <li><a href="index.html#about">About me</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Case studies</h4>
+      <ul>
+        <li><a href="work/auto-qa.html">Auto QA</a></li>
+        <li><a href="work/employee-experience.html">Employee Experience</a></li>
+        <li><a href="work/wiseway.html">WiseWay</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><a href="#">Behance</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Dribbble</a></li>
+        <li><a href="mailto:hello@purnet.design">hello@purnet.design</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 — Purnet Moirangthem</div>
+    <div class="meta">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    (function tick() {
+      rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22;
+      ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a, button, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    document.querySelector('.hero').addEventListener('mouseleave', () => document.body.classList.add('cursor-light'));
+    document.querySelector('.hero').addEventListener('mouseenter', () => document.body.classList.remove('cursor-light'));
+  })();
+
+  (function () {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+    let lastY = 0;
+    addEventListener('scroll', () => {
+      const y = scrollY;
+      if (y > 200 && y > lastY) nav.classList.add('hidden');
+      else nav.classList.remove('hidden');
+      lastY = y;
+    }, { passive: true });
+  })();
+
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    if (!name || !email || !message) return;
+    document.getElementById('formFields').style.display = 'none';
+    document.querySelector('.form-footer').style.display = 'none';
+    document.getElementById('formThanks').style.display = 'block';
+    // Open mailto as fallback
+    const body = encodeURIComponent(`Name: ${name}\n\n${message}`);
+    window.location.href = `mailto:hello@purnet.design?subject=Portfolio inquiry from ${encodeURIComponent(name)}&body=${body}`;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WiseWay — Purnet Moirangthem</title>
+<meta name="description" content="WiseWay: Designing a Senior-Focused Mobility Platform. A mobility service focused on clarity, assistance, and everyday health needs for senior citizens." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F0B1E;
+    --ink-soft: #4A4363;
+    --paper: #FAFAF8;
+    --purple: #6A4BFF;
+    --lavender: #F0EBFF;
+    --lavender-soft: #F7F4FF;
+    --line: rgba(15, 11, 30, 0.10);
+    --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --grad-purple: linear-gradient(120deg, #7B3CF7 0%, #FF6EC7 55%, #F4E84C 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", "SF Mono", monospace;
+    --max: 1100px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-mono); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; }
+  a, button { cursor: none; }
+  ::selection { background: var(--ink); color: var(--paper); }
+  :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
+
+  /* Cursor */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+  .cursor-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
+  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+  body.cursor-dark .cursor-dot { background: var(--paper); }
+  body.cursor-dark .cursor-ring { border-color: var(--paper); }
+
+  /* Nav */
+  .nav { position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 14px 20px; background: rgba(250,250,248,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 50px; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
+  .nav.hidden { transform: translateY(-140%); }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 500; font-size: 20px; letter-spacing: -0.02em; }
+  .nav-mark { width: 30px; height: 30px; border-radius: 50%; background: var(--grad); font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 600; color: var(--ink); display: grid; place-items: center; font-size: 14px; }
+  .nav-links { display: flex; gap: 2px; list-style: none; }
+  .nav-links a { padding: 10px 18px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-radius: 50px; transition: background 160ms; }
+  .nav-links a:hover { background: rgba(0,0,0,0.08); }
+  .nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; background: var(--ink); color: var(--paper); border-radius: 50px; font-size: 13px; font-weight: 500; font-family: var(--font-mono); transition: opacity 150ms; }
+  .nav-cta:hover { opacity: 0.88; }
+  .nav-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-hamburger { display: none; width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.06); align-items: center; justify-content: center; position: relative; }
+  .nav-hamburger svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; fill: none; position: absolute; transition: opacity 160ms, transform 160ms cubic-bezier(.2,.7,.3,1); }
+  .nav-hamburger .hamburger-icon { opacity: 1; transform: scale(1); }
+  .nav-hamburger .close-icon { opacity: 0; transform: scale(0.7) rotate(-45deg); }
+  .nav-hamburger[aria-expanded="true"] .hamburger-icon { opacity: 0; transform: scale(0.7) rotate(45deg); }
+  .nav-hamburger[aria-expanded="true"] .close-icon { opacity: 1; transform: scale(1) rotate(0deg); }
+  @media (max-width: 760px) {
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
+    .nav-links { position: fixed; top: 80px; left: 20px; right: 20px; background: rgba(250,250,248,0.96); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 20px; padding: 16px; flex-direction: column; gap: 4px; z-index: 99; display: flex; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 220ms cubic-bezier(.2,.7,.3,1), transform 220ms cubic-bezier(.2,.7,.3,1); }
+    .nav-links.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .nav-links a { padding: 12px 20px; font-size: 15px; border-radius: 12px; }
+  }
+
+  /* Case study hero */
+  .cs-hero { padding: 160px 40px 80px; max-width: var(--max); margin: 0 auto; }
+  .cs-tag { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 24px; }
+  .cs-h1 { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400; font-size: clamp(36px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.03em; max-width: 18ch; margin-bottom: 52px; }
+  .cs-h1 em { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; }
+  .cs-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; border-top: 1px solid var(--line); padding-top: 32px; }
+  .cs-meta-item dt { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
+  .cs-meta-item dd { font-family: var(--font-mono); font-size: 14px; font-weight: 400; }
+  .cs-meta-item dd a { border-bottom: 1px solid var(--line); transition: border-color 160ms; }
+  .cs-meta-item dd a:hover { border-color: var(--ink); }
+
+  /* Gallery */
+  .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .gallery-track-wrap { position: relative; border-radius: 16px; overflow: hidden; }
+  .gallery-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; list-style: none; margin: 0; padding: 0; gap: 12px; cursor: grab; }
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gallery-track.is-dragging { cursor: grabbing; }
+  .gallery-slide { scroll-snap-align: start; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--lavender); }
+  .gallery-slide img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+  [data-layout="landscape"] .gallery-track { padding-right: 60px; }
+  [data-layout="landscape"] .gallery-slide { width: min(1000px, calc(100vw - 80px - 60px - 12px)); aspect-ratio: 16 / 10; }
+  [data-layout="portrait"] .gallery-track { padding: 24px 24px 24px 0; gap: 20px; }
+  [data-layout="portrait"] .gallery-slide { width: clamp(180px, 28vw, 260px); aspect-ratio: 722 / 1470; border-radius: 0; box-shadow: none; overflow: visible; }
+
+  /* Device mockup — phone */
+  .gallery-slide-inner {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+  .gallery-slide-inner > img:first-child {
+    position: absolute;
+    top: 2.24%; bottom: 2.31%; left: 0; right: 0;
+    width: 100%;
+    object-fit: cover; display: block;
+    pointer-events: none; user-select: none;
+  }
+  .gallery-frame-img--phone {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 10;
+    display: block; object-fit: fill;
+    filter: drop-shadow(0 4px 16px rgba(15,11,30,0.14)) drop-shadow(0 16px 40px rgba(15,11,30,0.20));
+  }
+  .gallery-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s, opacity 0.15s; cursor: pointer; }
+  .gallery-btn:hover { background: var(--lavender-soft); border-color: var(--purple); color: var(--purple); }
+  .gallery-btn--prev { left: 16px; }
+  .gallery-btn--next { right: 16px; }
+  .gallery-btn[data-at-edge] { opacity: 0; pointer-events: none; }
+  .gallery-dots { display: flex; justify-content: center; gap: 6px; padding: 4px 0; }
+  .gallery-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0; background: var(--line); cursor: pointer; transition: background 0.2s, width 0.2s, border-radius 0.2s; }
+  .gallery-dots button[aria-selected="true"] { background: var(--purple); width: 20px; border-radius: 3px; }
+
+  /* ── Accordion body ────────────────────────────────────────────────── */
+  .cs-body { max-width: var(--max); margin: 0 auto; padding: 80px 40px 0; }
+  .cs-accordion { border-top: 1px solid var(--line); margin-bottom: 80px; }
+  .cs-acc-item { border-bottom: 1px solid var(--line); }
+  .cs-acc-trigger { width: 100%; display: flex; align-items: center; gap: 16px; padding: 28px 0; background: none; text-align: left; transition: opacity 140ms; }
+  .cs-acc-trigger:hover { opacity: 0.72; }
+  .cs-acc-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background 200ms, border-color 200ms; }
+  .cs-acc-icon svg { width: 18px; height: 18px; stroke: var(--ink-soft); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke 200ms; }
+  .cs-acc-item[data-open] .cs-acc-icon { background: var(--ink); border-color: var(--ink); }
+  .cs-acc-item[data-open] .cs-acc-icon svg { stroke: var(--paper); }
+  .cs-acc-label { flex: 1; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); transition: color 200ms; }
+  .cs-acc-item[data-open] .cs-acc-label { color: var(--ink); }
+  .cs-acc-title { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 450; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.018em; line-height: 1.18; color: var(--ink); flex: 3; }
+  .cs-acc-chevron { width: 32px; height: 32px; flex-shrink: 0; display: grid; place-items: center; color: var(--ink-soft); transition: transform 300ms cubic-bezier(.2,.7,.3,1), color 200ms; }
+  .cs-acc-chevron svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cs-acc-item[data-open] .cs-acc-chevron { transform: rotate(180deg); color: var(--ink); }
+  .cs-acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms cubic-bezier(.2,.7,.3,1); }
+  .cs-acc-item[data-open] .cs-acc-body { grid-template-rows: 1fr; }
+  .cs-acc-inner { overflow: hidden; }
+  .cs-acc-content { padding: 0 0 36px 56px; }
+
+  .cs-lead { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 350; font-size: clamp(18px, 2.2vw, 24px); line-height: 1.48; letter-spacing: -0.018em; color: var(--ink); max-width: 62ch; margin-bottom: 36px; }
+  .cs-items { display: flex; flex-direction: column; gap: 0; }
+  .cs-item { display: grid; grid-template-columns: 200px 1fr; gap: 40px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .cs-item:first-child { border-top: 1px solid var(--line); }
+  .cs-item dt { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 680; font-size: 16px; letter-spacing: -0.012em; line-height: 1.25; color: var(--ink); }
+  .cs-item dd { font-family: var(--font-mono); font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--ink-soft); }
+
+  .cs-takeaway { background: var(--ink); color: var(--paper); border-radius: 16px; padding: 56px; margin-bottom: 80px; }
+  .cs-takeaway .cs-lead { color: rgba(255,255,255,0.9); max-width: 60ch; margin-bottom: 0; font-size: clamp(16px, 1.8vw, 22px); }
+  .cs-takeaway-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+
+  .cs-back { max-width: var(--max); margin: 0 auto; padding: 48px 40px; }
+  .cs-back a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 160ms; }
+  .cs-back a:hover { border-color: var(--ink); }
+  .cs-back a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Footer */
+  footer { background: var(--ink); color: var(--paper); padding: 96px 40px 40px; }
+  .foot-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+  .foot-brand h3 { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400; font-size: 38px; line-height: 1.04; letter-spacing: -0.028em; margin-bottom: 20px; text-wrap: balance; }
+  .foot-brand h3 .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .foot-brand p { font-family: var(--font-mono); font-size: 13px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+  .foot-socials { display: flex; gap: 8px; }
+  .foot-soc { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); display: grid; place-items: center; transition: background 200ms, transform 200ms, color 200ms; color: var(--paper); }
+  .foot-soc:hover { background: var(--grad); transform: translateY(-3px); color: var(--ink); }
+  .foot-soc svg { width: 17px; height: 17px; }
+  .foot-col h4 { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .foot-col a { font-family: var(--font-mono); font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85); transition: color 160ms; }
+  .foot-col a:hover { color: #FF6EC7; }
+  .foot-bottom { max-width: var(--max); margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.55); flex-wrap: wrap; gap: 16px; }
+  .foot-bottom .meta { display: flex; gap: 24px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms cubic-bezier(.2,.7,.3,1), transform 700ms cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal-stagger > * { opacity: 0; transform: translateY(18px); transition: opacity 620ms cubic-bezier(.2,.7,.3,1), transform 620ms cubic-bezier(.2,.7,.3,1); }
+  .reveal-stagger.in > * { opacity: 1; transform: none; }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 60ms; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 120ms; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 180ms; }
+
+  @media (max-width: 760px) {
+    .cs-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cs-item { grid-template-columns: 1fr; gap: 8px; }
+    .cs-hero, .cs-body, .cs-back { padding-left: 20px; padding-right: 20px; }
+    .foot-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cs-takeaway { padding: 40px 24px; }
+    .gallery-shell { padding: 0 20px; }
+    [data-layout="portrait"] .gallery-slide { width: clamp(140px, 55vw, 200px); }
+    .gallery-btn { display: none; }
+    .cs-acc-content { padding-left: 0; }
+    .cs-acc-title { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-brand" href="../index.html">
+    <span class="nav-mark">P</span>
+    <span>Purnet Moirangthem</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html#work">Work</a></li>
+    <li><a href="../index.html#tools">Tools</a></li>
+    <li><a href="../index.html#about">About</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+    <svg class="hamburger-icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="close-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a class="nav-cta" href="../contact.html">
+    Let's talk
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</nav>
+
+<div class="cs-hero">
+  <p class="cs-tag">WiseWay: Designing a Senior-Focused Mobility Platform</p>
+  <h1 class="cs-h1">A mobility service focused on <em>clarity, assistance,</em> and everyday health needs for senior citizens.</h1>
+  <dl class="cs-meta reveal-stagger">
+    <div class="cs-meta-item">
+      <dt>Case Study</dt>
+      <dd><a href="https://www.behance.net/gallery/189412123/WiseWay-Cab-UXUI-Case-Study" target="_blank" rel="noopener">Behance ↗</a></dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Role</dt>
+      <dd>UX Designer</dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Expertise</dt>
+      <dd>UX/UI Design</dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Year</dt>
+      <dd>2024</dd>
+    </div>
+  </dl>
+</div>
+
+<section class="gallery-shell reveal" data-layout="portrait">
+  <div class="gallery-track-wrap" role="region" aria-label="WiseWay project screenshots">
+    <ul class="gallery-track" role="list">
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%2001.png" alt="WiseWay — Home screen with morning greeting and one-tap ride booking" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%202.png" alt="WiseWay — Destination selection with health shortcuts for clinic and pharmacy" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%203.png" alt="WiseWay — Ride confirmation screen with large trust indicators and driver profile" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%204.png" alt="WiseWay — Live ride tracking with caregiver notification and emergency button" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%205.png" alt="WiseWay — Caregiver mode showing linked account with ride status visibility" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%206.png" alt="WiseWay — Saved destinations list with one-tap favourites for recurring trips" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%207.png" alt="WiseWay — Voice-assisted booking flow with real-time speech transcription" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%208.png" alt="WiseWay — Trip history and upcoming health appointments in a single view" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
+    </ul>
+    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot" hidden>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
+    </button>
+    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot" hidden>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
+    </button>
+  </div>
+  <div class="gallery-dots" role="tablist" aria-label="Screenshot navigation"></div>
+</section>
+
+<div class="cs-body">
+
+  <div class="cs-accordion reveal">
+
+    <!-- Project Overview -->
+    <div class="cs-acc-item" data-open>
+      <button class="cs-acc-trigger" aria-expanded="true">
+        <span class="cs-acc-icon">
+          <!-- Car / mobility icon -->
+          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><polyline points="17 8 17 3 11 3 11 8"/></svg>
+        </span>
+        <span class="cs-acc-label">01</span>
+        <span class="cs-acc-title">Project Overview</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">WiseWay is a ride-hailing service designed specifically for senior citizens — a segment often left behind by mainstream mobility apps that prioritise speed over accessibility. The project required rethinking every touchpoint: from onboarding to ride confirmation, to ensure seniors could book with confidence and complete their journeys independently.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Problem -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Alert triangle / problem icon -->
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <span class="cs-acc-label">02</span>
+        <span class="cs-acc-title">The Problem</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Four recurring friction points emerged from research with senior users and their caregivers.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Interface complexity</dt>
+                <dd>Mainstream ride apps assume fast interaction patterns — small tap targets, dense information, rapid transitions — that create anxiety and errors for seniors with motor and vision limitations.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Low trust in digital services</dt>
+                <dd>Seniors expressed difficulty trusting apps without visible cues of legitimacy, caregiver oversight, or human fallback — leading many to abandon bookings mid-flow.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Fragmented health journeys</dt>
+                <dd>Getting to a clinic, pharmacy, or therapy session involved coordinating across multiple apps. No service connected daily mobility with ongoing health needs in one place.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Caregiver exclusion</dt>
+                <dd>Family members and care assistants had no visibility into rides being booked or completed — creating anxiety on both sides of the journey.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Approach -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Accessibility / approach icon -->
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </span>
+        <span class="cs-acc-label">03</span>
+        <span class="cs-acc-title">Design Approach</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Research and design went hand-in-hand, with each phase informing the next.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Research with real users</dt>
+                <dd>Conducted contextual interviews and task observation sessions with senior participants aged 65–82. Mapped pain points, mental models, and moments of abandonment across competing products.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Accessible visual system</dt>
+                <dd>Defined a high-contrast colour palette, large touch targets (minimum 56px), generous line-height, and reduced motion defaults. Every component passed WCAG AA contrast ratios.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Simplified booking flow</dt>
+                <dd>Reduced the booking journey to a maximum of 3 steps from home screen to confirmation. Each screen shows exactly one primary action, with secondary options collapsed by default.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Shield / trust icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        <span class="cs-acc-label">04</span>
+        <span class="cs-acc-title">Solution</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Five key features define the WiseWay experience.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Voice-assisted booking</dt>
+                <dd>Users can speak their destination rather than type it, with real-time transcription confirmation before proceeding. Designed for seniors with low dexterity or limited typing comfort.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Caregiver mode</dt>
+                <dd>A linked caregiver account can view live ride status, receive notifications at departure and arrival, and book rides on behalf of the senior — all with clearly designated permissions.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Health destination shortcuts</dt>
+                <dd>Recurring destinations like clinics, pharmacies, and therapy centres are surfaced as one-tap favourites based on frequency — eliminating repetitive address entry.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Trust indicators</dt>
+                <dd>Driver profiles include a senior-specialist rating, years of service, and opt-in video verification. Ride confirmation screens show a phone number to call a human dispatcher.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Emergency quick action</dt>
+                <dd>A persistent, clearly visible emergency button is available throughout the ride screen — triggering an immediate call to the nominated emergency contact without navigating away.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /accordion -->
+
+  <div class="cs-takeaway reveal">
+    <p class="cs-takeaway-label">Design Takeaway</p>
+    <p class="cs-lead">Designing for seniors forced me to question every assumption I carry about how people interact with digital products. What felt like sensible UX defaults — compressed flows, icon-only navigation, swipe gestures — became barriers. The constraint was clarifying: when you design for the edges, the centre improves too.</p>
+  </div>
+
+</div>
+
+<div class="cs-back">
+  <a href="../index.html#work">
+    <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to all work
+  </a>
+</div>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <h3>Have a project<br>in <span class="italic">mind?</span></h3>
+      <p>Taking on a small number of product-design engagements for 2026 — systems work, zero-to-one, or the messy middle.</p>
+      <div class="foot-socials">
+        <a class="foot-soc" href="https://www.behance.net/gallery/189412123/WiseWay-Cab-UXUI-Case-Study" target="_blank" rel="noopener" aria-label="Behance">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.2 6.4H3v11.2h6.35c2.54 0 4.3-1.3 4.3-3.36 0-1.54-.96-2.57-2.35-2.76 1.05-.27 1.79-1.2 1.79-2.4 0-1.75-1.52-2.68-3.89-2.68zm-.25 4.55h-3v-2.8h2.92c1.1 0 1.76.43 1.76 1.37 0 .99-.66 1.43-1.68 1.43zm.2 4.82h-3.2v-3.04h3.13c1.34 0 2.06.54 2.06 1.51 0 1.02-.7 1.53-1.99 1.53zM21 10.4h-5.5V9h5.5v1.4zm-2.75 1c-2.3 0-3.8 1.55-3.8 3.85 0 2.34 1.55 3.85 3.85 3.85 1.8 0 3.14-.87 3.55-2.35h-2.07c-.22.58-.78.92-1.48.92-1 0-1.67-.6-1.8-1.68H21.8c.05-.25.05-.5.05-.74 0-2.3-1.5-3.85-3.6-3.85zm-1.71 3.08c.18-.98.8-1.57 1.71-1.57s1.54.59 1.62 1.57H16.54z"/></svg>
+        </a>
+        <a class="foot-soc" href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+        </a>
+        <a class="foot-soc" href="mailto:hello@purnet.design" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#tools">Tools</a></li>
+        <li><a href="../index.html#about">About me</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Case studies</h4>
+      <ul>
+        <li><a href="auto-qa.html">Auto QA</a></li>
+        <li><a href="employee-experience.html">Employee Experience</a></li>
+        <li><a href="wiseway.html">WiseWay</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><a href="https://www.behance.net/gallery/189412123/WiseWay-Cab-UXUI-Case-Study" target="_blank" rel="noopener">Behance</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="mailto:hello@purnet.design">hello@purnet.design</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 — Purnet Moirangthem</div>
+    <div class="meta">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Cookies</a>
+      <a href="#">Terms & Conditions</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (dot && ring) {
+      let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+      addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+      (function tick() { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+      document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
+      });
+    }
+
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      function closeNav() { navLinks.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false'); }
+      hamburger.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); hamburger.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+      navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+      document.addEventListener('click', e => { if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) closeNav(); });
+    }
+
+    const nav = document.getElementById('nav');
+    let lastY = 0;
+    addEventListener('scroll', () => { const y = scrollY; nav.classList.toggle('hidden', y > lastY && y > 100); lastY = y; });
+
+    const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+    // Accordion
+    document.querySelectorAll('.cs-acc-trigger').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const item = btn.closest('.cs-acc-item');
+        const isOpen = item.hasAttribute('data-open');
+        document.querySelectorAll('.cs-acc-item[data-open]').forEach(function(openItem) {
+          openItem.removeAttribute('data-open');
+          openItem.querySelector('.cs-acc-trigger').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.setAttribute('data-open', '');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Gallery
+    document.querySelectorAll('.gallery-shell').forEach(function(shell) {
+      var track = shell.querySelector('.gallery-track'), dotsWrap = shell.querySelector('.gallery-dots'), btnPrev = shell.querySelector('.gallery-btn--prev'), btnNext = shell.querySelector('.gallery-btn--next'), slides = Array.from(shell.querySelectorAll('.gallery-slide'));
+      if (!track || !slides.length) return;
+      btnPrev.removeAttribute('hidden'); btnNext.removeAttribute('hidden');
+      var active = 0;
+      var dots = slides.map(function(_, i) { var btn = document.createElement('button'); btn.setAttribute('role', 'tab'); btn.setAttribute('aria-label', 'Screenshot ' + (i+1) + ' of ' + slides.length); btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); btn.addEventListener('click', function() { goTo(i); }); dotsWrap.appendChild(btn); return btn; });
+      function goTo(i) { i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: 'smooth' }); }
+      function getActive() { var center = track.getBoundingClientRect().left + track.clientWidth / 2; var best = 0, bestDist = Infinity; slides.forEach(function(s, i) { var r = s.getBoundingClientRect(); var d = Math.abs(r.left + r.width/2 - center); if (d < bestDist) { bestDist = d; best = i; } }); return best; }
+      function sync() { active = getActive(); dots.forEach(function(d, i) { d.setAttribute('aria-selected', i === active ? 'true' : 'false'); }); btnPrev.toggleAttribute('data-at-edge', active === 0); btnNext.toggleAttribute('data-at-edge', active === slides.length - 1); }
+      var raf; track.addEventListener('scroll', function() { cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); }, { passive: true });
+      btnPrev.addEventListener('click', function() { goTo(active - 1); }); btnNext.addEventListener('click', function() { goTo(active + 1); });
+      track.setAttribute('tabindex', '0');
+      shell.addEventListener('keydown', function(e) { if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); } });
+      var isDrag = false, dragX = 0, scrollX = 0;
+      track.addEventListener('mousedown', function(e) { isDrag = true; dragX = e.clientX; scrollX = track.scrollLeft; track.classList.add('is-dragging'); e.preventDefault(); });
+      window.addEventListener('mousemove', function(e) { if (isDrag) track.scrollLeft = scrollX + (dragX - e.clientX); });
+      window.addEventListener('mouseup', function() { isDrag = false; track.classList.remove('is-dragging'); });
+      var txStart = 0, ttStart = 0;
+      track.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; ttStart = Date.now(); }, { passive: true });
+      track.addEventListener('touchend', function(e) { var dx = e.changedTouches[0].clientX - txStart; var v = Math.abs(dx) / (Date.now() - ttStart); if (v > 0.3 && Math.abs(dx) > 20) goTo(dx < 0 ? active + 1 : active - 1); }, { passive: true });
+      sync();
+    });
+  })();
+</script>
+</body>
+</html>

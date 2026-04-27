@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Auto QA Platform — Purnet Moirangthem</title>
+<meta name="description" content="AI-Powered Quality Assurance Platform. Centralized quality evaluation platform for support agents at Kapture CX." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F0B1E;
+    --ink-soft: #4A4363;
+    --paper: #FAFAF8;
+    --purple: #6A4BFF;
+    --lavender: #F0EBFF;
+    --lavender-soft: #F7F4FF;
+    --line: rgba(15, 11, 30, 0.10);
+    --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --grad-purple: linear-gradient(120deg, #7B3CF7 0%, #FF6EC7 55%, #F4E84C 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", "SF Mono", monospace;
+    --max: 1100px;
+    --accent: #10B981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-mono); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; }
+  a, button { cursor: none; }
+  ::selection { background: var(--ink); color: var(--paper); }
+  :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
+
+  /* Cursor */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+  .cursor-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
+  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+  body.cursor-dark .cursor-dot { background: var(--paper); }
+  body.cursor-dark .cursor-ring { border-color: var(--paper); }
+
+  /* Nav */
+  .nav { position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 14px 20px; background: rgba(250,250,248,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 50px; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
+  .nav.hidden { transform: translateY(-140%); }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 500; font-size: 20px; letter-spacing: -0.02em; }
+  .nav-mark { width: 30px; height: 30px; border-radius: 50%; background: var(--grad); font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 600; color: var(--ink); display: grid; place-items: center; font-size: 14px; }
+  .nav-links { display: flex; gap: 2px; list-style: none; }
+  .nav-links a { padding: 10px 18px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-radius: 50px; transition: background 160ms; }
+  .nav-links a:hover { background: rgba(0,0,0,0.08); }
+  .nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; background: var(--ink); color: var(--paper); border-radius: 50px; font-size: 13px; font-weight: 500; font-family: var(--font-mono); transition: opacity 150ms; }
+  .nav-cta:hover { opacity: 0.88; }
+  .nav-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-hamburger { display: none; width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.06); align-items: center; justify-content: center; position: relative; }
+  .nav-hamburger svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; fill: none; position: absolute; transition: opacity 160ms, transform 160ms cubic-bezier(.2,.7,.3,1); }
+  .nav-hamburger .hamburger-icon { opacity: 1; transform: scale(1); }
+  .nav-hamburger .close-icon { opacity: 0; transform: scale(0.7) rotate(-45deg); }
+  .nav-hamburger[aria-expanded="true"] .hamburger-icon { opacity: 0; transform: scale(0.7) rotate(45deg); }
+  .nav-hamburger[aria-expanded="true"] .close-icon { opacity: 1; transform: scale(1) rotate(0deg); }
+  @media (max-width: 760px) {
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
+    .nav-links {
+      position: fixed; top: 80px; left: 20px; right: 20px;
+      background: rgba(250,250,248,0.96);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--line); border-radius: 20px;
+      padding: 16px; flex-direction: column; gap: 4px;
+      z-index: 99; display: flex;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-10px);
+      transition: opacity 220ms cubic-bezier(.2,.7,.3,1), transform 220ms cubic-bezier(.2,.7,.3,1);
+    }
+    .nav-links.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .nav-links a { padding: 12px 20px; font-size: 15px; border-radius: 12px; }
+  }
+
+  /* Case study hero */
+  .cs-hero { padding: 160px 40px 80px; max-width: var(--max); margin: 0 auto; }
+  .cs-tag { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 24px; }
+  .cs-h1 { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400; font-size: clamp(36px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.03em; max-width: 18ch; margin-bottom: 52px; }
+  .cs-h1 em { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; }
+  .cs-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; border-top: 1px solid var(--line); padding-top: 32px; }
+  .cs-meta-item dt { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
+  .cs-meta-item dd { font-family: var(--font-mono); font-size: 14px; font-weight: 400; }
+  .cs-meta-item dd a { border-bottom: 1px solid var(--line); transition: border-color 160ms; }
+  .cs-meta-item dd a:hover { border-color: var(--ink); }
+
+  /* Gallery */
+  .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .gallery-track-wrap { position: relative; border-radius: 16px; overflow: hidden; }
+  .gallery-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; list-style: none; margin: 0; padding: 0; gap: 12px; cursor: grab; }
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gallery-track.is-dragging { cursor: grabbing; }
+  .gallery-slide { scroll-snap-align: start; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--lavender); }
+  .gallery-slide img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+  [data-layout="landscape"] .gallery-track { padding-right: 60px; }
+  [data-layout="landscape"] .gallery-slide { width: min(1000px, calc(100vw - 80px - 60px - 12px)); aspect-ratio: 16 / 10; }
+
+  /* Device mockup — desktop */
+  .gallery-device-wrap { position: relative; aspect-ratio: 6316 / 4765; }
+  .gallery-device-wrap .gallery-track-wrap {
+    position: absolute;
+    top: 3.15%; bottom: 2.44%; left: 2.38%; right: 2.39%;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .gallery-device-wrap .gallery-track { height: 100%; padding-right: 0; }
+  .gallery-device-wrap .gallery-slide { width: auto; height: 100%; aspect-ratio: 16 / 10; }
+  .gallery-frame-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 10;
+    display: block; object-fit: fill;
+  }
+  [data-layout="portrait"] .gallery-track { padding: 24px 24px 24px 0; gap: 20px; }
+  [data-layout="portrait"] .gallery-slide { width: clamp(180px, 28vw, 260px); aspect-ratio: 9 / 19.5; border-radius: 24px; box-shadow: 0 2px 8px rgba(15,11,30,0.08), 0 8px 32px rgba(15,11,30,0.12); }
+  .gallery-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s, opacity 0.15s; cursor: pointer; }
+  .gallery-btn:hover { background: var(--lavender-soft); border-color: var(--purple); color: var(--purple); }
+  .gallery-btn--prev { left: 16px; }
+  .gallery-btn--next { right: 16px; }
+  .gallery-btn[data-at-edge] { opacity: 0; pointer-events: none; }
+  .gallery-dots { display: flex; justify-content: center; gap: 6px; padding: 4px 0; }
+  .gallery-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0; background: var(--line); cursor: pointer; transition: background 0.2s, width 0.2s, border-radius 0.2s; }
+  .gallery-dots button[aria-selected="true"] { background: var(--purple); width: 20px; border-radius: 3px; }
+
+  /* ── Accordion body ────────────────────────────────────────────────── */
+  .cs-body { max-width: var(--max); margin: 0 auto; padding: 80px 40px 0; }
+
+  .cs-accordion { border-top: 1px solid var(--line); margin-bottom: 80px; }
+
+  .cs-acc-item { border-bottom: 1px solid var(--line); }
+
+  .cs-acc-trigger {
+    width: 100%; display: flex; align-items: center; gap: 16px;
+    padding: 28px 0; background: none; text-align: left;
+    transition: opacity 140ms;
+  }
+  .cs-acc-trigger:hover { opacity: 0.72; }
+
+  .cs-acc-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 10px; border: 1.5px solid var(--line);
+    display: grid; place-items: center;
+    transition: background 200ms, border-color 200ms;
+  }
+  .cs-acc-icon svg { width: 18px; height: 18px; stroke: var(--ink-soft); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke 200ms; }
+  .cs-acc-item[data-open] .cs-acc-icon { background: var(--ink); border-color: var(--ink); }
+  .cs-acc-item[data-open] .cs-acc-icon svg { stroke: var(--paper); }
+
+  .cs-acc-label {
+    flex: 1;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+    transition: color 200ms;
+  }
+  .cs-acc-item[data-open] .cs-acc-label { color: var(--ink); }
+
+  .cs-acc-title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 450;
+    font-size: clamp(20px, 2.4vw, 28px);
+    letter-spacing: -0.018em; line-height: 1.18;
+    color: var(--ink); flex: 3;
+  }
+
+  .cs-acc-chevron {
+    width: 32px; height: 32px; flex-shrink: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft);
+    transition: transform 300ms cubic-bezier(.2,.7,.3,1), color 200ms;
+  }
+  .cs-acc-chevron svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cs-acc-item[data-open] .cs-acc-chevron { transform: rotate(180deg); color: var(--ink); }
+
+  .cs-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 320ms cubic-bezier(.2,.7,.3,1);
+  }
+  .cs-acc-item[data-open] .cs-acc-body { grid-template-rows: 1fr; }
+  .cs-acc-inner { overflow: hidden; }
+  .cs-acc-content { padding: 0 0 36px 56px; }
+
+  .cs-lead {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 350;
+    font-size: clamp(18px, 2.2vw, 24px);
+    line-height: 1.48; letter-spacing: -0.018em;
+    color: var(--ink); max-width: 62ch; margin-bottom: 36px;
+  }
+
+  .cs-items { display: flex; flex-direction: column; gap: 0; }
+  .cs-item { display: grid; grid-template-columns: 200px 1fr; gap: 40px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .cs-item:first-child { border-top: 1px solid var(--line); }
+  .cs-item dt { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 680; font-size: 16px; letter-spacing: -0.012em; line-height: 1.25; color: var(--ink); }
+  .cs-item dd { font-family: var(--font-mono); font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--ink-soft); }
+
+  /* Outcome block */
+  .cs-takeaway { background: var(--ink); color: var(--paper); border-radius: 16px; padding: 56px; margin-bottom: 80px; }
+  .cs-takeaway .cs-lead { color: rgba(255,255,255,0.9); max-width: 60ch; margin-bottom: 0; font-size: clamp(16px, 1.8vw, 22px); }
+  .cs-takeaway-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+
+  .cs-back { max-width: var(--max); margin: 0 auto; padding: 48px 40px; }
+  .cs-back a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 160ms; }
+  .cs-back a:hover { border-color: var(--ink); }
+  .cs-back a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Footer */
+  footer { background: var(--ink); color: var(--paper); padding: 96px 40px 40px; }
+  .foot-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+  .foot-brand h3 { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400; font-size: 38px; line-height: 1.04; letter-spacing: -0.028em; margin-bottom: 20px; text-wrap: balance; }
+  .foot-brand h3 .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .foot-brand p { font-family: var(--font-mono); font-size: 13px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+  .foot-socials { display: flex; gap: 8px; }
+  .foot-soc { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); display: grid; place-items: center; transition: background 200ms, transform 200ms, color 200ms; color: var(--paper); }
+  .foot-soc:hover { background: var(--grad); transform: translateY(-3px); color: var(--ink); }
+  .foot-soc svg { width: 17px; height: 17px; }
+  .foot-col h4 { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .foot-col a { font-family: var(--font-mono); font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85); transition: color 160ms; }
+  .foot-col a:hover { color: #FF6EC7; }
+  .foot-bottom { max-width: var(--max); margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.55); flex-wrap: wrap; gap: 16px; }
+  .foot-bottom .meta { display: flex; gap: 24px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms cubic-bezier(.2,.7,.3,1), transform 700ms cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal-stagger > * { opacity: 0; transform: translateY(18px); transition: opacity 620ms cubic-bezier(.2,.7,.3,1), transform 620ms cubic-bezier(.2,.7,.3,1); }
+  .reveal-stagger.in > * { opacity: 1; transform: none; }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 60ms; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 120ms; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 180ms; }
+
+  @media (max-width: 760px) {
+    .cs-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cs-item { grid-template-columns: 1fr; gap: 8px; }
+    .cs-hero, .cs-body, .cs-back { padding-left: 20px; padding-right: 20px; }
+    .foot-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cs-takeaway { padding: 40px 24px; }
+    .gallery-shell { padding: 0 20px; }
+    [data-layout="landscape"] .gallery-slide { width: calc(100vw - 80px); aspect-ratio: 4/3; }
+    .gallery-device-wrap .gallery-slide { width: auto; height: 100%; aspect-ratio: 16 / 10; }
+    .gallery-btn { display: none; }
+    .cs-acc-content { padding-left: 0; }
+    .cs-acc-title { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-brand" href="../index.html">
+    <span class="nav-mark">P</span>
+    <span>Purnet Moirangthem</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html#work">Work</a></li>
+    <li><a href="../index.html#tools">Tools</a></li>
+    <li><a href="../index.html#about">About</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+    <svg class="hamburger-icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="close-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a class="nav-cta" href="../contact.html">
+    Let's talk
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</nav>
+
+<div class="cs-hero">
+  <p class="cs-tag">AI-Powered Quality Assurance Platform</p>
+  <h1 class="cs-h1">Centralized quality evaluation platform for <em>support agents.</em></h1>
+  <dl class="cs-meta reveal-stagger">
+    <div class="cs-meta-item">
+      <dt>Company</dt>
+      <dd><a href="https://kapture.cx/conversation-intelligence/auto-qa/" target="_blank" rel="noopener">Kapture CX ↗</a></dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Role</dt>
+      <dd>UX Designer</dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Expertise</dt>
+      <dd>UX/UI Design</dd>
+    </div>
+    <div class="cs-meta-item">
+      <dt>Year</dt>
+      <dd>2025</dd>
+    </div>
+  </dl>
+</div>
+
+<section class="gallery-shell reveal" data-layout="landscape">
+  <div class="gallery-device-wrap">
+  <div class="gallery-track-wrap" role="region" aria-label="Auto QA project screenshots">
+    <ul class="gallery-track" role="list">
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Dashboard.png" alt="Auto QA — Dashboard showing agent performance metrics and conversation scores" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Conversations.png" alt="Auto QA — Conversations list with filter controls and score indicators" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Agent%20view.png" alt="Auto QA — Agent view with individual performance timeline and score breakdown" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Agent%20view%20transcript.png" alt="Auto QA — Transcript view with inline AI evaluation scores linked to conversation moments" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Scorecard.png" alt="Auto QA — Scorecard with weighted quality dimensions and pass/fail thresholds" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Manual%20QA.png" alt="Auto QA — Manual QA workflow for calibration and human review override" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Layout%201.png" alt="Auto QA — Full platform layout showing the evaluation workspace" loading="lazy" draggable="false" /></li>
+      <li class="gallery-slide" role="listitem"><img src="../assets/QA/Settings.png" alt="Auto QA — Settings panel for configuring scoring criteria and alert thresholds" loading="lazy" draggable="false" /></li>
+    </ul>
+    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot" hidden>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
+    </button>
+    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot" hidden>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
+    </button>
+  </div>
+  <img class="gallery-frame-img" src="../assets/Mockups/desktop-frame.png" alt="" aria-hidden="true" />
+  </div>
+  <div class="gallery-dots" role="tablist" aria-label="Screenshot navigation"></div>
+</section>
+
+<div class="cs-body">
+
+  <!-- Accordion -->
+  <div class="cs-accordion reveal">
+
+    <!-- Project Overview -->
+    <div class="cs-acc-item" data-open>
+      <button class="cs-acc-trigger" aria-expanded="true">
+        <span class="cs-acc-icon">
+          <!-- Magnifying glass / search icon -->
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <span class="cs-acc-label">01</span>
+        <span class="cs-acc-title">Project Overview</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Auto QA is Kapture CX's AI-powered platform for evaluating customer support agent conversations at scale. Before it existed, quality audits were manual, sporadic, and subjective — reviewers would sample a fraction of conversations, score them inconsistently, and deliver feedback too late to change behaviour. The platform was designed to make quality evaluation continuous, structured, and actionable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Approach -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Compass / design icon -->
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </span>
+        <span class="cs-acc-label">02</span>
+        <span class="cs-acc-title">Design Approach</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Three overlapping research and design tracks ran in parallel throughout the project.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Workflow mapping</dt>
+                <dd>Shadowed QA analysts, team leads, and support managers to understand how quality evaluation actually worked — not how it was supposed to work. Uncovered that most feedback was delivered too late, too vaguely, and without enough context for agents to act on it.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Dual-persona design</dt>
+                <dd>The platform serves two distinct users with opposing needs: evaluators (who need structured tools to assess conversations quickly and fairly) and agents (who need feedback that is specific, timely, and tied to real examples). Both personas were designed for in parallel, not sequentially.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>AI output readability</dt>
+                <dd>AI-generated evaluation scores are only useful if a human can understand why. Worked closely with the ML team to define how model outputs should be presented — score breakdowns, citation-linked evidence, confidence indicators — so evaluators could trust, verify, and override the AI when needed.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Layers / solution icon -->
+          <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </span>
+        <span class="cs-acc-label">03</span>
+        <span class="cs-acc-title">Solution</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Six core features define the Auto QA platform experience.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Conversation scoring</dt>
+                <dd>AI-evaluated scores for every conversation, broken down by quality dimensions (tone, resolution, compliance, empathy). Each dimension links directly to the moment in the transcript that influenced the score — so evaluators can review evidence, not just conclusions.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>AI evaluation criteria</dt>
+                <dd>A visual rubric builder that lets QA managers define what "good" looks like for their team — weighted scoring, custom criteria, pass/fail thresholds — without writing a single line of code. Criteria can be versioned and A/B tested across teams.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Agent performance timeline</dt>
+                <dd>Each agent has a longitudinal performance view showing score trends, recurring issues, and improvement areas over time. Designed to surface coaching opportunities rather than just compliance violations.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Team leaderboards</dt>
+                <dd>Configurable team and individual rankings that QA leads can share in team standups or 1:1 reviews. Designed to encourage healthy competition without creating anxiety — rankings are opt-in and framed around improvement, not surveillance.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Calibration workflows</dt>
+                <dd>A structured process for QA teams to align on scoring standards — reviewers score the same conversation independently, then compare results, discuss discrepancies, and lock in a calibrated benchmark. Reduces evaluator bias over time.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Dispute and appeal flow</dt>
+                <dd>Agents can flag scores they disagree with, attach context, and request re-review — all within the platform. Designed to give agents agency in the process and reduce the perception that AI evaluation is final and unappealable.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Designed to Scale -->
+    <div class="cs-acc-item">
+      <button class="cs-acc-trigger" aria-expanded="false">
+        <span class="cs-acc-icon">
+          <!-- Trending up / scale icon -->
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </span>
+        <span class="cs-acc-label">04</span>
+        <span class="cs-acc-title">Designed to Scale</span>
+        <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="cs-acc-body" role="region">
+        <div class="cs-acc-inner">
+          <div class="cs-acc-content">
+            <p class="cs-lead">Four structural decisions made the platform viable at enterprise scale.</p>
+            <dl class="cs-items">
+              <div class="cs-item">
+                <dt>Bulk evaluation</dt>
+                <dd>QA analysts can queue hundreds of conversations for batch review, apply filters (date range, agent, channel, score range), and process evaluations with a single scoring action — dramatically reducing manual effort without removing human oversight.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>CRM data integration</dt>
+                <dd>Conversation data, agent profiles, and team structures pull directly from existing CRM sources. No duplicate data entry, no manual imports — evaluations are always in context with the full customer record.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Customisable scoring</dt>
+                <dd>Different business units, geographies, and product lines can run entirely different quality frameworks within the same platform — with isolated rubrics, separate leaderboards, and independent calibration sessions.</dd>
+              </div>
+              <div class="cs-item">
+                <dt>Real-time alerts</dt>
+                <dd>Configurable threshold alerts notify team leads when an agent's score drops below a defined level, or when a specific quality dimension trends negatively — enabling intervention before patterns become problems.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /accordion -->
+
+  <div class="cs-takeaway reveal">
+    <p class="cs-takeaway-label">Outcome</p>
+    <p class="cs-lead">AI evaluation is only as trusted as its transparency. The hardest design challenge on Auto QA wasn't building the scoring UI — it was making the AI's reasoning legible enough that evaluators would act on it, and agents would believe it was fair. That required designing for doubt, not just clarity.</p>
+  </div>
+
+</div>
+
+<div class="cs-back">
+  <a href="../index.html#work">
+    <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to all work
+  </a>
+</div>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <h3>Have a project<br>in <span class="italic">mind?</span></h3>
+      <p>Taking on a small number of product-design engagements for 2026 — systems work, zero-to-one, or the messy middle.</p>
+      <div class="foot-socials">
+        <a class="foot-soc" href="#" aria-label="Behance">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.2 6.4H3v11.2h6.35c2.54 0 4.3-1.3 4.3-3.36 0-1.54-.96-2.57-2.35-2.76 1.05-.27 1.79-1.2 1.79-2.4 0-1.75-1.52-2.68-3.89-2.68zm-.25 4.55h-3v-2.8h2.92c1.1 0 1.76.43 1.76 1.37 0 .99-.66 1.43-1.68 1.43zm.2 4.82h-3.2v-3.04h3.13c1.34 0 2.06.54 2.06 1.51 0 1.02-.7 1.53-1.99 1.53zM21 10.4h-5.5V9h5.5v1.4zm-2.75 1c-2.3 0-3.8 1.55-3.8 3.85 0 2.34 1.55 3.85 3.85 3.85 1.8 0 3.14-.87 3.55-2.35h-2.07c-.22.58-.78.92-1.48.92-1 0-1.67-.6-1.8-1.68H21.8c.05-.25.05-.5.05-.74 0-2.3-1.5-3.85-3.6-3.85zm-1.71 3.08c.18-.98.8-1.57 1.71-1.57s1.54.59 1.62 1.57H16.54z"/></svg>
+        </a>
+        <a class="foot-soc" href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+        </a>
+        <a class="foot-soc" href="mailto:hello@purnet.design" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#tools">Tools</a></li>
+        <li><a href="../index.html#about">About me</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Case studies</h4>
+      <ul>
+        <li><a href="auto-qa.html">Auto QA</a></li>
+        <li><a href="employee-experience.html">Employee Experience</a></li>
+        <li><a href="wiseway.html">WiseWay</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><a href="#" target="_blank" rel="noopener">Behance</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="mailto:hello@purnet.design">hello@purnet.design</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 — Purnet Moirangthem</div>
+    <div class="meta">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Cookies</a>
+      <a href="#">Terms & Conditions</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // Cursor
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (dot && ring) {
+      let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+      addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+      (function tick() { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+      document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
+      });
+    }
+
+    // Nav hamburger
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      function closeNav() { navLinks.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false'); }
+      hamburger.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); hamburger.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+      navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+      document.addEventListener('click', e => { if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) closeNav(); });
+    }
+
+    // Nav scroll hide
+    const nav = document.getElementById('nav');
+    let lastY = 0;
+    addEventListener('scroll', () => { const y = scrollY; nav.classList.toggle('hidden', y > lastY && y > 100); lastY = y; });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+    // Accordion — one-open behaviour
+    document.querySelectorAll('.cs-acc-trigger').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const item = btn.closest('.cs-acc-item');
+        const isOpen = item.hasAttribute('data-open');
+
+        // close all
+        document.querySelectorAll('.cs-acc-item[data-open]').forEach(function(openItem) {
+          openItem.removeAttribute('data-open');
+          openItem.querySelector('.cs-acc-trigger').setAttribute('aria-expanded', 'false');
+        });
+
+        // open clicked if it was closed
+        if (!isOpen) {
+          item.setAttribute('data-open', '');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Gallery
+    document.querySelectorAll('.gallery-shell').forEach(function(shell) {
+      var track    = shell.querySelector('.gallery-track');
+      var dotsWrap = shell.querySelector('.gallery-dots');
+      var btnPrev  = shell.querySelector('.gallery-btn--prev');
+      var btnNext  = shell.querySelector('.gallery-btn--next');
+      var slides   = Array.from(shell.querySelectorAll('.gallery-slide'));
+      if (!track || !slides.length) return;
+      btnPrev.removeAttribute('hidden');
+      btnNext.removeAttribute('hidden');
+      var active = 0;
+      var dots = slides.map(function(_, i) {
+        var btn = document.createElement('button');
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-label', 'Screenshot ' + (i+1) + ' of ' + slides.length);
+        btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        btn.addEventListener('click', function() { goTo(i); });
+        dotsWrap.appendChild(btn);
+        return btn;
+      });
+      function goTo(i) { i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: 'smooth' }); }
+      function getActive() { var center = track.getBoundingClientRect().left + track.clientWidth / 2; var best = 0, bestDist = Infinity; slides.forEach(function(s, i) { var r = s.getBoundingClientRect(); var d = Math.abs(r.left + r.width/2 - center); if (d < bestDist) { bestDist = d; best = i; } }); return best; }
+      function sync() { active = getActive(); dots.forEach(function(d, i) { d.setAttribute('aria-selected', i === active ? 'true' : 'false'); }); btnPrev.toggleAttribute('data-at-edge', active === 0); btnNext.toggleAttribute('data-at-edge', active === slides.length - 1); }
+      var raf; track.addEventListener('scroll', function() { cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); }, { passive: true });
+      btnPrev.addEventListener('click', function() { goTo(active - 1); });
+      btnNext.addEventListener('click', function() { goTo(active + 1); });
+      track.setAttribute('tabindex', '0');
+      shell.addEventListener('keydown', function(e) { if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); } });
+      var isDrag = false, dragX = 0, scrollX = 0;
+      track.addEventListener('mousedown', function(e) { isDrag = true; dragX = e.clientX; scrollX = track.scrollLeft; track.classList.add('is-dragging'); e.preventDefault(); });
+      window.addEventListener('mousemove', function(e) { if (isDrag) track.scrollLeft = scrollX + (dragX - e.clientX); });
+      window.addEventListener('mouseup', function() { isDrag = false; track.classList.remove('is-dragging'); });
+      var txStart = 0, ttStart = 0;
+      track.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; ttStart = Date.now(); }, { passive: true });
+      track.addEventListener('touchend', function(e) { var dx = e.changedTouches[0].clientX - txStart; var v = Math.abs(dx) / (Date.now() - ttStart); if (v > 0.3 && Math.abs(dx) > 20) goTo(dx < 0 ? active + 1 : active - 1); }, { passive: true });
+      sync();
+    });
+  })();
+</script>
+</body>
+</html>

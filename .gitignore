@@ -1,0 +1,5 @@
+.claude/
+.DS_Store
+assets/.DS_Store
+assets/Thumbnails/.DS_Store
+node_modules/

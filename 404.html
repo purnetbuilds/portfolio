@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>404 — Purnet Moirangthem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F0B1E;
+    --paper: #FAFAF8;
+    --line: rgba(15,11,30,0.10);
+    --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --grad-purple: linear-gradient(120deg, #7B3CF7 0%, #FF6EC7 55%, #F4E84C 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", "SF Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-mono);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    cursor: none;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  a { color: inherit; text-decoration: none; }
+  a, button { cursor: none; }
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* Cursor */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+  .cursor-dot { width: 4px; height: 4px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
+  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--paper); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-radius 220ms; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 14px 14px 20px;
+    background: rgba(15,11,30,0.55);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 500;
+    font-size: 20px; letter-spacing: -0.02em; color: white;
+  }
+  .nav-mark {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--grad);
+    font-family: var(--font-display); font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 600;
+    color: var(--ink); display: grid; place-items: center; font-size: 14px;
+  }
+
+  /* Hero */
+  .hero {
+    flex: 1;
+    background: var(--grad-purple);
+    background-size: 180% 180%;
+    animation: gradShift 22s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 40px 80px;
+    text-align: center;
+  }
+  @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .hero-inner { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+
+  .oops {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .big-num {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 400;
+    font-style: italic;
+    font-size: clamp(120px, 20vw, 240px);
+    line-height: 0.85; letter-spacing: -0.05em;
+    color: white;
+    opacity: 0.18;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 400;
+    font-size: clamp(44px, 7vw, 96px);
+    line-height: 1.0; letter-spacing: -0.03em;
+    color: white; position: relative; z-index: 1;
+  }
+  .hero-h1 .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; }
+
+  .btn-home {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px;
+    background: white; color: var(--ink);
+    border-radius: 50px; font-family: var(--font-mono);
+    font-size: 14px; font-weight: 500;
+    transition: opacity 160ms, transform 200ms;
+    position: relative; z-index: 1;
+  }
+  .btn-home:hover { opacity: 0.88; transform: translateY(-2px); }
+  .btn-home svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav">
+  <a class="nav-brand" href="index.html">
+    <span class="nav-mark">P</span>
+    <span>Purnet</span>
+  </a>
+</nav>
+
+<section class="hero">
+  <span class="big-num">404</span>
+  <div class="hero-inner">
+    <p class="oops">Oops…</p>
+    <h1 class="hero-h1">Something went <span class="italic">wrong.</span></h1>
+    <a class="btn-home" href="index.html">
+      Back to my homepage
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    (function tick() {
+      rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22;
+      ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  })();
+</script>
+</body>
+</html>
