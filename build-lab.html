@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Build Lab — Purnet Moirangthem</title>
+<meta name="description" content="Build Lab — AI-augmented product explorations by Purnet Moirangthem." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F0B1E;
+    --ink-soft: #4A4363;
+    --paper: #FAFAF8;
+    --purple: #6A4BFF;
+    --purple-deep: #1F1A4A;
+    --lavender: #F0EBFF;
+    --line: rgba(15,11,30,0.10);
+    --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", "SF Mono", monospace;
+    --max: 1320px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-mono);
+    background: var(--ink);
+    color: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    cursor: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; }
+  a, button { cursor: none; }
+  ::selection { background: var(--paper); color: var(--ink); }
+  :focus-visible { outline: dashed 2px rgba(255,255,255,0.4); outline-offset: 3px; }
+
+  /* Cursor */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+  .cursor-dot { width: 4px; height: 4px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
+  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid rgba(255,255,255,0.5); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; border-color: white; }
+
+  /* Nav */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+  .nav-brand {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 30, "wght" 400;
+    font-size: 16px; letter-spacing: -0.01em; color: white;
+  }
+  .nav-link {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    transition: color 160ms;
+  }
+  .nav-link:hover { color: white; }
+
+  /* Main */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 40px 24px;
+    gap: 32px;
+  }
+
+  /* Intro */
+  .intro { }
+  .intro-h1 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 20, "wght" 400;
+    font-size: clamp(52px, 7vw, 96px);
+    line-height: 0.95; letter-spacing: -0.035em;
+    color: white; margin-bottom: 14px;
+  }
+  .intro-sub {
+    font-family: var(--font-mono); font-size: 14px; font-weight: 400;
+    color: rgba(255,255,255,0.65); margin-bottom: 8px;
+  }
+  .intro-tag {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.38);
+  }
+
+  /* Gallery */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: background 220ms, border-color 220ms, transform 260ms cubic-bezier(.2,.7,.3,1);
+  }
+  .card:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-3px);
+  }
+  .card-subtitle {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.38);
+  }
+  .card-title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 20, "wght" 400;
+    font-size: clamp(22px, 2.2vw, 32px);
+    letter-spacing: -0.022em; line-height: 1.05;
+    color: white;
+  }
+  .card-desc {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 300;
+    line-height: 1.65; color: rgba(255,255,255,0.45);
+    flex: 1;
+  }
+  .card-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .card-tag {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+    color: rgba(255,255,255,0.45);
+  }
+  .card-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 16px;
+    background: var(--paper); color: var(--ink);
+    border-radius: 8px;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    transition: opacity 150ms;
+    margin-top: 4px;
+  }
+  .card-btn:hover { opacity: 0.88; }
+
+  /* Footer */
+  footer {
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 20px 40px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .foot-socials { display: flex; gap: 16px; }
+  .foot-soc {
+    color: rgba(255,255,255,0.35);
+    transition: color 160ms;
+    display: flex; align-items: center;
+  }
+  .foot-soc:hover { color: white; }
+  .foot-soc svg { width: 18px; height: 18px; }
+  .foot-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 400;
+    color: rgba(255,255,255,0.35);
+    transition: color 160ms;
+  }
+  .foot-back:hover { color: rgba(255,255,255,0.7); }
+  .foot-back svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .nav { padding: 16px 20px; }
+    main { padding: 32px 20px 20px; gap: 28px; }
+    .gallery { grid-template-columns: 1fr; }
+    footer { padding: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav">
+  <span class="nav-brand">Purnet Moirangthem</span>
+  <a class="nav-link" href="index.html">All Projects</a>
+</nav>
+
+<main>
+  <div class="intro">
+    <h1 class="intro-h1">Build Lab</h1>
+    <p class="intro-sub">AI-Augmented Product Explorations</p>
+    <p class="intro-tag">From idea to working product — using AI to move faster and think deeper.</p>
+  </div>
+
+  <div class="gallery">
+    <article class="card">
+      <p class="card-subtitle">Financial Advisor Powered by Claude</p>
+      <h2 class="card-title">Spendsmart</h2>
+      <p class="card-desc">Spendsmart is a financial advisor that uses real data to generate personalized insights. It helps users understand spending patterns, optimize subscriptions, and make better financial decisions. Built to explore how AI can move from mock responses to real, usable guidance.</p>
+      <div class="card-tags">
+        <span class="card-tag">#Personalization</span>
+        <span class="card-tag">#Claude-API</span>
+        <span class="card-tag">#FinTech</span>
+      </div>
+      <a class="card-btn" href="build-lab/spendsmart.html">
+        View Project →
+      </a>
+    </article>
+
+    <article class="card">
+      <p class="card-subtitle">E-Commerce with AI Recommendations</p>
+      <h2 class="card-title">Calora</h2>
+      <p class="card-desc">Calora is a dessert e-commerce experience with smart recommendations and search. It personalizes product discovery while keeping the experience simple and intuitive. Built to explore how AI can enhance discovery without overwhelming users.</p>
+      <div class="card-tags">
+        <span class="card-tag">#AI</span>
+        <span class="card-tag">#E-commerce</span>
+        <span class="card-tag">#Discovery</span>
+      </div>
+      <a class="card-btn" href="build-lab/calora.html">
+        View Project →
+      </a>
+    </article>
+
+    <article class="card">
+      <p class="card-subtitle">No-Code Dashboard Builder</p>
+      <h2 class="card-title">Post Call Analysis</h2>
+      <p class="card-desc">Post Call Analysis enables users to build custom dashboards for call insights without writing code. It supports flexible metrics, layouts, and data views based on user needs. Built to explore how AI can make analytics tools more accessible and user-driven.</p>
+      <div class="card-tags">
+        <span class="card-tag">#Claude-Code</span>
+        <span class="card-tag">#Figma-MCP</span>
+        <span class="card-tag">#Analytics</span>
+      </div>
+      <a class="card-btn" href="build-lab/pca.html">
+        View Project →
+      </a>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="foot-socials">
+    <a class="foot-soc" href="https://github.com/purnetbuilds" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <a class="foot-soc" href="https://www.linkedin.com/in/purnet-moirangthem-460a63b3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+    </a>
+  </div>
+  <a class="foot-back" href="index.html">
+    <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Portfolio
+  </a>
+</footer>
+
+<script>
+  (function () {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    (function tick() {
+      rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22;
+      ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a, button, .card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  })();
+</script>
+
+</body>
+</html>
