@@ -16,8 +16,11 @@
     --purple: #6A4BFF;
     --purple-deep: #1F1A4A;
     --lavender: #F0EBFF;
+    --lavender-soft: #F7F4FF;
     --line: rgba(15,11,30,0.10);
     --grad: linear-gradient(100deg, #3DE67A 0%, #F4E84C 28%, #FF6EC7 60%, #7B3CF7 100%);
+    --grad-purple: linear-gradient(120deg, #7B3CF7 0%, #FF6EC7 55%, #F4E84C 100%);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --font-display: "Fraunces", Georgia, serif;
     --font-mono: "JetBrains Mono", "SF Mono", monospace;
     --max: 1320px;
@@ -41,6 +44,60 @@
   ::selection { background: var(--paper); color: var(--ink); }
   :focus-visible { outline: dashed 2px rgba(255,255,255,0.4); outline-offset: 3px; }
 
+  /* Animated background orbs */
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+  }
+  .bg-orb-1 {
+    width: 760px; height: 760px;
+    top: -280px; left: 50%;
+    background: radial-gradient(circle, rgba(106,75,255,0.20) 0%, rgba(106,75,255,0.06) 45%, transparent 70%);
+    animation: orb1 14s ease-in-out infinite;
+  }
+  .bg-orb-2 {
+    width: 480px; height: 480px;
+    bottom: -160px; right: -80px;
+    background: radial-gradient(circle, rgba(61,230,122,0.11) 0%, transparent 68%);
+    animation: orb2 18s ease-in-out infinite;
+  }
+  .bg-orb-3 {
+    width: 380px; height: 380px;
+    top: 35%; left: -120px;
+    background: radial-gradient(circle, rgba(255,110,199,0.09) 0%, transparent 68%);
+    animation: orb3 22s ease-in-out infinite;
+  }
+  .bg-orb-4 {
+    width: 260px; height: 260px;
+    top: 20%; right: 8%;
+    background: radial-gradient(circle, rgba(244,232,76,0.07) 0%, transparent 68%);
+    animation: orb4 26s ease-in-out infinite;
+  }
+
+  @keyframes orb1 {
+    0%, 100% { transform: translateX(-50%) translateY(0px) scale(1); }
+    30%       { transform: translateX(-47%) translateY(-36px) scale(1.04); }
+    65%       { transform: translateX(-53%) translateY(24px) scale(0.97); }
+  }
+  @keyframes orb2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    40%       { transform: translate(-40px, -50px) scale(1.08); }
+    70%       { transform: translate(20px, -20px) scale(0.94); }
+  }
+  @keyframes orb3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    35%       { transform: translate(50px, -40px) scale(1.06); }
+    70%       { transform: translate(20px, 50px) scale(0.96); }
+  }
+  @keyframes orb4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    45%       { transform: translate(-30px, 60px) scale(1.1); }
+    80%       { transform: translate(20px, 20px) scale(0.92); }
+  }
+
   /* Cursor */
   .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
   .cursor-dot { width: 4px; height: 4px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
@@ -49,10 +106,12 @@
 
   /* Nav */
   .nav {
+    position: relative; z-index: 10;
     display: flex; align-items: center; justify-content: space-between;
     padding: 18px 40px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
     flex-shrink: 0;
+    backdrop-filter: blur(12px);
   }
   .nav-brand {
     font-family: var(--font-display);
@@ -60,15 +119,19 @@
     font-size: 16px; letter-spacing: -0.01em; color: white;
   }
   .nav-link {
+    display: inline-flex; align-items: center; gap: 6px;
     font-family: var(--font-mono); font-size: 11px; font-weight: 500;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: rgba(255,255,255,0.45);
     transition: color 160ms;
   }
   .nav-link:hover { color: white; }
+  .nav-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 160ms var(--ease-out); }
+  .nav-link:hover svg { transform: translateX(-3px); }
 
   /* Main */
   main {
+    position: relative; z-index: 1;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -78,21 +141,40 @@
   }
 
   /* Intro */
-  .intro { }
+  .intro-label {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .intro-label-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--grad);
+    flex-shrink: 0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.8); }
+  }
+  .intro-label-text {
+    background: var(--grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
   .intro-h1 {
     font-family: var(--font-display);
     font-variation-settings: "opsz" 144, "SOFT" 20, "wght" 400;
     font-size: clamp(52px, 7vw, 96px);
     line-height: 0.95; letter-spacing: -0.035em;
-    color: white; margin-bottom: 14px;
+    margin-bottom: 14px;
+    background: linear-gradient(105deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .intro-sub {
     font-family: var(--font-mono); font-size: 14px; font-weight: 400;
-    color: rgba(255,255,255,0.65); margin-bottom: 8px;
-  }
-  .intro-tag {
-    font-family: var(--font-mono); font-size: 13px; font-weight: 300;
-    color: rgba(255,255,255,0.38);
+    color: rgba(255,255,255,0.50);
   }
 
   /* Gallery */
@@ -101,25 +183,54 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
   }
+
   .card {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: background 220ms, border-color 220ms, transform 260ms cubic-bezier(.2,.7,.3,1);
+    transition:
+      background 220ms ease,
+      border-color 280ms ease,
+      transform 300ms var(--ease-out),
+      box-shadow 300ms var(--ease-out);
+
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 420ms var(--ease-out),
+      transform 420ms var(--ease-out),
+      background 220ms ease,
+      border-color 280ms ease,
+      box-shadow 300ms var(--ease-out);
   }
   .card:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.14);
-    transform: translateY(-3px);
+    background: rgba(255,255,255,0.065);
+    border-color: rgba(106,75,255,0.38);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(106,75,255,0.12), 0 4px 16px rgba(0,0,0,0.3);
   }
+
   .card-subtitle {
+    display: flex; align-items: center; gap: 6px;
     font-family: var(--font-mono); font-size: 10px; font-weight: 500;
     letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(255,255,255,0.38);
+    color: rgba(255,255,255,0.35);
+  }
+  .card-subtitle::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 10px;
+    border-radius: 2px;
+    background: var(--grad-purple);
+    flex-shrink: 0;
   }
   .card-title {
     font-family: var(--font-display);
@@ -130,15 +241,20 @@
   }
   .card-desc {
     font-family: var(--font-mono); font-size: 12px; font-weight: 300;
-    line-height: 1.65; color: rgba(255,255,255,0.45);
+    line-height: 1.68; color: rgba(255,255,255,0.42);
     flex: 1;
   }
   .card-tags {
-    display: flex; flex-wrap: wrap; gap: 6px;
+    display: flex; flex-wrap: wrap; gap: 5px;
   }
   .card-tag {
-    font-family: var(--font-mono); font-size: 10px; font-weight: 400;
-    color: rgba(255,255,255,0.45);
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(161,139,255,0.85);
+    background: rgba(106,75,255,0.12);
+    border: 1px solid rgba(106,75,255,0.2);
+    border-radius: 4px;
+    padding: 3px 7px;
   }
   .card-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -146,13 +262,25 @@
     background: var(--paper); color: var(--ink);
     border-radius: 8px;
     font-family: var(--font-mono); font-size: 13px; font-weight: 500;
-    transition: opacity 150ms;
+    transition: opacity 150ms, transform 120ms var(--ease-out), box-shadow 150ms;
     margin-top: 4px;
   }
-  .card-btn:hover { opacity: 0.88; }
+  .card-btn:hover { opacity: 0.92; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+  .card-btn:active { transform: scale(0.97); opacity: 0.85; }
+  .card-btn-arrow {
+    display: inline-flex;
+    transition: transform 200ms var(--ease-out);
+  }
+  .card-btn-arrow svg {
+    width: 13px; height: 13px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .card-btn:hover .card-btn-arrow { transform: translateX(3px); }
 
   /* Footer */
   footer {
+    position: relative; z-index: 1;
     flex-shrink: 0;
     border-top: 1px solid rgba(255,255,255,0.08);
     padding: 20px 40px;
@@ -173,7 +301,8 @@
     transition: color 160ms;
   }
   .foot-back:hover { color: rgba(255,255,255,0.7); }
-  .foot-back svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .foot-back svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 160ms var(--ease-out); }
+  .foot-back:hover svg { transform: translateX(-3px); }
 
   @media (max-width: 900px) {
     body { overflow: auto; }
@@ -187,19 +316,30 @@
 </head>
 <body>
 
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="bg-orb bg-orb-4"></div>
+
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav class="nav">
   <span class="nav-brand">Purnet Moirangthem</span>
-  <a class="nav-link" href="index.html">All Projects</a>
+  <a class="nav-link" href="index.html">
+    <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    All Projects
+  </a>
 </nav>
 
 <main>
   <div class="intro">
+    <div class="intro-label">
+      <span class="intro-label-dot"></span>
+      <span class="intro-label-text">AI-Augmented Product Explorations</span>
+    </div>
     <h1 class="intro-h1">Build Lab</h1>
-    <p class="intro-sub">AI-Augmented Product Explorations</p>
-    <p class="intro-tag">From idea to working product — using AI to move faster and think deeper.</p>
+    <p class="intro-sub">From idea to working product — using AI to move faster and think deeper.</p>
   </div>
 
   <div class="gallery">
@@ -212,8 +352,11 @@
         <span class="card-tag">#Claude-API</span>
         <span class="card-tag">#FinTech</span>
       </div>
-      <a class="card-btn" href="build-lab/spendsmart.html">
-        View Project →
+      <a class="card-btn no-cursor-hover" href="build-lab/spendsmart.html">
+        View Project
+        <span class="card-btn-arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
       </a>
     </article>
 
@@ -226,8 +369,11 @@
         <span class="card-tag">#E-commerce</span>
         <span class="card-tag">#Discovery</span>
       </div>
-      <a class="card-btn" href="build-lab/calora.html">
-        View Project →
+      <a class="card-btn no-cursor-hover" href="build-lab/calora.html">
+        View Project
+        <span class="card-btn-arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
       </a>
     </article>
 
@@ -240,8 +386,11 @@
         <span class="card-tag">#Figma-MCP</span>
         <span class="card-tag">#Analytics</span>
       </div>
-      <a class="card-btn" href="build-lab/pca.html">
-        View Project →
+      <a class="card-btn no-cursor-hover" href="build-lab/pca.html">
+        View Project
+        <span class="card-btn-arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
       </a>
     </article>
   </div>
@@ -263,6 +412,7 @@
 </footer>
 
 <script>
+  /* Custom cursor */
   (function () {
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
@@ -277,9 +427,19 @@
       ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
       requestAnimationFrame(tick);
     })();
-    document.querySelectorAll('a, button, .card').forEach(el => {
+    /* Cursor hover — skip .no-cursor-hover elements */
+    document.querySelectorAll('a:not(.no-cursor-hover), button:not(.no-cursor-hover), .card').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  })();
+
+  /* Staggered card entrance */
+  (function () {
+    const cards = document.querySelectorAll('.card');
+    const delays = [0, 80, 160];
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('visible'), delays[i]);
     });
   })();
 </script>
