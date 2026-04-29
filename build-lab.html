@@ -449,11 +449,22 @@
         ctx.globalAlpha = p.alpha;
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
+        const r = Math.min(p.size * 0.25, 5);
         const g = ctx.createLinearGradient(-p.size / 2, -p.size / 2, p.size / 2, p.size / 2);
-        g.addColorStop(0, p.color);
-        g.addColorStop(1, p.colorLight);
+        g.addColorStop(0, p.colorLight);
+        g.addColorStop(0.5, p.color);
+        g.addColorStop(1, p.color);
         ctx.fillStyle = g;
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.beginPath();
+        ctx.roundRect(-p.size / 2, -p.size / 2, p.size, p.size, r);
+        ctx.fill();
+        const shine = ctx.createRadialGradient(-p.size * 0.15, -p.size * 0.15, 0, -p.size * 0.15, -p.size * 0.15, p.size * 0.6);
+        shine.addColorStop(0, 'rgba(255,255,255,0.55)');
+        shine.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = shine;
+        ctx.beginPath();
+        ctx.roundRect(-p.size / 2, -p.size / 2, p.size, p.size, r);
+        ctx.fill();
         ctx.restore();
       }
       rafId = particles.length > 0 ? requestAnimationFrame(loop) : null;
