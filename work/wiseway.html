@@ -445,23 +445,58 @@
 </footer>
 
 <script>
+  // Pixel cube cursor trail
   (function () {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
     const dot = document.getElementById('cursorDot');
-    const ring = document.getElementById('cursorRing');
-    if (dot && ring) {
-      let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-      addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
-      (function tick() { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
-      document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-      });
-      document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
-      });
+    if (!dot) return;
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    resize(); addEventListener('resize', resize);
+    const PALETTE = [
+      ['#3DE67A','#9AF5BF'],['#F4E84C','#FAF4A0'],['#FF6EC7','#FFB3E3'],
+      ['#7B3CF7','#BF99FB'],['#FF4D6D','#FF99AD'],['#00C8FF','#80E4FF'],['#FF9900','#FFCC66'],
+    ];
+    let particles = [], mx = innerWidth/2, my = innerHeight/2, rafId = null, lastSpawn = 0;
+    function spawn(x, y) {
+      const count = 2 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < count; i++) {
+        if (particles.length >= 120) break;
+        const pair = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+        particles.push({ x: x+(Math.random()-.5)*40, y: y+(Math.random()-.5)*40, vx:(Math.random()-.5)*3, vy:(Math.random()-.5)*3, size:6+Math.random()*22, rotation:Math.random()*Math.PI/4, alpha:0.85, color:pair[0], colorLight:pair[1] });
+      }
     }
+    function startLoop() { if (!rafId) rafId = requestAnimationFrame(loop); }
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length-1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy; p.alpha -= 0.018;
+        if (p.alpha <= 0) { particles.splice(i,1); continue; }
+        ctx.save(); ctx.globalAlpha = p.alpha; ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+        const g = ctx.createLinearGradient(-p.size/2,-p.size/2,p.size/2,p.size/2);
+        g.addColorStop(0,p.color); g.addColorStop(1,p.colorLight);
+        ctx.fillStyle = g; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size); ctx.restore();
+      }
+      rafId = particles.length > 0 ? requestAnimationFrame(loop) : null;
+    }
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      const now = Date.now();
+      if (now - lastSpawn > 8) { spawn(mx, my); startLoop(); lastSpawn = now; }
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { spawn(mx, my); spawn(mx, my); startLoop(); });
+    });
+    document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
+    });
+  })();
 
+  (function () {
     const hamburger = document.getElementById('navHamburger');
     const navLinks = document.getElementById('navLinks');
     if (hamburger && navLinks) {
