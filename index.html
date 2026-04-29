@@ -448,14 +448,16 @@
 
   .wcard-visual {
     position: relative; aspect-ratio: 16/11;
-    border-radius: 8px; overflow: hidden; background: var(--lavender);
+    border-radius: 8px; background: var(--paper);
+    box-shadow: 0 2px 16px rgba(15,11,30,0.07), 0 1px 4px rgba(15,11,30,0.05);
   }
   .wcard-visual img {
     width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block;
+    border-radius: 8px;
   }
 
   /* Build Lab wcard visual */
-  .wcard--bl .wcard-visual { background: var(--ink); }
+  .wcard--bl .wcard-visual { background: var(--ink); overflow: hidden; box-shadow: none; }
   .wcard--bl:hover { outline-color: rgba(123, 60, 247, 0.18); }
   .wcard--bl:hover .wcard-visual::after {
     opacity: 1;
@@ -643,6 +645,7 @@
 
   /* ── Responsive ────────────────────────────────────────────────────── */
   @media (max-width: 960px) {
+    .mono-label { display: none; }
     .nav-hamburger { display: flex; }
     .nav-links {
       position: fixed; top: 80px; left: 20px; right: 20px;
@@ -720,8 +723,8 @@
   <div class="hero-bottom">
     <p class="hero-sub">I design with engineering constraints and edge cases in mind — so ideas actually ship.</p>
     <div class="hero-ctas">
-      <a class="btn btn-paper" href="#work">
-        See the work
+      <a class="btn btn-paper" href="build-lab.html">
+        Build Lab
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
       <a class="btn btn-ghost-light" href="#about">About me</a>

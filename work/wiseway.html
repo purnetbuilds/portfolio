@@ -33,12 +33,9 @@
   :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
 
   /* Cursor */
-  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
-  .cursor-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
-  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
-  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
+  #pixelCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
   body.cursor-dark .cursor-dot { background: var(--paper); }
-  body.cursor-dark .cursor-ring { border-color: var(--paper); }
 
   /* Nav */
   .nav { position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 14px 20px; background: rgba(250,250,248,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 50px; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
@@ -123,20 +120,14 @@
   .cs-acc-item { border-bottom: 1px solid var(--line); }
   .cs-acc-trigger { width: 100%; display: flex; align-items: center; gap: 16px; padding: 28px 0; background: none; text-align: left; transition: opacity 140ms; }
   .cs-acc-trigger:hover { opacity: 0.72; }
-  .cs-acc-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background 200ms, border-color 200ms; }
-  .cs-acc-icon svg { width: 18px; height: 18px; stroke: var(--ink-soft); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke 200ms; }
-  .cs-acc-item[data-open] .cs-acc-icon { background: var(--ink); border-color: var(--ink); }
-  .cs-acc-item[data-open] .cs-acc-icon svg { stroke: var(--paper); }
-  .cs-acc-label { flex: 1; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); transition: color 200ms; }
-  .cs-acc-item[data-open] .cs-acc-label { color: var(--ink); }
-  .cs-acc-title { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 450; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.018em; line-height: 1.18; color: var(--ink); flex: 3; }
+  .cs-acc-title { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 450; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.018em; line-height: 1.18; color: var(--ink); flex: 1; }
   .cs-acc-chevron { width: 32px; height: 32px; flex-shrink: 0; display: grid; place-items: center; color: var(--ink-soft); transition: transform 300ms cubic-bezier(.2,.7,.3,1), color 200ms; }
-  .cs-acc-chevron svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cs-acc-chevron svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cs-acc-item[data-open] .cs-acc-chevron { transform: rotate(180deg); color: var(--ink); }
   .cs-acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms cubic-bezier(.2,.7,.3,1); }
   .cs-acc-item[data-open] .cs-acc-body { grid-template-rows: 1fr; }
   .cs-acc-inner { overflow: hidden; }
-  .cs-acc-content { padding: 0 0 36px 56px; }
+  .cs-acc-content { padding: 0 0 36px 0; }
 
   .cs-lead { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 350; font-size: clamp(18px, 2.2vw, 24px); line-height: 1.48; letter-spacing: -0.018em; color: var(--ink); max-width: 62ch; margin-bottom: 36px; }
   .cs-items { display: flex; flex-direction: column; gap: 0; }
@@ -199,7 +190,7 @@
 <body>
 
 <div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="pixelCanvas"></canvas>
 
 <nav class="nav" id="nav">
   <a class="nav-brand" href="../index.html">
@@ -273,11 +264,6 @@
     <!-- Project Overview -->
     <div class="cs-acc-item" data-open>
       <button class="cs-acc-trigger" aria-expanded="true">
-        <span class="cs-acc-icon">
-          <!-- Car / mobility icon -->
-          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><polyline points="17 8 17 3 11 3 11 8"/></svg>
-        </span>
-        <span class="cs-acc-label">01</span>
         <span class="cs-acc-title">Project Overview</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -293,11 +279,6 @@
     <!-- The Problem -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Alert triangle / problem icon -->
-          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </span>
-        <span class="cs-acc-label">02</span>
         <span class="cs-acc-title">The Problem</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -331,11 +312,6 @@
     <!-- Design Approach -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Accessibility / approach icon -->
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        </span>
-        <span class="cs-acc-label">03</span>
         <span class="cs-acc-title">Design Approach</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -365,11 +341,6 @@
     <!-- Solution -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Shield / trust icon -->
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </span>
-        <span class="cs-acc-label">04</span>
         <span class="cs-acc-title">Solution</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>

@@ -34,12 +34,9 @@
   :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
 
   /* Cursor */
-  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
-  .cursor-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
-  .cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: width 220ms cubic-bezier(.2,.7,.3,1), height 220ms cubic-bezier(.2,.7,.3,1), border-color 220ms, border-radius 220ms; }
-  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-radius: 4px; border-style: dashed; }
+  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
+  #pixelCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
   body.cursor-dark .cursor-dot { background: var(--paper); }
-  body.cursor-dark .cursor-ring { border-color: var(--paper); }
 
   /* Nav */
   .nav { position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 14px 20px; background: rgba(250,250,248,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 50px; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
@@ -139,30 +136,12 @@
   }
   .cs-acc-trigger:hover { opacity: 0.72; }
 
-  .cs-acc-icon {
-    width: 40px; height: 40px; flex-shrink: 0;
-    border-radius: 10px; border: 1.5px solid var(--line);
-    display: grid; place-items: center;
-    transition: background 200ms, border-color 200ms;
-  }
-  .cs-acc-icon svg { width: 18px; height: 18px; stroke: var(--ink-soft); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke 200ms; }
-  .cs-acc-item[data-open] .cs-acc-icon { background: var(--ink); border-color: var(--ink); }
-  .cs-acc-item[data-open] .cs-acc-icon svg { stroke: var(--paper); }
-
-  .cs-acc-label {
-    flex: 1;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
-    transition: color 200ms;
-  }
-  .cs-acc-item[data-open] .cs-acc-label { color: var(--ink); }
-
   .cs-acc-title {
     font-family: var(--font-display);
     font-variation-settings: "opsz" 144, "SOFT" 50, "wght" 450;
     font-size: clamp(20px, 2.4vw, 28px);
     letter-spacing: -0.018em; line-height: 1.18;
-    color: var(--ink); flex: 3;
+    color: var(--ink); flex: 1;
   }
 
   .cs-acc-chevron {
@@ -171,7 +150,7 @@
     color: var(--ink-soft);
     transition: transform 300ms cubic-bezier(.2,.7,.3,1), color 200ms;
   }
-  .cs-acc-chevron svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cs-acc-chevron svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cs-acc-item[data-open] .cs-acc-chevron { transform: rotate(180deg); color: var(--ink); }
 
   .cs-acc-body {
@@ -181,7 +160,7 @@
   }
   .cs-acc-item[data-open] .cs-acc-body { grid-template-rows: 1fr; }
   .cs-acc-inner { overflow: hidden; }
-  .cs-acc-content { padding: 0 0 36px 56px; }
+  .cs-acc-content { padding: 0 0 36px 0; }
 
   .cs-lead {
     font-family: var(--font-display);
@@ -253,7 +232,7 @@
 <body>
 
 <div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="pixelCanvas"></canvas>
 
 <nav class="nav" id="nav">
   <a class="nav-brand" href="../index.html">
@@ -331,11 +310,6 @@
     <!-- Project Overview -->
     <div class="cs-acc-item" data-open>
       <button class="cs-acc-trigger" aria-expanded="true">
-        <span class="cs-acc-icon">
-          <!-- Magnifying glass / search icon -->
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </span>
-        <span class="cs-acc-label">01</span>
         <span class="cs-acc-title">Project Overview</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -351,11 +325,6 @@
     <!-- Design Approach -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Compass / design icon -->
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-        </span>
-        <span class="cs-acc-label">02</span>
         <span class="cs-acc-title">Design Approach</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -385,11 +354,6 @@
     <!-- Solution -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Layers / solution icon -->
-          <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-        </span>
-        <span class="cs-acc-label">03</span>
         <span class="cs-acc-title">Solution</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -431,11 +395,6 @@
     <!-- Designed to Scale -->
     <div class="cs-acc-item">
       <button class="cs-acc-trigger" aria-expanded="false">
-        <span class="cs-acc-icon">
-          <!-- Trending up / scale icon -->
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        </span>
-        <span class="cs-acc-label">04</span>
         <span class="cs-acc-title">Designed to Scale</span>
         <span class="cs-acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
@@ -537,22 +496,66 @@
 
 <script>
   (function () {
-    // Cursor
+    // Pixel cube cursor trail
+    if (!window.matchMedia('(pointer: fine)').matches) return;
     const dot = document.getElementById('cursorDot');
-    const ring = document.getElementById('cursorRing');
-    if (dot && ring) {
-      let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-      addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
-      (function tick() { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
-      document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-      });
-      document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
-      });
+    if (!dot) return;
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    resize();
+    addEventListener('resize', resize);
+    const PALETTE = [
+      ['#3DE67A','#9AF5BF'],['#F4E84C','#FAF4A0'],['#FF6EC7','#FFB3E3'],
+      ['#7B3CF7','#BF99FB'],['#FF4D6D','#FF99AD'],['#00C8FF','#80E4FF'],['#FF9900','#FFCC66'],
+    ];
+    let particles = [], mx = innerWidth / 2, my = innerHeight / 2, rafId = null, lastSpawn = 0;
+    function spawn(x, y) {
+      const count = 2 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < count; i++) {
+        if (particles.length >= 120) break;
+        const pair = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+        particles.push({
+          x: x + (Math.random() - 0.5) * 40, y: y + (Math.random() - 0.5) * 40,
+          vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3,
+          size: 6 + Math.random() * 22, rotation: Math.random() * Math.PI / 4,
+          alpha: 0.85, color: pair[0], colorLight: pair[1],
+        });
+      }
     }
+    function startLoop() { if (!rafId) rafId = requestAnimationFrame(loop); }
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy; p.alpha -= 0.018;
+        if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        const g = ctx.createLinearGradient(-p.size / 2, -p.size / 2, p.size / 2, p.size / 2);
+        g.addColorStop(0, p.color);
+        g.addColorStop(1, p.colorLight);
+        ctx.fillStyle = g;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+      rafId = particles.length > 0 ? requestAnimationFrame(loop) : null;
+    }
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      const now = Date.now();
+      if (now - lastSpawn > 8) { spawn(mx, my); startLoop(); lastSpawn = now; }
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { spawn(mx, my); spawn(mx, my); startLoop(); });
+    });
+    document.querySelectorAll('footer, .cs-takeaway').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
+    });
 
     // Nav hamburger
     const hamburger = document.getElementById('navHamburger');
