@@ -82,11 +82,12 @@
     display: grid;
     overflow: visible;
     margin-top: 72px;
+    padding-bottom: 60px;
   }
   [data-layout="portrait"]  .gallery-cinema {
-    max-width: 360px; margin: 72px auto 0;
+    max-width: 300px; margin: 72px auto 0;
   }
-  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center bottom; }
+  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center center; }
   [data-layout="portrait"] .gallery-slide { border-radius: 32px; box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22); }
   .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
   .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
@@ -176,7 +177,7 @@
     .gallery-shell { flex-direction: column; gap: 20px; padding: 0 20px; }
     .gallery-cinema { margin-top: 44px; }
     .gallery-btn { display: none; }
-    [data-layout="portrait"] .gallery-cinema { max-width: 260px; margin: 44px auto 0; }
+    [data-layout="portrait"] .gallery-cinema { max-width: 220px; margin: 44px auto 0; }
     [data-layout="portrait"] .gallery-slide { border-radius: 24px; }
     .gallery-nav { flex-direction: row; flex-wrap: wrap; width: 100%; padding-top: 0; gap: 6px; }
     .gallery-nav button { width: auto; padding: 6px 12px; font-size: 11px; }
@@ -233,27 +234,6 @@
     </div>
   </dl>
 </div>
-
-<section class="gallery-shell reveal" data-layout="portrait">
-  <div class="gallery-cinema" role="region" aria-label="WiseWay project screenshots">
-    <div class="gallery-slide is-active" data-label="Home" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%2001.png" alt="WiseWay — Home screen with morning greeting and one-tap ride booking" loading="eager" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Destination" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%202.png" alt="WiseWay — Destination selection with health shortcuts for clinic and pharmacy" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Confirmation" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%203.png" alt="WiseWay — Ride confirmation screen with large trust indicators and driver profile" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Live tracking" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%204.png" alt="WiseWay — Live ride tracking with caregiver notification and emergency button" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Caregiver" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%205.png" alt="WiseWay — Caregiver mode showing linked account with ride status visibility" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Saved places" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%206.png" alt="WiseWay — Saved destinations list with one-tap favourites for recurring trips" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Voice" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%207.png" alt="WiseWay — Voice-assisted booking flow with real-time speech transcription" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Trip history" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%208.png" alt="WiseWay — Trip history and upcoming health appointments in a single view" loading="lazy" draggable="false" /></div>
-    <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
-    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
-    </button>
-    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
-    </button>
-  </div>
-  <nav class="gallery-nav" role="tablist" aria-label="Screenshot navigation"></nav>
-</section>
 
 <div class="cs-body">
 
@@ -381,6 +361,27 @@
   </div>
 
 </div>
+
+<section class="gallery-shell reveal" data-layout="portrait">
+  <div class="gallery-cinema" role="region" aria-label="WiseWay project screenshots">
+    <div class="gallery-slide is-active" data-label="Home" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%2001.png" alt="WiseWay — Home screen with morning greeting and one-tap ride booking" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Destination" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%202.png" alt="WiseWay — Destination selection with health shortcuts for clinic and pharmacy" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Confirmation" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%203.png" alt="WiseWay — Ride confirmation screen with large trust indicators and driver profile" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Live tracking" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%204.png" alt="WiseWay — Live ride tracking with caregiver notification and emergency button" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Caregiver" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%205.png" alt="WiseWay — Caregiver mode showing linked account with ride status visibility" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Saved places" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%206.png" alt="WiseWay — Saved destinations list with one-tap favourites for recurring trips" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Voice" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%207.png" alt="WiseWay — Voice-assisted booking flow with real-time speech transcription" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Trip history" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%208.png" alt="WiseWay — Trip history and upcoming health appointments in a single view" loading="lazy" draggable="false" /></div>
+    <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
+    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
+    </button>
+    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
+    </button>
+  </div>
+  <nav class="gallery-nav" role="tablist" aria-label="Screenshot navigation"></nav>
+</section>
 
 <div class="cs-back">
   <a href="../index.html#work">
@@ -548,12 +549,12 @@
       var ORIGINS       = ['55% 45%', '45% 55%', '50% 40%', '60% 50%', '40% 60%'];
       var STACK_VISIBLE = 4;
       var STACK_CONFIGS = [
-        { translateY:   0, scale: 1.00, opacity: 1.00, zIndex: 20 },
-        { translateY: -20, scale: 0.94, opacity: 0.80, zIndex: 19 },
-        { translateY: -36, scale: 0.88, opacity: 0.62, zIndex: 18 },
-        { translateY: -50, scale: 0.82, opacity: 0.45, zIndex: 17 },
+        { translateY:  0, scale: 1.00, opacity: 1.00, zIndex: 20 },
+        { translateY: 14, scale: 0.96, opacity: 0.72, zIndex: 19 },
+        { translateY: 26, scale: 0.92, opacity: 0.52, zIndex: 18 },
+        { translateY: 36, scale: 0.88, opacity: 0.36, zIndex: 17 },
       ];
-      var HIDDEN_CONFIG = { translateY: -50, scale: 0.82, opacity: 0, zIndex: 0 };
+      var HIDDEN_CONFIG = { translateY: 36, scale: 0.88, opacity: 0, zIndex: 0 };
 
       function getCardPosition(idx) {
         return (idx - active + total) % total;

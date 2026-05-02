@@ -82,11 +82,12 @@
     display: grid;
     overflow: visible;
     margin-top: 72px;
+    padding-bottom: 60px;
   }
   [data-layout="portrait"]  .gallery-cinema {
     max-width: 360px; margin: 72px auto 0;
   }
-  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center bottom; }
+  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center center; }
   [data-layout="portrait"] .gallery-slide { border-radius: 32px; box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22); }
   .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
   .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
@@ -234,27 +235,6 @@
   </dl>
 </div>
 
-<section class="gallery-shell reveal" data-layout="landscape">
-  <div class="gallery-cinema" role="region" aria-label="Employee Experience project screenshots">
-    <div class="gallery-slide is-active" data-label="Home" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Home.png" alt="Employee Experience — Home dashboard with personalised welcome and task overview" loading="eager" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Dashboard" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — Manager dashboard with team leave, reviews, and 1:1 metrics" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Tasks" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Tasks%20Home.png" alt="Employee Experience — Task management workspace with status tracking and assignments" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Library" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Library.png" alt="Employee Experience — Knowledge library with categorised resources and search" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Threads" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/All%20Threads.png" alt="Employee Experience — Unified communication threads across teams and channels" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Email" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Email.png" alt="Employee Experience — Integrated email workspace with smart reply suggestions" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Visual builder" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Visual%20builder.png" alt="Employee Experience — Visual workflow builder for automating HR processes" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="AI" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/AI.png" alt="Employee Experience — AI assistant interface for employee self-service queries" loading="lazy" draggable="false" /></div>
-    <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
-    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
-    </button>
-    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
-    </button>
-  </div>
-  <nav class="gallery-nav" role="tablist" aria-label="Screenshot navigation"></nav>
-</section>
-
 <div class="cs-body">
 
   <div class="cs-accordion reveal">
@@ -373,6 +353,27 @@
   </div>
 
 </div>
+
+<section class="gallery-shell reveal" data-layout="landscape">
+  <div class="gallery-cinema" role="region" aria-label="Employee Experience project screenshots">
+    <div class="gallery-slide is-active" data-label="Home" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Home.png" alt="Employee Experience — Home dashboard with personalised welcome and task overview" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Dashboard" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — Manager dashboard with team leave, reviews, and 1:1 metrics" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Tasks" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Tasks%20Home.png" alt="Employee Experience — Task management workspace with status tracking and assignments" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Library" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Library.png" alt="Employee Experience — Knowledge library with categorised resources and search" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Threads" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/All%20Threads.png" alt="Employee Experience — Unified communication threads across teams and channels" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Email" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Email.png" alt="Employee Experience — Integrated email workspace with smart reply suggestions" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Visual builder" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Visual%20builder.png" alt="Employee Experience — Visual workflow builder for automating HR processes" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="AI" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/AI.png" alt="Employee Experience — AI assistant interface for employee self-service queries" loading="lazy" draggable="false" /></div>
+    <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
+    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
+    </button>
+    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
+    </button>
+  </div>
+  <nav class="gallery-nav" role="tablist" aria-label="Screenshot navigation"></nav>
+</section>
 
 <div class="cs-back">
   <a href="../index.html#work">
@@ -538,12 +539,12 @@
       var ORIGINS       = ['55% 45%', '45% 55%', '50% 40%', '60% 50%', '40% 60%'];
       var STACK_VISIBLE = 4;
       var STACK_CONFIGS = [
-        { translateY:   0, scale: 1.00, opacity: 1.00, zIndex: 20 },
-        { translateY: -20, scale: 0.94, opacity: 0.80, zIndex: 19 },
-        { translateY: -36, scale: 0.88, opacity: 0.62, zIndex: 18 },
-        { translateY: -50, scale: 0.82, opacity: 0.45, zIndex: 17 },
+        { translateY:  0, scale: 1.00, opacity: 1.00, zIndex: 20 },
+        { translateY: 14, scale: 0.96, opacity: 0.72, zIndex: 19 },
+        { translateY: 26, scale: 0.92, opacity: 0.52, zIndex: 18 },
+        { translateY: 36, scale: 0.88, opacity: 0.36, zIndex: 17 },
       ];
-      var HIDDEN_CONFIG = { translateY: -50, scale: 0.82, opacity: 0, zIndex: 0 };
+      var HIDDEN_CONFIG = { translateY: 36, scale: 0.88, opacity: 0, zIndex: 0 };
 
       function getCardPosition(idx) {
         return (idx - active + total) % total;
