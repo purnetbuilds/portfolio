@@ -74,42 +74,37 @@
   .cs-meta-item dd a:hover { border-color: var(--ink); }
 
   /* Gallery */
+  /* ── Cinematic Gallery ───────────────────────────────────── */
   .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-  .gallery-track-wrap { position: relative; border-radius: 16px; overflow: hidden; }
-  .gallery-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; list-style: none; margin: 0; padding: 0; gap: 12px; cursor: grab; }
-  .gallery-track::-webkit-scrollbar { display: none; }
-  .gallery-track.is-dragging { cursor: grabbing; }
-  .gallery-slide { scroll-snap-align: start; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--lavender); }
+  .gallery-cinema {
+    position: relative; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10);
+    background: var(--lavender);
+  }
+  [data-layout="landscape"] .gallery-cinema { aspect-ratio: 16 / 10; }
+  [data-layout="portrait"]  .gallery-cinema {
+    aspect-ratio: 722 / 1470; max-width: 360px; margin: 0 auto;
+    border-radius: 32px;
+    box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22);
+  }
+  .gallery-slide { position: absolute; inset: 0; opacity: 0; }
+  .gallery-slide.is-active { opacity: 1; }
   .gallery-slide img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
-  [data-layout="landscape"] .gallery-track { padding-right: 60px; }
-  [data-layout="landscape"] .gallery-slide { width: min(1000px, calc(100vw - 80px - 60px - 12px)); aspect-ratio: 16 / 10; }
-  [data-layout="portrait"] .gallery-track { padding: 24px 24px 24px 0; gap: 20px; }
-  [data-layout="portrait"] .gallery-slide { width: clamp(180px, 28vw, 260px); aspect-ratio: 722 / 1470; border-radius: 0; box-shadow: none; overflow: visible; }
-
-  /* Device mockup — phone */
-  .gallery-slide-inner {
-    position: relative;
-    width: 100%; height: 100%;
+  .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 5; }
+  .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
+  .gallery-btn {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s, opacity 0.3s;
+    cursor: pointer; opacity: 0;
   }
-  .gallery-slide-inner > img:first-child {
-    position: absolute;
-    top: 2.24%; bottom: 2.31%; left: 0; right: 0;
-    width: 100%;
-    object-fit: cover; display: block;
-    pointer-events: none; user-select: none;
-  }
-  .gallery-frame-img--phone {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: 10;
-    display: block; object-fit: fill;
-    filter: drop-shadow(0 4px 16px rgba(15,11,30,0.14)) drop-shadow(0 16px 40px rgba(15,11,30,0.20));
-  }
-  .gallery-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s, opacity 0.15s; cursor: pointer; }
-  .gallery-btn:hover { background: var(--lavender-soft); border-color: var(--purple); color: var(--purple); }
+  .gallery-cinema:hover .gallery-btn { opacity: 1; }
+  .gallery-btn:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.5); }
   .gallery-btn--prev { left: 16px; }
   .gallery-btn--next { right: 16px; }
-  .gallery-btn[data-at-edge] { opacity: 0; pointer-events: none; }
   .gallery-dots { display: flex; justify-content: center; gap: 6px; padding: 4px 0; }
   .gallery-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0; background: var(--line); cursor: pointer; transition: background 0.2s, width 0.2s, border-radius 0.2s; }
   .gallery-dots button[aria-selected="true"] { background: var(--purple); width: 20px; border-radius: 3px; }
@@ -179,8 +174,8 @@
     .foot-grid { grid-template-columns: 1fr; gap: 40px; }
     .cs-takeaway { padding: 40px 24px; }
     .gallery-shell { padding: 0 20px; }
-    [data-layout="portrait"] .gallery-slide { width: clamp(140px, 55vw, 200px); }
     .gallery-btn { display: none; }
+    [data-layout="portrait"] .gallery-cinema { max-width: 260px; border-radius: 24px; }
     .cs-acc-content { padding-left: 0; }
     .cs-acc-title { font-size: 17px; }
   }
@@ -236,21 +231,20 @@
 </div>
 
 <section class="gallery-shell reveal" data-layout="portrait">
-  <div class="gallery-track-wrap" role="region" aria-label="WiseWay project screenshots">
-    <ul class="gallery-track" role="list">
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%2001.png" alt="WiseWay — Home screen with morning greeting and one-tap ride booking" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%202.png" alt="WiseWay — Destination selection with health shortcuts for clinic and pharmacy" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%203.png" alt="WiseWay — Ride confirmation screen with large trust indicators and driver profile" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%204.png" alt="WiseWay — Live ride tracking with caregiver notification and emergency button" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%205.png" alt="WiseWay — Caregiver mode showing linked account with ride status visibility" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%206.png" alt="WiseWay — Saved destinations list with one-tap favourites for recurring trips" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%207.png" alt="WiseWay — Voice-assisted booking flow with real-time speech transcription" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-      <li class="gallery-slide" role="listitem"><div class="gallery-slide-inner"><img src="../assets/Wiseway/WW%208.png" alt="WiseWay — Trip history and upcoming health appointments in a single view" loading="lazy" draggable="false" /><img class="gallery-frame-img--phone" src="../assets/Mockups/phone-frame.webp" alt="" aria-hidden="true" /></div></li>
-    </ul>
-    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot" hidden>
+  <div class="gallery-cinema" role="region" aria-label="WiseWay project screenshots">
+    <div class="gallery-slide is-active" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%2001.png" alt="WiseWay — Home screen with morning greeting and one-tap ride booking" loading="eager" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%202.png" alt="WiseWay — Destination selection with health shortcuts for clinic and pharmacy" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%203.png" alt="WiseWay — Ride confirmation screen with large trust indicators and driver profile" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%204.png" alt="WiseWay — Live ride tracking with caregiver notification and emergency button" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%205.png" alt="WiseWay — Caregiver mode showing linked account with ride status visibility" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%206.png" alt="WiseWay — Saved destinations list with one-tap favourites for recurring trips" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%207.png" alt="WiseWay — Voice-assisted booking flow with real-time speech transcription" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Wiseway/WW%208.png" alt="WiseWay — Trip history and upcoming health appointments in a single view" loading="lazy" draggable="false" /></div>
+    <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
+    <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
     </button>
-    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot" hidden>
+    <button class="gallery-btn gallery-btn--next" aria-label="Next screenshot">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
     </button>
   </div>
@@ -444,6 +438,7 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <script>
   // Pixel cube cursor trail
   (function () {
@@ -529,28 +524,138 @@
       });
     });
 
-    // Gallery
+    // ── Cinematic Autoplay Gallery (anime.js) ───────────────────
     document.querySelectorAll('.gallery-shell').forEach(function(shell) {
-      var track = shell.querySelector('.gallery-track'), dotsWrap = shell.querySelector('.gallery-dots'), btnPrev = shell.querySelector('.gallery-btn--prev'), btnNext = shell.querySelector('.gallery-btn--next'), slides = Array.from(shell.querySelectorAll('.gallery-slide'));
-      if (!track || !slides.length) return;
-      btnPrev.removeAttribute('hidden'); btnNext.removeAttribute('hidden');
-      var active = 0;
-      var dots = slides.map(function(_, i) { var btn = document.createElement('button'); btn.setAttribute('role', 'tab'); btn.setAttribute('aria-label', 'Screenshot ' + (i+1) + ' of ' + slides.length); btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); btn.addEventListener('click', function() { goTo(i); }); dotsWrap.appendChild(btn); return btn; });
-      function goTo(i) { i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: 'smooth' }); }
-      function getActive() { var center = track.getBoundingClientRect().left + track.clientWidth / 2; var best = 0, bestDist = Infinity; slides.forEach(function(s, i) { var r = s.getBoundingClientRect(); var d = Math.abs(r.left + r.width/2 - center); if (d < bestDist) { bestDist = d; best = i; } }); return best; }
-      function sync() { active = getActive(); dots.forEach(function(d, i) { d.setAttribute('aria-selected', i === active ? 'true' : 'false'); }); btnPrev.toggleAttribute('data-at-edge', active === 0); btnNext.toggleAttribute('data-at-edge', active === slides.length - 1); }
-      var raf; track.addEventListener('scroll', function() { cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); }, { passive: true });
-      btnPrev.addEventListener('click', function() { goTo(active - 1); }); btnNext.addEventListener('click', function() { goTo(active + 1); });
-      track.setAttribute('tabindex', '0');
-      shell.addEventListener('keydown', function(e) { if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); } });
-      var isDrag = false, dragX = 0, scrollX = 0;
-      track.addEventListener('mousedown', function(e) { isDrag = true; dragX = e.clientX; scrollX = track.scrollLeft; track.classList.add('is-dragging'); e.preventDefault(); });
-      window.addEventListener('mousemove', function(e) { if (isDrag) track.scrollLeft = scrollX + (dragX - e.clientX); });
-      window.addEventListener('mouseup', function() { isDrag = false; track.classList.remove('is-dragging'); });
+      var cinema      = shell.querySelector('.gallery-cinema');
+      var dotsWrap    = shell.querySelector('.gallery-dots');
+      var btnPrev     = shell.querySelector('.gallery-btn--prev');
+      var btnNext     = shell.querySelector('.gallery-btn--next');
+      var progressBar = shell.querySelector('.gallery-progress-bar');
+      var slides      = Array.from(shell.querySelectorAll('.gallery-slide'));
+      if (!cinema || !slides.length) return;
+
+      var active        = 0;
+      var total         = slides.length;
+      var DURATION      = 4500;
+      var transitioning = false;
+      var paused        = false;
+      var progressAnim  = null;
+      var kenburnsAnim  = null;
+      var ORIGINS       = ['55% 45%', '45% 55%', '50% 40%', '60% 50%', '40% 60%'];
+
+      var dots = slides.map(function(_, i) {
+        var btn = document.createElement('button');
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-label', 'Screenshot ' + (i + 1) + ' of ' + total);
+        btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        btn.addEventListener('click', function() { if (!transitioning) goTo(i, true); });
+        dotsWrap.appendChild(btn);
+        return btn;
+      });
+
+      function syncDots() {
+        dots.forEach(function(d, i) { d.setAttribute('aria-selected', i === active ? 'true' : 'false'); });
+      }
+
+      function startProgress() {
+        if (progressAnim) progressAnim.pause();
+        anime.set(progressBar, { scaleX: 0 });
+        progressAnim = anime({
+          targets: progressBar,
+          scaleX: 1,
+          duration: DURATION,
+          easing: 'linear',
+          complete: function() { advance(); }
+        });
+      }
+
+      function pauseProgress() {
+        if (progressAnim) progressAnim.pause();
+        if (kenburnsAnim) kenburnsAnim.pause();
+      }
+
+      function resumeProgress() {
+        if (progressAnim) progressAnim.play();
+        if (kenburnsAnim) kenburnsAnim.play();
+      }
+
+      function startKenBurns(slideEl) {
+        var img = slideEl.querySelector('img');
+        if (!img) return;
+        anime.set(img, { scale: 1, transformOrigin: ORIGINS[active % ORIGINS.length] });
+        kenburnsAnim = anime({ targets: img, scale: 1.028, duration: DURATION + 600, easing: 'linear' });
+      }
+
+      function goTo(nextIdx, isManual) {
+        if (nextIdx === active || transitioning) return;
+        transitioning = true;
+        var outSlide = slides[active];
+        var inSlide  = slides[nextIdx];
+        outSlide.style.willChange = 'opacity';
+        inSlide.style.willChange  = 'transform, opacity';
+        var img = inSlide.querySelector('img');
+        if (img) img.style.willChange = 'transform';
+        active = nextIdx;
+        inSlide.classList.add('is-active');
+        syncDots();
+        var tl = anime.timeline({ easing: 'cubicBezier(0.4, 0, 0.2, 1)' });
+        tl.add({
+          targets: outSlide,
+          opacity: 0,
+          duration: 520,
+          easing: 'cubicBezier(0.4, 0, 1, 1)',
+          complete: function() { outSlide.classList.remove('is-active'); }
+        }).add({
+          targets: inSlide,
+          opacity: [0, 1],
+          duration: 680,
+          easing: 'cubicBezier(0, 0, 0.2, 1)',
+          complete: function() {
+            outSlide.style.willChange = '';
+            inSlide.style.willChange  = '';
+            if (img) img.style.willChange = '';
+            transitioning = false;
+          }
+        }, '-=240');
+        startKenBurns(inSlide);
+        if (isManual) startProgress();
+      }
+
+      function advance() { if (!paused) { goTo((active + 1) % total, false); startProgress(); } }
+
+      slides[0].classList.add('is-active');
+      syncDots();
+      startKenBurns(slides[0]);
+
+      cinema.addEventListener('mouseenter', function() { paused = true; pauseProgress(); });
+      cinema.addEventListener('mouseleave', function() { paused = false; resumeProgress(); });
+
+      if (btnPrev) btnPrev.addEventListener('click', function() { if (!transitioning) goTo((active - 1 + total) % total, true); });
+      if (btnNext) btnNext.addEventListener('click', function() { if (!transitioning) goTo((active + 1) % total, true); });
+
+      shell.setAttribute('tabindex', '0');
+      shell.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); if (!transitioning) goTo((active - 1 + total) % total, true); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); if (!transitioning) goTo((active + 1) % total, true); }
+      });
+
       var txStart = 0, ttStart = 0;
-      track.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; ttStart = Date.now(); }, { passive: true });
-      track.addEventListener('touchend', function(e) { var dx = e.changedTouches[0].clientX - txStart; var v = Math.abs(dx) / (Date.now() - ttStart); if (v > 0.3 && Math.abs(dx) > 20) goTo(dx < 0 ? active + 1 : active - 1); }, { passive: true });
-      sync();
+      cinema.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; ttStart = Date.now(); }, { passive: true });
+      cinema.addEventListener('touchend', function(e) {
+        var dx  = e.changedTouches[0].clientX - txStart;
+        var vel = Math.abs(dx) / Math.max(Date.now() - ttStart, 1);
+        if (vel > 0.3 && Math.abs(dx) > 20 && !transitioning) {
+          goTo(dx < 0 ? (active + 1) % total : (active - 1 + total) % total, true);
+        }
+      }, { passive: true });
+
+      var ioGallery = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { paused = false; startProgress(); startKenBurns(slides[active]); }
+          else { paused = true; pauseProgress(); }
+        });
+      }, { threshold: 0.4 });
+      ioGallery.observe(cinema);
     });
   })();
 </script>
