@@ -249,6 +249,26 @@
   }
   .sec-h .italic { font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500; }
 
+  /* ── Section gradient fades ────────────────────────────────────────── */
+  .hero::after,
+  .work::after,
+  .principles::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+  .hero::after {
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, var(--lavender-soft));
+  }
+  .work::after {
+    height: 160px;
+    background: linear-gradient(to bottom, transparent, var(--paper));
+  }
+  .principles::after {
+    height: 520px;
+    background: linear-gradient(to bottom, transparent, var(--ink));
+  }
+
   /* ── About ─────────────────────────────────────────────────────────── */
   .about { background: var(--paper); }
   .about-grid {
@@ -290,6 +310,7 @@
     font-size: 10px; font-weight: 500;
     letter-spacing: 0.12em; text-transform: uppercase;
     display: flex; align-items: center; gap: 5px;
+    border-radius: 8px;
   }
   .about-img-tag svg { flex-shrink: 0; }
   .about-img-status {
@@ -300,6 +321,7 @@
     font-size: 11px; font-weight: 500;
     letter-spacing: 0.08em;
     display: flex; align-items: center; gap: 8px;
+    border-radius: 8px;
   }
   .about-img-status .d { width: 6px; height: 6px; background: #3DE67A; border-radius: 50%; }
   .about-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family: var(--font-mono); font-size: 12px; }
@@ -312,10 +334,11 @@
   }
 
   /* ── Principles ────────────────────────────────────────────────────── */
-  .principles { background: var(--paper); border-top: 1px solid var(--line); }
+  .principles { background: var(--paper); }
   .principles-head {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 60px; align-items: end; margin-bottom: 72px;
+    position: relative; z-index: 1;
   }
   .principles-head p { font-size: 16px; font-weight: 300; line-height: 1.6; color: var(--ink-soft); max-width: 40ch; text-align: right; justify-self: end; }
   .principles-grid {
@@ -323,10 +346,11 @@
     gap: 0;
     border-radius: 12px; overflow: hidden;
     box-shadow: 0 0 0 1px var(--line);
+    position: relative; z-index: 1;
   }
   .pcard {
     padding: 36px 32px; transition: background 220ms;
-    position: relative;
+    position: relative; background: var(--paper);
   }
   .pcard:not(:nth-child(3n)) { border-right: 1px solid var(--line); }
   .pcard:not(:nth-last-child(-n+3)) { border-bottom: 1px solid var(--line); }
@@ -352,7 +376,7 @@
   .pcard p { font-family: var(--font-mono); font-size: 14px; font-weight: 300; line-height: 1.55; color: var(--ink-soft); }
 
   /* ── Tools ─────────────────────────────────────────────────────────── */
-  .tools { background: var(--ink); color: var(--paper); }
+  .tools { background: var(--ink); color: var(--paper); padding-bottom: 60px; }
   .tools .mono-label { color: rgba(255,255,255,0.6); }
   .tools .mono-label::before { background: rgba(255,255,255,0.5); }
   .tools .sec-h { color: var(--paper); }
@@ -582,10 +606,10 @@
   .dtop-card .bar > i { display: block; height: 100%; background: var(--grad); }
 
   /* ── Footer ────────────────────────────────────────────────────────── */
-  footer { background: var(--ink); color: var(--paper); padding: 96px 40px 40px; }
+  footer { background: var(--ink); color: var(--paper); padding: 48px 40px 40px; }
   .foot-grid {
     max-width: var(--max); margin: 0 auto;
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
     gap: 60px; margin-bottom: 80px;
   }
   .foot-brand h3 {
@@ -700,8 +724,8 @@
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#work">Work</a></li>
-    <li><a href="#tools">Tools</a></li>
     <li><a href="#principles">Skills</a></li>
+    <li><a href="#tools">Tools</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
     <svg class="hamburger-icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -1050,15 +1074,6 @@
         <li><a href="work/employee-experience.html">Employee Experience</a></li>
         <li><a href="work/auto-qa.html">Auto QA</a></li>
         <li><a href="work/wiseway.html">WiseWay</a></li>
-      </ul>
-    </div>
-    <div class="foot-col">
-      <h4>Elsewhere</h4>
-      <ul>
-        <li><a href="#">Behance</a></li>
-        <li><a href="#">LinkedIn</a></li>
-        <li><a href="#">Dribbble</a></li>
-        <li><a href="mailto:hello@purnet.design">hello@purnet.design</a></li>
       </ul>
     </div>
   </div>
