@@ -75,25 +75,24 @@
 
   /* Gallery */
   /* ── Cinematic Gallery ───────────────────────────────────── */
-  .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: row; align-items: flex-start; gap: 40px; }
   .gallery-cinema {
-    position: relative; border-radius: 14px; overflow: hidden;
+    flex: 1; min-width: 0;
+    position: relative;
     display: grid;
-    box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10);
-    background: var(--lavender);
+    overflow: visible;
+    margin-top: 72px;
   }
   [data-layout="portrait"]  .gallery-cinema {
-    max-width: 360px; margin: 0 auto;
-    border-radius: 32px;
-    box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22);
+    max-width: 360px; margin: 72px auto 0;
   }
-  .gallery-slide { grid-area: 1/1; opacity: 0; }
-  .gallery-slide.is-active { opacity: 1; }
+  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center bottom; }
+  [data-layout="portrait"] .gallery-slide { border-radius: 32px; box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22); }
   .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
-  .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 5; }
+  .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
   .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
   .gallery-btn {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 30;
     width: 44px; height: 44px; border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.25);
     background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -105,9 +104,10 @@
   .gallery-btn:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.5); }
   .gallery-btn--prev { left: 16px; }
   .gallery-btn--next { right: 16px; }
-  .gallery-dots { display: flex; justify-content: center; gap: 6px; padding: 4px 0; }
-  .gallery-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0; background: var(--line); cursor: pointer; transition: background 0.2s, width 0.2s, border-radius 0.2s; }
-  .gallery-dots button[aria-selected="true"] { background: var(--purple); width: 20px; border-radius: 3px; }
+  .gallery-nav { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; padding-top: 72px; }
+  .gallery-nav button { display: block; width: 100%; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-align: left; cursor: pointer; transition: color 180ms, background 180ms, border-color 180ms; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gallery-nav button[aria-selected="true"] { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .gallery-nav button:hover:not([aria-selected="true"]) { border-color: rgba(255,255,255,0.3); color: var(--ink); }
 
   /* ── Accordion body ────────────────────────────────────────────────── */
   .cs-body { max-width: var(--max); margin: 0 auto; padding: 80px 40px 0; }
@@ -173,9 +173,13 @@
     .cs-hero, .cs-body, .cs-back { padding-left: 20px; padding-right: 20px; }
     .foot-grid { grid-template-columns: 1fr; gap: 40px; }
     .cs-takeaway { padding: 40px 24px; }
-    .gallery-shell { padding: 0 20px; }
+    .gallery-shell { flex-direction: column; gap: 20px; padding: 0 20px; }
+    .gallery-cinema { margin-top: 44px; width: 100%; }
     .gallery-btn { display: none; }
-    [data-layout="portrait"] .gallery-cinema { max-width: 260px; border-radius: 24px; }
+    [data-layout="portrait"] .gallery-cinema { max-width: 260px; margin: 44px auto 0; }
+    [data-layout="portrait"] .gallery-slide { border-radius: 24px; }
+    .gallery-nav { flex-direction: row; flex-wrap: wrap; width: 100%; padding-top: 0; gap: 6px; }
+    .gallery-nav button { width: auto; padding: 6px 12px; font-size: 11px; }
     .cs-acc-content { padding-left: 0; }
     .cs-acc-title { font-size: 17px; }
   }
@@ -232,14 +236,14 @@
 
 <section class="gallery-shell reveal" data-layout="landscape">
   <div class="gallery-cinema" role="region" aria-label="Employee Experience project screenshots">
-    <div class="gallery-slide is-active" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Home.png" alt="Employee Experience — Home dashboard with personalised welcome and task overview" loading="eager" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — Manager dashboard with team leave, reviews, and 1:1 metrics" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Tasks%20Home.png" alt="Employee Experience — Task management workspace with status tracking and assignments" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Library.png" alt="Employee Experience — Knowledge library with categorised resources and search" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/All%20Threads.png" alt="Employee Experience — Unified communication threads across teams and channels" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Email.png" alt="Employee Experience — Integrated email workspace with smart reply suggestions" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Visual%20builder.png" alt="Employee Experience — Visual workflow builder for automating HR processes" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/AI.png" alt="Employee Experience — AI assistant interface for employee self-service queries" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide is-active" data-label="Home" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Home.png" alt="Employee Experience — Home dashboard with personalised welcome and task overview" loading="eager" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Dashboard" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — Manager dashboard with team leave, reviews, and 1:1 metrics" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Tasks" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Tasks%20Home.png" alt="Employee Experience — Task management workspace with status tracking and assignments" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Library" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Library.png" alt="Employee Experience — Knowledge library with categorised resources and search" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Threads" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/All%20Threads.png" alt="Employee Experience — Unified communication threads across teams and channels" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Email" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Email.png" alt="Employee Experience — Integrated email workspace with smart reply suggestions" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Visual builder" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/Visual%20builder.png" alt="Employee Experience — Visual workflow builder for automating HR processes" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide" data-label="AI" role="group" aria-roledescription="slide"><img src="../assets/Employee%20Experience/AI.png" alt="Employee Experience — AI assistant interface for employee self-service queries" loading="lazy" draggable="false" /></div>
     <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
     <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
@@ -248,7 +252,7 @@
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8,5 13,10 8,15"/></svg>
     </button>
   </div>
-  <div class="gallery-dots" role="tablist" aria-label="Screenshot navigation"></div>
+  <nav class="gallery-nav" role="tablist" aria-label="Screenshot navigation"></nav>
 </section>
 
 <div class="cs-body">
@@ -514,10 +518,10 @@
       });
     });
 
-    // ── Cinematic Autoplay Gallery (anime.js) ───────────────────
+    // ── Time Machine Stack Gallery (anime.js) ───────────────────
     document.querySelectorAll('.gallery-shell').forEach(function(shell) {
       var cinema      = shell.querySelector('.gallery-cinema');
-      var dotsWrap    = shell.querySelector('.gallery-dots');
+      var navWrap     = shell.querySelector('.gallery-nav');
       var btnPrev     = shell.querySelector('.gallery-btn--prev');
       var btnNext     = shell.querySelector('.gallery-btn--next');
       var progressBar = shell.querySelector('.gallery-progress-bar');
@@ -532,19 +536,45 @@
       var progressAnim  = null;
       var kenburnsAnim  = null;
       var ORIGINS       = ['55% 45%', '45% 55%', '50% 40%', '60% 50%', '40% 60%'];
+      var STACK_VISIBLE = 4;
+      var STACK_CONFIGS = [
+        { translateY:   0, scale: 1.00, opacity: 1.00, zIndex: 20 },
+        { translateY: -20, scale: 0.94, opacity: 0.80, zIndex: 19 },
+        { translateY: -36, scale: 0.88, opacity: 0.62, zIndex: 18 },
+        { translateY: -50, scale: 0.82, opacity: 0.45, zIndex: 17 },
+      ];
+      var HIDDEN_CONFIG = { translateY: -50, scale: 0.82, opacity: 0, zIndex: 0 };
 
-      var dots = slides.map(function(_, i) {
+      function getCardPosition(idx) {
+        return (idx - active + total) % total;
+      }
+
+      function getConfig(position) {
+        return position < STACK_VISIBLE ? STACK_CONFIGS[position] : HIDDEN_CONFIG;
+      }
+
+      var navBtns = slides.map(function(slide, i) {
+        var label = slide.getAttribute('data-label') || ('Screen ' + (i + 1));
         var btn = document.createElement('button');
         btn.setAttribute('role', 'tab');
-        btn.setAttribute('aria-label', 'Screenshot ' + (i + 1) + ' of ' + total);
+        btn.setAttribute('aria-label', label);
         btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        btn.textContent = label;
         btn.addEventListener('click', function() { if (!transitioning) goTo(i, true); });
-        dotsWrap.appendChild(btn);
+        navWrap.appendChild(btn);
         return btn;
       });
 
-      function syncDots() {
-        dots.forEach(function(d, i) { d.setAttribute('aria-selected', i === active ? 'true' : 'false'); });
+      function syncNav() {
+        navBtns.forEach(function(b, i) { b.setAttribute('aria-selected', i === active ? 'true' : 'false'); });
+      }
+
+      function initStack() {
+        slides.forEach(function(slide, idx) {
+          var cfg = getConfig(idx);
+          anime.set(slide, { translateY: cfg.translateY, scale: cfg.scale, opacity: cfg.opacity });
+          slide.style.zIndex = cfg.zIndex;
+        });
       }
 
       function startProgress() {
@@ -569,6 +599,10 @@
         if (kenburnsAnim) kenburnsAnim.play();
       }
 
+      function stopKenBurns() {
+        if (kenburnsAnim) { kenburnsAnim.pause(); kenburnsAnim = null; }
+      }
+
       function startKenBurns(slideEl) {
         var img = slideEl.querySelector('img');
         if (!img) return;
@@ -576,45 +610,81 @@
         kenburnsAnim = anime({ targets: img, scale: 1.028, duration: DURATION + 600, easing: 'linear' });
       }
 
+      function advance() {
+        if (paused || transitioning) return;
+        transitioning = true;
+
+        var oldActive = active;
+        active = (active + 1) % total;
+        syncNav();
+
+        // Front card flies up and shrinks away decisively
+        anime({
+          targets: slides[oldActive],
+          translateY: -130,
+          scale: 0.55,
+          opacity: 0,
+          duration: 480,
+          easing: 'cubicBezier(0.55, 0, 0.7, 0.35)',
+          complete: function() {
+            anime.set(slides[oldActive], { translateY: HIDDEN_CONFIG.translateY, scale: HIDDEN_CONFIG.scale, opacity: 0 });
+            slides[oldActive].style.zIndex = 0;
+          }
+        });
+
+        // All remaining cards spring to their new stack positions
+        slides.forEach(function(slide, idx) {
+          if (idx === oldActive) return;
+          var newPos = getCardPosition(idx);
+          var cfg = getConfig(newPos);
+          slide.style.zIndex = cfg.zIndex;
+          anime({
+            targets: slide,
+            translateY: cfg.translateY,
+            scale: cfg.scale,
+            opacity: cfg.opacity,
+            duration: 620,
+            easing: 'spring(1, 80, 10, 0)'
+          });
+        });
+
+        stopKenBurns();
+        startKenBurns(slides[active]);
+        startProgress();
+
+        setTimeout(function() { transitioning = false; }, 680);
+      }
+
       function goTo(nextIdx, isManual) {
         if (nextIdx === active || transitioning) return;
         transitioning = true;
-        var outSlide = slides[active];
-        var inSlide  = slides[nextIdx];
-        outSlide.style.willChange = 'opacity';
-        inSlide.style.willChange  = 'transform, opacity';
-        var img = inSlide.querySelector('img');
-        if (img) img.style.willChange = 'transform';
+
         active = nextIdx;
-        inSlide.classList.add('is-active');
-        syncDots();
-        var tl = anime.timeline({ easing: 'cubicBezier(0.4, 0, 0.2, 1)' });
-        tl.add({
-          targets: outSlide,
-          opacity: 0,
-          duration: 520,
-          easing: 'cubicBezier(0.4, 0, 1, 1)',
-          complete: function() { outSlide.classList.remove('is-active'); }
-        }).add({
-          targets: inSlide,
-          opacity: [0, 1],
-          duration: 680,
-          easing: 'cubicBezier(0, 0, 0.2, 1)',
-          complete: function() {
-            outSlide.style.willChange = '';
-            inSlide.style.willChange  = '';
-            if (img) img.style.willChange = '';
-            transitioning = false;
-          }
-        }, '-=240');
-        startKenBurns(inSlide);
+        syncNav();
+
+        slides.forEach(function(slide, idx) {
+          var newPos = getCardPosition(idx);
+          var cfg = getConfig(newPos);
+          slide.style.zIndex = cfg.zIndex;
+          anime({
+            targets: slide,
+            translateY: cfg.translateY,
+            scale: cfg.scale,
+            opacity: cfg.opacity,
+            duration: 600,
+            easing: 'spring(1, 80, 10, 0)'
+          });
+        });
+
+        stopKenBurns();
+        startKenBurns(slides[active]);
         if (isManual) startProgress();
+
+        setTimeout(function() { transitioning = false; }, 660);
       }
 
-      function advance() { if (!paused) { goTo((active + 1) % total, false); startProgress(); } }
-
-      slides[0].classList.add('is-active');
-      syncDots();
+      initStack();
+      syncNav();
       startKenBurns(slides[0]);
 
       cinema.addEventListener('mouseenter', function() { paused = true; pauseProgress(); });
