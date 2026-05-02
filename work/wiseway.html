@@ -78,18 +78,18 @@
   .gallery-shell { padding: 0 40px; max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
   .gallery-cinema {
     position: relative; border-radius: 14px; overflow: hidden;
+    display: grid;
     box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10);
     background: var(--lavender);
   }
-  [data-layout="landscape"] .gallery-cinema { aspect-ratio: 16 / 10; }
   [data-layout="portrait"]  .gallery-cinema {
-    aspect-ratio: 722 / 1470; max-width: 360px; margin: 0 auto;
+    max-width: 360px; margin: 0 auto;
     border-radius: 32px;
     box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22);
   }
-  .gallery-slide { position: absolute; inset: 0; opacity: 0; }
+  .gallery-slide { grid-area: 1/1; opacity: 0; }
   .gallery-slide.is-active { opacity: 1; }
-  .gallery-slide img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+  .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
   .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 5; }
   .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
   .gallery-btn {
