@@ -93,7 +93,7 @@
   .gallery-slide { background: linear-gradient(160deg, #E8E3F8 0%, #F0EBF9 100%); }
   .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; opacity: 0; transition: opacity 350ms ease; }
   .gallery-slide.is-active img { opacity: 1; transition: opacity 400ms ease 60ms; }
-  .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
+  .gallery-progress { position: absolute; bottom: -24px; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
   .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
   .gallery-btn {
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 30;
@@ -139,7 +139,7 @@
   .cs-takeaway .cs-lead { color: rgba(255,255,255,0.9); max-width: 60ch; margin-bottom: 0; font-size: clamp(16px, 1.8vw, 22px); }
   .cs-takeaway-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
 
-  .cs-back { max-width: var(--max); margin: 0 auto; padding: 48px 40px; }
+  .cs-back { max-width: 1320px; margin: 0 auto; padding: 48px 40px; }
   .cs-back a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 160ms; }
   .cs-back a:hover { border-color: var(--ink); }
   .cs-back a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }

@@ -82,15 +82,15 @@
     display: grid;
     overflow: visible;
     margin-top: 72px;
-    padding-bottom: 60px;
+    padding-left: 60px;
   }
   [data-layout="portrait"]  .gallery-cinema {
     max-width: 300px; margin: 72px auto 0;
   }
-  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: center center; }
+  .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: 100% 50%; }
   [data-layout="portrait"] .gallery-slide { border-radius: 32px; box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22); }
   .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
-  .gallery-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
+  .gallery-progress { position: absolute; bottom: -24px; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
   .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
   .gallery-btn {
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 30;
@@ -136,7 +136,7 @@
   .cs-takeaway .cs-lead { color: rgba(255,255,255,0.9); max-width: 60ch; margin-bottom: 0; font-size: clamp(16px, 1.8vw, 22px); }
   .cs-takeaway-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
 
-  .cs-back { max-width: var(--max); margin: 0 auto; padding: 48px 40px; }
+  .cs-back { max-width: 1320px; margin: 0 auto; padding: 48px 40px; }
   .cs-back a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 160ms; }
   .cs-back a:hover { border-color: var(--ink); }
   .cs-back a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -177,7 +177,7 @@
     .gallery-shell { flex-direction: column; gap: 20px; padding: 0 20px; }
     .gallery-cinema { margin-top: 44px; }
     .gallery-btn { display: none; }
-    [data-layout="portrait"] .gallery-cinema { max-width: 220px; margin: 44px auto 0; }
+    [data-layout="portrait"] .gallery-cinema { max-width: 220px; margin: 44px auto 0; padding-left: 44px; }
     [data-layout="portrait"] .gallery-slide { border-radius: 24px; }
     .gallery-nav { flex-direction: row; flex-wrap: wrap; width: 100%; padding-top: 0; gap: 6px; }
     .gallery-nav button { width: auto; padding: 6px 12px; font-size: 11px; }
@@ -549,12 +549,12 @@
       var ORIGINS       = ['55% 45%', '45% 55%', '50% 40%', '60% 50%', '40% 60%'];
       var STACK_VISIBLE = 4;
       var STACK_CONFIGS = [
-        { translateY:  0, scale: 1.00, opacity: 1.00, zIndex: 20 },
-        { translateY: 14, scale: 0.96, opacity: 0.72, zIndex: 19 },
-        { translateY: 26, scale: 0.92, opacity: 0.52, zIndex: 18 },
-        { translateY: 36, scale: 0.88, opacity: 0.36, zIndex: 17 },
+        { translateX:   0, scale: 1.00, opacity: 1.00, zIndex: 20 },
+        { translateX: -18, scale: 0.96, opacity: 0.72, zIndex: 19 },
+        { translateX: -34, scale: 0.92, opacity: 0.52, zIndex: 18 },
+        { translateX: -48, scale: 0.88, opacity: 0.36, zIndex: 17 },
       ];
-      var HIDDEN_CONFIG = { translateY: 36, scale: 0.88, opacity: 0, zIndex: 0 };
+      var HIDDEN_CONFIG = { translateX: -48, scale: 0.88, opacity: 0, zIndex: 0 };
 
       function getCardPosition(idx) {
         return (idx - active + total) % total;
@@ -583,7 +583,7 @@
       function initStack() {
         slides.forEach(function(slide, idx) {
           var cfg = getConfig(idx);
-          anime.set(slide, { translateY: cfg.translateY, scale: cfg.scale, opacity: cfg.opacity });
+          anime.set(slide, { translateX: cfg.translateX, scale: cfg.scale, opacity: cfg.opacity });
           slide.style.zIndex = cfg.zIndex;
         });
       }
@@ -629,16 +629,17 @@
         active = (active + 1) % total;
         syncNav();
 
-        // Front card flies up and shrinks away decisively
+        // Front card flies right and shrinks away decisively
         anime({
           targets: slides[oldActive],
-          translateY: -130,
+          translateX: 100,
+          translateY: -60,
           scale: 0.55,
           opacity: 0,
           duration: 480,
           easing: 'cubicBezier(0.55, 0, 0.7, 0.35)',
           complete: function() {
-            anime.set(slides[oldActive], { translateY: HIDDEN_CONFIG.translateY, scale: HIDDEN_CONFIG.scale, opacity: 0 });
+            anime.set(slides[oldActive], { translateX: HIDDEN_CONFIG.translateX, translateY: 0, scale: HIDDEN_CONFIG.scale, opacity: 0 });
             slides[oldActive].style.zIndex = 0;
           }
         });
@@ -651,7 +652,7 @@
           slide.style.zIndex = cfg.zIndex;
           anime({
             targets: slide,
-            translateY: cfg.translateY,
+            translateX: cfg.translateX,
             scale: cfg.scale,
             opacity: cfg.opacity,
             duration: 620,
@@ -679,7 +680,7 @@
           slide.style.zIndex = cfg.zIndex;
           anime({
             targets: slide,
-            translateY: cfg.translateY,
+            translateX: cfg.translateX,
             scale: cfg.scale,
             opacity: cfg.opacity,
             duration: 600,
