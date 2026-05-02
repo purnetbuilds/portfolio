@@ -645,7 +645,7 @@
 
   /* ── Responsive ────────────────────────────────────────────────────── */
   @media (max-width: 960px) {
-    .mono-label { display: none; }
+    .nav .mono-label { display: none; }
     .nav-hamburger { display: flex; }
     .nav-links {
       position: fixed; top: 80px; left: 20px; right: 20px;
@@ -676,6 +676,9 @@
     .hero-bottom { grid-template-columns: 1fr; }
     .hero-ctas { justify-content: flex-start; }
     .nav-cta { display: none; }
+    .work-head > p,
+    .principles-head > p,
+    .tools-head > p { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
