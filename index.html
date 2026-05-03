@@ -430,6 +430,7 @@
     outline: 1px solid var(--line); margin-bottom: 16px;
     padding: 36px; display: grid;
     grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center;
+    overflow: hidden;
     transition: outline-color 250ms, box-shadow 250ms cubic-bezier(.2,.7,.3,1), transform 250ms cubic-bezier(.2,.7,.3,1);
   }
   .wcard:hover {
@@ -441,6 +442,51 @@
       0 36px 80px rgba(123, 60, 247, 0.06);
     transform: translateY(-3px);
   }
+  /* Auto QA — scattered deck hover */
+  .wcard-visual.qa-visual { overflow: hidden; }
+
+  .qa-stack {
+    position: absolute;
+    inset: 0;
+  }
+  .qa-img {
+    position: absolute;
+    top: 20px; left: 16px;
+    width: calc(100% - 32px);
+    height: calc(100% - 20px);
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 12px 40px rgba(80,60,180,0.22);
+    transform-origin: 50% 85%;
+    will-change: transform, opacity;
+    transition:
+      transform 500ms cubic-bezier(0.34, 1.45, 0.64, 1),
+      opacity   280ms ease;
+    object-fit: cover;
+    object-position: top left;
+  }
+  .qa-img-back  { opacity: 0; transform: rotate(-5deg) scale(0.86) translateY(6%);  z-index: 1; }
+  .qa-img-mid   { opacity: 0; transform: rotate(4deg)  scale(0.89) translateY(3%);  z-index: 2; }
+  .qa-img-front { opacity: 1; transform: rotate(0deg)  scale(1);                    z-index: 3; }
+
+  .wcard:hover .qa-img-back  {
+    opacity: 1;
+    transform: rotate(-13deg) scale(0.74) translate(6%, -12%);
+    transition-delay: 0ms;
+  }
+  .wcard:hover .qa-img-mid   {
+    opacity: 1;
+    transform: rotate(11deg) scale(0.77) translate(10%, 10%);
+    transition-delay: 50ms;
+  }
+  .wcard:hover .qa-img-front {
+    transform: rotate(-3deg) scale(0.86) translate(-5%, -4%);
+    transition-delay: 90ms;
+  }
+  .wcard:hover .wcard-visual.qa-visual {
+    background: linear-gradient(160deg, #E6DEFF 0%, #C4B5FF 55%, #DDD5FF 100%) !important;
+    transition: background 450ms ease;
+  }
+
   .wcard--rev { grid-template-columns: 1.15fr 1fr; }
   .wcard--rev .wcard-text { order: 2; }
   .wcard--rev .wcard-visual { order: 1; }
@@ -853,10 +899,12 @@
           <a class="btn btn-ghost-dark" href="https://www.kapture.cx/conversation-intelligence/auto-qa/" target="_blank" rel="noopener">Visit website</a>
         </div>
       </div>
-      <div class="wcard-visual" style="background:linear-gradient(160deg,#EDE9FF 0%,#D8D0FF 55%,#E8E4FF 100%); overflow:hidden;">
-        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(106,75,255,0.12) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="position:absolute;inset:0;padding:20px 16px 0;display:flex;align-items:flex-start;">
-          <img src="assets/QA/Dashboard.png" alt="Auto QA — development hub dashboard" loading="lazy" style="width:100%;border-radius:8px 8px 0 0;object-fit:cover;object-position:top left;display:block;box-shadow:0 12px 40px rgba(80,60,180,0.18);" />
+      <div class="wcard-visual qa-visual" style="background:linear-gradient(160deg,#EDE9FF 0%,#D8D0FF 55%,#E8E4FF 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(106,75,255,0.15) 0%,transparent 60%);pointer-events:none;z-index:4;"></div>
+        <div class="qa-stack">
+          <img class="qa-img qa-img-back"  src="assets/QA/Agent view.png"    alt="Auto QA — agent view"    loading="lazy" />
+          <img class="qa-img qa-img-mid"   src="assets/QA/Conversations.png" alt="Auto QA — conversations" loading="lazy" />
+          <img class="qa-img qa-img-front" src="assets/QA/Dashboard.png"     alt="Auto QA — dashboard"     loading="lazy" />
         </div>
       </div>
     </article>
@@ -1292,6 +1340,35 @@
       else nav.classList.remove('hidden');
       lastY = y;
     }, { passive: true });
+  })();
+
+  /* Auto QA — cycle images while hovering */
+  (function() {
+    const qaCard = document.querySelector('.wcard-visual.qa-visual')?.closest('.wcard');
+    if (!qaCard) return;
+    const imgs = Array.from(qaCard.querySelectorAll('.qa-img'));
+    const pos = ['back', 'mid', 'front'];
+    let tick = 0, cycleTimer = null, startTimer = null;
+
+    function apply() {
+      imgs.forEach((img, i) => {
+        img.className = `qa-img qa-img-${pos[(i + tick) % 3]}`;
+      });
+    }
+
+    qaCard.addEventListener('mouseenter', () => {
+      startTimer = setTimeout(() => {
+        cycleTimer = setInterval(() => { tick++; apply(); }, 2200);
+      }, 700);
+    });
+
+    qaCard.addEventListener('mouseleave', () => {
+      clearTimeout(startTimer);
+      clearInterval(cycleTimer);
+      startTimer = null; cycleTimer = null;
+      tick = 0;
+      apply();
+    });
   })();
 </script>
 </body>
