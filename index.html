@@ -7,7 +7,7 @@
 <meta name="description" content="Product designer & builder. I design with engineering constraints and edge cases in mind — so the ideas on the Figma board actually survive the trip to production." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=JetBrains+Mono:wght@300..800&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #0F0B1E;
@@ -532,6 +532,58 @@
     transition: background 450ms ease;
   }
 
+  /* ── WiseWay handwritten annotations ───────────────────────────────── */
+  .ww-visual { position: relative; overflow: visible !important; }
+  .ww-phone { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+  .ww-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .ww-feat { opacity: 0; }
+  .ww-feat.is-visible { opacity: 1; }
+
+  .ww-arrow, .ww-tip {
+    fill: none;
+    stroke: #1A4A48;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ww-arrow {
+    stroke-width: 1.7;
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ww-tip {
+    stroke-width: 1.7;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ww-feat.is-visible .ww-arrow { stroke-dashoffset: 0; }
+  .ww-feat.is-visible .ww-tip   { stroke-dashoffset: 0; transition-delay: 520ms; }
+
+  .ww-label {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    font-weight: 600;
+    fill: #1A4A48;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ww-feat.is-visible .ww-label { clip-path: inset(0 0% 0 0); transition-delay: 180ms; }
+
+  .wcard:hover .wcard-visual.ww-visual {
+    background: linear-gradient(160deg, #FBCEC8 0%, #F5A89E 60%, #F8BDB5 100%) !important;
+    transition: background 450ms ease;
+  }
+
   .wcard--rev { grid-template-columns: 1.15fr 1fr; }
   .wcard--rev .wcard-text { order: 2; }
   .wcard--rev .wcard-visual { order: 1; }
@@ -972,8 +1024,47 @@
           <a class="btn btn-ghost-dark" href="https://www.behance.net/gallery/189412123/WiseWay-Cab-UXUI-Case-Study" target="_blank" rel="noopener">View on Behance</a>
         </div>
       </div>
-      <div class="wcard-visual" style="background:#F5A89E; overflow:hidden;">
-        <img src="assets/Thumbnails/WiseWay%203.png" alt="WiseWay app — home screen mockup" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />
+      <div class="wcard-visual ww-visual" style="background:#F5A89E;">
+        <img class="ww-phone" src="assets/Thumbnails/WiseWay%203.png" alt="WiseWay app — home screen mockup" loading="lazy" />
+        <svg class="ww-svg" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+          <!-- Feature 1: Top-left — Built for senior eyes
+               Arrow: tail from open background (165,95), curves left to arrowhead near text (112,68) -->
+          <g class="ww-feat ww-feat-1">
+            <path class="ww-arrow" d="M 165,95 C 152,90 138,80 112,68" />
+            <path class="ww-tip"   d="M 120,61 L 112,68 L 121,74" />
+            <text class="ww-label" x="6" y="52">Built for</text>
+            <text class="ww-label" x="6" y="76">senior eyes</text>
+          </g>
+
+          <!-- Feature 2: Middle-left — NGO-backed assistance
+               Arrow: tail from open background (168,242), curves left to arrowhead near text (112,222) -->
+          <g class="ww-feat ww-feat-2">
+            <path class="ww-arrow" d="M 168,242 C 155,238 140,232 112,222" />
+            <path class="ww-tip"   d="M 120,215 L 112,222 L 121,228" />
+            <text class="ww-label" x="6" y="206">NGO-backed</text>
+            <text class="ww-label" x="6" y="230">assistance</text>
+          </g>
+
+          <!-- Feature 3: Bottom-left — Medicine reminders
+               Arrow: tail from open background (165,388), curves left-up to arrowhead near text (112,368) -->
+          <g class="ww-feat ww-feat-3">
+            <path class="ww-arrow" d="M 165,388 C 152,384 138,376 112,368" />
+            <path class="ww-tip"   d="M 120,361 L 112,368 L 121,374" />
+            <text class="ww-label" x="6" y="352">Medicine</text>
+            <text class="ww-label" x="6" y="376">reminders</text>
+          </g>
+
+          <!-- Feature 4: Right — Ads made for seniors
+               Arrow: tail from open background (388,295), curves right-up to arrowhead near text (422,262) -->
+          <g class="ww-feat ww-feat-4">
+            <path class="ww-arrow" d="M 388,295 C 396,284 408,274 422,262" />
+            <path class="ww-tip"   d="M 414,256 L 422,262 L 415,270" />
+            <text class="ww-label" x="426" y="248">Ads made</text>
+            <text class="ww-label" x="426" y="272">for seniors</text>
+          </g>
+
+        </svg>
       </div>
     </article>
 
@@ -1444,6 +1535,28 @@
       startTimer = null; cycleTimer = null;
       tick = 0;
       apply();
+    });
+  })();
+
+  /* ── WiseWay handwritten annotations ───────────────────────────────── */
+  (function () {
+    const wwVisual = document.querySelector('.ww-visual');
+    if (!wwVisual) return;
+    const feats = wwVisual.querySelectorAll('.ww-feat');
+    const card = wwVisual.closest('.wcard');
+    let timers = [];
+
+    card.addEventListener('mouseenter', () => {
+      feats.forEach((feat, i) => {
+        const t = setTimeout(() => feat.classList.add('is-visible'), 250 + i * 850);
+        timers.push(t);
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      feats.forEach(feat => feat.classList.remove('is-visible'));
     });
   })();
 </script>
