@@ -34,9 +34,11 @@
   :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
 
   /* Cursor */
-  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 4px; height: 4px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
-  #pixelCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 6px; height: 6px; background: var(--ink); border-radius: 50%; transform: translate(-50%,-50%); transition: background 200ms; }
   body.cursor-dark .cursor-dot { background: var(--paper); }
+  .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%,-50%); opacity: 0.45; transition: transform 90ms linear, border-color 200ms; }
+  body.cursor-dark .cursor-ring { border-color: var(--paper); }
+  #pixelCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 
   /* Nav */
   .nav { position: fixed; top: 20px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 14px 20px; background: rgba(250,250,248,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 50px; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
@@ -236,6 +238,7 @@
 <body>
 
 <div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <canvas id="pixelCanvas"></canvas>
 
 <nav class="nav" id="nav">
@@ -500,6 +503,7 @@
     // Pixel cube cursor trail
     if (!window.matchMedia('(pointer: fine)').matches) return;
     const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
     if (!dot) return;
     const canvas = document.getElementById('pixelCanvas');
     const ctx = canvas.getContext('2d');
@@ -547,6 +551,7 @@
     addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      if (ring) ring.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
       const now = Date.now();
       if (now - lastSpawn > 8) { spawn(mx, my); startLoop(); lastSpawn = now; }
     });

@@ -40,8 +40,10 @@
   :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
 
   /* Cursor */
-  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 4px; height: 4px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
+  .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; width: 6px; height: 6px; background: var(--paper); border-radius: 50%; transform: translate(-50%,-50%); }
   body.cursor-light .cursor-dot { background: var(--ink); }
+  .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; width: 22px; height: 22px; border: 1.5px solid var(--paper); border-radius: 50%; transform: translate(-50%,-50%); opacity: 0.45; transition: transform 90ms linear, border-color 200ms; }
+  body.cursor-light .cursor-ring { border-color: var(--ink); }
   #pixelCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 
   /* Nav */
@@ -228,6 +230,7 @@
 <body>
 
 <div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <canvas id="pixelCanvas"></canvas>
 
 <nav class="nav" id="nav">
@@ -335,6 +338,7 @@
   (function () {
     if (!window.matchMedia('(pointer: fine)').matches) return;
     const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
     if (!dot) return;
     const canvas = document.getElementById('pixelCanvas');
     const ctx = canvas.getContext('2d');
@@ -382,6 +386,7 @@
     addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      if (ring) ring.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
       const now = Date.now();
       if (now - lastSpawn > 8) { spawn(mx, my); startLoop(); lastSpawn = now; }
     });
