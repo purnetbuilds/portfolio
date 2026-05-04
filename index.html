@@ -1029,9 +1029,9 @@
       <div class="wcard-visual ee-visual" style="background:linear-gradient(160deg,#E4E8FF 0%,#D0D6FF 55%,#E0E6FF 100%);">
         <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(106,75,255,0.12) 0%,transparent 60%);pointer-events:none;z-index:4;"></div>
         <div class="ee-stack">
-          <div class="ee-img-wrap ee-img-back">  <img src="assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — dashboard"    loading="lazy" /></div>
-          <div class="ee-img-wrap ee-img-mid">   <img src="assets/Employee%20Experience/Home.png"      alt="Employee Experience — home view"    loading="lazy" /></div>
-          <div class="ee-img-wrap ee-img-front"> <img src="assets/Employee%20Experience/Library.png"   alt="Employee Experience — library view" loading="lazy" /></div>
+          <div class="ee-img-wrap ee-img-back">  <img src="assets/Employee%20Experience/Dashboard.png" alt="Employee Experience — dashboard"    loading="eager" decoding="async" /></div>
+          <div class="ee-img-wrap ee-img-mid">   <img src="assets/Employee%20Experience/Home.png"      alt="Employee Experience — home view"    loading="eager" decoding="async" /></div>
+          <div class="ee-img-wrap ee-img-front"> <img src="assets/Employee%20Experience/Library.png"   alt="Employee Experience — library view" loading="eager" decoding="async" /></div>
         </div>
       </div>
     </article>
@@ -1055,9 +1055,9 @@
       <div class="wcard-visual qa-visual" style="background:linear-gradient(160deg,#EDE9FF 0%,#D8D0FF 55%,#E8E4FF 100%);">
         <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(106,75,255,0.15) 0%,transparent 60%);pointer-events:none;z-index:4;"></div>
         <div class="qa-stack">
-          <div class="qa-img-wrap qa-img-back">  <img src="assets/QA/Agent view.png"    alt="Auto QA — agent view"    loading="lazy" /></div>
-          <div class="qa-img-wrap qa-img-mid">   <img src="assets/QA/Conversations.png" alt="Auto QA — conversations" loading="lazy" /></div>
-          <div class="qa-img-wrap qa-img-front"> <img src="assets/QA/Dashboard.png"     alt="Auto QA — dashboard"     loading="lazy" /></div>
+          <div class="qa-img-wrap qa-img-back">  <img src="assets/QA/Agent view.png"    alt="Auto QA — agent view"    loading="eager" decoding="async" /></div>
+          <div class="qa-img-wrap qa-img-mid">   <img src="assets/QA/Conversations.png" alt="Auto QA — conversations" loading="eager" decoding="async" /></div>
+          <div class="qa-img-wrap qa-img-front"> <img src="assets/QA/Dashboard.png"     alt="Auto QA — dashboard"     loading="eager" decoding="async" /></div>
         </div>
       </div>
     </article>
@@ -1576,6 +1576,12 @@
       apply();
     });
   })();
+
+  /* Pre-decode EE and QA images so first hover is instant */
+  document.querySelectorAll('.ee-img-wrap img, .qa-img-wrap img').forEach(img => {
+    if (img.complete) return;
+    img.decode().catch(() => {});
+  });
 
   /* Employee Experience — cycle images while hovering */
   (function() {
