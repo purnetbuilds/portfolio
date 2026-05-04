@@ -42,8 +42,12 @@
 
   iframe {
     position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
-    width: 100%; height: calc(100vh - 52px);
+    width: 100%; height: calc(100dvh - 52px);
     border: none;
+  }
+  @media (max-width: 640px) {
+    .nav { height: 44px; }
+    iframe { top: 44px; height: calc(100dvh - 44px); }
   }
 </style>
 </head>
