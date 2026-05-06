@@ -24,7 +24,7 @@
     --max: 1320px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: var(--ink); }
   body {
     font-family: var(--font-mono);
     background: var(--paper);
@@ -420,7 +420,7 @@
     document.getElementById('formThanks').style.display = 'block';
     // Open mailto as fallback
     const body = encodeURIComponent(`Name: ${name}\n\n${message}`);
-    window.location.href = `mailto:hello@purnet.design?subject=Portfolio inquiry from ${encodeURIComponent(name)}&body=${body}`;
+    window.location.href = `mailto:purnet.92@gmail.com?subject=Portfolio inquiry from ${encodeURIComponent(name)}&body=${body}`;
   });
 </script>
 </body>
