@@ -409,18 +409,32 @@
     }, { passive: true });
   })();
 
-  document.getElementById('contactForm').addEventListener('submit', function (e) {
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
     if (!name || !email || !message) return;
-    document.getElementById('formFields').style.display = 'none';
-    document.querySelector('.form-footer').style.display = 'none';
-    document.getElementById('formThanks').style.display = 'block';
-    // Open mailto as fallback
-    const body = encodeURIComponent(`Name: ${name}\n\n${message}`);
-    window.location.href = `mailto:purnet.92@gmail.com?subject=Portfolio inquiry from ${encodeURIComponent(name)}&body=${body}`;
+
+    const btn = this.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch('https://formspree.io/f/xwvyqzwa', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error();
+      document.getElementById('formFields').style.display = 'none';
+      document.querySelector('.form-footer').style.display = 'none';
+      document.getElementById('formThanks').style.display = 'block';
+    } catch {
+      btn.disabled = false;
+      btn.innerHTML = 'Send message <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+      alert('Something went wrong. Please try again or email subs.purnet@gmail.com directly.');
+    }
   });
 </script>
 </body>
