@@ -5,3 +5,4 @@ assets/Thumbnails/.DS_Store
 assets/Mockups/.agents/
 assets/Mockups/skills-lock.json
 node_modules/
+.vercel
