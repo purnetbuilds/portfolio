@@ -500,8 +500,10 @@
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <script>
   (function () {
-    // Pixel cube cursor trail
-    if (!window.matchMedia('(pointer: fine)').matches) return;
+    // Pixel cube cursor trail — fine-pointer devices only.
+    // Critical: keep this guard local; the rest of the IIFE (accordion,
+    // gallery, scroll reveal, nav) must run on touch devices too.
+    if (window.matchMedia('(pointer: fine)').matches) (function initCursor() {
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
     if (!dot) return;
@@ -562,6 +564,7 @@
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-dark'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-dark'));
     });
+    })();
 
     // Nav hamburger
     const hamburger = document.getElementById('navHamburger');
