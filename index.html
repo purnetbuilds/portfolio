@@ -188,12 +188,10 @@
     font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 500;
   }
   .hero-h1 .cycle {
-    display: inline-block;
     font-style: italic;
     font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 400;
+    white-space: pre;
   }
-  .hero-h1 .cycle.out { opacity: 0; transform: translateX(-44px); }
-  .hero-h1 .cycle.entering { opacity: 0; transform: translateX(44px); transition: none !important; }
 
   .hero-bottom {
     margin-top: 44px;
@@ -1412,25 +1410,49 @@
     });
   })();
 
-  // ── Headline word cycle
+  // ── Headline typewriter (type → hold → delete → next word)
   (function () {
     const words = ['Design', 'Build', 'Ship', 'Test', 'Scale'];
     const el = document.getElementById('cycleWord');
     if (!el) return;
-    let i = 0;
-    setInterval(() => {
-      el.style.transition = 'opacity 150ms ease-in, transform 150ms cubic-bezier(0.55,0,1,0.45)';
-      el.classList.add('out');
-      setTimeout(() => {
-        i = (i + 1) % words.length;
-        el.textContent = words[i];
-        el.classList.remove('out');
-        el.classList.add('entering');
-        el.getBoundingClientRect();
-        el.classList.remove('entering');
-        el.style.transition = 'opacity 200ms ease-out, transform 200ms cubic-bezier(0,0,0.2,1)';
-      }, 150);
-    }, 2600);
+
+    // Respect reduced-motion: show a static word, no animation.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = words[0];
+      return;
+    }
+
+    const TYPE = 100;   // ms per character while typing in
+    const DELETE = 60;  // ms per character while deleting
+    const HOLD = 1600;  // pause once a word is fully typed
+    const GAP = 360;    // pause after a word is cleared, before the next
+
+    let wi = 0, ci = words[0].length, deleting = true;
+    el.textContent = words[0];
+
+    function loop() {
+      const word = words[wi];
+      if (!deleting) {
+        el.textContent = word.slice(0, ++ci);
+        if (ci >= word.length) {
+          deleting = true;
+          setTimeout(loop, HOLD);
+        } else {
+          setTimeout(loop, TYPE);
+        }
+      } else {
+        el.textContent = word.slice(0, --ci);
+        if (ci <= 0) {
+          deleting = false;
+          wi = (wi + 1) % words.length;
+          setTimeout(loop, GAP);
+        } else {
+          setTimeout(loop, DELETE);
+        }
+      }
+    }
+
+    setTimeout(loop, HOLD);             // hold the initial word, then start deleting
   })();
 
   // ── Mobile nav hamburger
