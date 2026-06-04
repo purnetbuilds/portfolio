@@ -103,8 +103,7 @@
   .gallery-slide { grid-area: 1/1; opacity: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,11,30,0.06), 0 12px 48px rgba(15,11,30,0.14), 0 32px 80px rgba(15,11,30,0.10); will-change: transform, opacity; transform-origin: 50% 0%; }
   [data-layout="portrait"] .gallery-slide { border-radius: 32px; box-shadow: 0 4px 16px rgba(15,11,30,0.12), 0 24px 64px rgba(15,11,30,0.22); }
   .gallery-slide { background: linear-gradient(160deg, #E8E3F8 0%, #F0EBF9 100%); }
-  .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; opacity: 0; transition: opacity 350ms ease; }
-  .gallery-slide.is-active img { opacity: 1; transition: opacity 400ms ease 60ms; }
+  .gallery-slide img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; opacity: 0; }
   .gallery-progress { position: absolute; bottom: -24px; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.15); z-index: 25; }
   .gallery-progress-bar { width: 100%; height: 100%; background: var(--purple); transform: scaleX(0); transform-origin: left; }
   .gallery-btn {
@@ -418,14 +417,14 @@
 
 <section class="gallery-shell reveal" data-layout="landscape">
   <div class="gallery-cinema" role="region" aria-label="Auto QA project screenshots">
-    <div class="gallery-slide is-active" data-label="Dashboard" role="group" aria-roledescription="slide"><img src="../assets/QA/Dashboard.png" alt="Auto QA — Dashboard showing agent performance metrics and conversation scores" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Conversations" role="group" aria-roledescription="slide"><img src="../assets/QA/Conversations.png" alt="Auto QA — Conversations list with filter controls and score indicators" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Agent view" role="group" aria-roledescription="slide"><img src="../assets/QA/Agent%20view.png" alt="Auto QA — Agent view with individual performance timeline and score breakdown" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Transcript" role="group" aria-roledescription="slide"><img src="../assets/QA/Agent%20view%20transcript.png" alt="Auto QA — Transcript view with inline AI evaluation scores linked to conversation moments" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Scorecard" role="group" aria-roledescription="slide"><img src="../assets/QA/Scorecard.png" alt="Auto QA — Scorecard with weighted quality dimensions and pass/fail thresholds" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Manual QA" role="group" aria-roledescription="slide"><img src="../assets/QA/Manual%20QA.png" alt="Auto QA — Manual QA workflow for calibration and human review override" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Layout" role="group" aria-roledescription="slide"><img src="../assets/QA/Layout%201.png" alt="Auto QA — Full platform layout showing the evaluation workspace" loading="lazy" draggable="false" /></div>
-    <div class="gallery-slide" data-label="Settings" role="group" aria-roledescription="slide"><img src="../assets/QA/Settings.png" alt="Auto QA — Settings panel for configuring scoring criteria and alert thresholds" loading="lazy" draggable="false" /></div>
+    <div class="gallery-slide is-active" data-label="Dashboard" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Dashboard.png" alt="Auto QA — Dashboard showing agent performance metrics and conversation scores" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Conversations" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Conversations.png" alt="Auto QA — Conversations list with filter controls and score indicators" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Agent view" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Agent%20view.png" alt="Auto QA — Agent view with individual performance timeline and score breakdown" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Transcript" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Agent%20view%20transcript.png" alt="Auto QA — Transcript view with inline AI evaluation scores linked to conversation moments" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Scorecard" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Scorecard.png" alt="Auto QA — Scorecard with weighted quality dimensions and pass/fail thresholds" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Manual QA" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Manual%20QA.png" alt="Auto QA — Manual QA workflow for calibration and human review override" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Layout" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Layout%201.png" alt="Auto QA — Full platform layout showing the evaluation workspace" loading="lazy" decoding="async" draggable="false" /></div>
+    <div class="gallery-slide" data-label="Settings" role="group" aria-roledescription="slide"><img src="../assets/QA-opt/Settings.png" alt="Auto QA — Settings panel for configuring scoring criteria and alert thresholds" loading="lazy" decoding="async" draggable="false" /></div>
     <div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-bar"></div></div>
     <button class="gallery-btn gallery-btn--prev" aria-label="Previous screenshot">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,15 7,10 12,5"/></svg>
@@ -612,6 +611,8 @@
       var active        = 0;
       var total         = slides.length;
       var DURATION      = 4500;
+      var RESTACK_DUR   = 560;
+      var RESTACK_EASE  = 'cubicBezier(0.22, 1, 0.36, 1)';
       var transitioning = false;
       var paused        = false;
       var progressAnim  = null;
@@ -656,6 +657,8 @@
           var cfg = getConfig(idx);
           anime.set(slide, { translateY: cfg.translateY, scale: cfg.scale, opacity: cfg.opacity });
           slide.style.zIndex = cfg.zIndex;
+          var img = slide.querySelector('img');
+          if (img) anime.set(img, { opacity: idx === active ? 1 : 0 });
         });
       }
 
@@ -705,6 +708,12 @@
         active = (active + 1) % total;
         syncNav();
 
+        // Outgoing screenshot fades with the card, not on its own CSS timeline
+        var oldImg = slides[oldActive].querySelector('img');
+        if (oldImg) anime({ targets: oldImg, opacity: 0, duration: 300, easing: 'linear' });
+        var newImg = slides[active].querySelector('img');
+        if (newImg) anime({ targets: newImg, opacity: 1, duration: RESTACK_DUR, easing: RESTACK_EASE });
+
         // Front card flies up and shrinks away decisively
         anime({
           targets: slides[oldActive],
@@ -719,7 +728,7 @@
           }
         });
 
-        // All remaining cards spring to their new stack positions
+        // All remaining cards ease to their new stack positions on a single, honored timeline
         slides.forEach(function(slide, idx) {
           if (idx === oldActive) return;
           var newPos = getCardPosition(idx);
@@ -730,24 +739,29 @@
             translateY: cfg.translateY,
             scale: cfg.scale,
             opacity: cfg.opacity,
-            duration: 620,
-            easing: 'spring(1, 80, 10, 0)'
+            duration: RESTACK_DUR,
+            easing: RESTACK_EASE,
+            complete: idx === active ? function() { transitioning = false; } : undefined
           });
         });
 
         stopKenBurns();
         startKenBurns(slides[active]);
         startProgress();
-
-        setTimeout(function() { transitioning = false; }, 680);
       }
 
       function goTo(nextIdx, isManual) {
         if (nextIdx === active || transitioning) return;
         transitioning = true;
 
+        var prevActive = active;
         active = nextIdx;
         syncNav();
+
+        var prevImg = slides[prevActive].querySelector('img');
+        if (prevImg) anime({ targets: prevImg, opacity: 0, duration: 300, easing: 'linear' });
+        var newImg = slides[active].querySelector('img');
+        if (newImg) anime({ targets: newImg, opacity: 1, duration: RESTACK_DUR, easing: RESTACK_EASE });
 
         slides.forEach(function(slide, idx) {
           var newPos = getCardPosition(idx);
@@ -758,21 +772,19 @@
             translateY: cfg.translateY,
             scale: cfg.scale,
             opacity: cfg.opacity,
-            duration: 600,
-            easing: 'spring(1, 80, 10, 0)'
+            duration: RESTACK_DUR,
+            easing: RESTACK_EASE,
+            complete: idx === active ? function() { transitioning = false; } : undefined
           });
         });
 
         stopKenBurns();
         startKenBurns(slides[active]);
         if (isManual) startProgress();
-
-        setTimeout(function() { transitioning = false; }, 660);
       }
 
       initStack();
       syncNav();
-      startKenBurns(slides[0]);
 
       cinema.addEventListener('mouseenter', function() { paused = true; pauseProgress(); });
       cinema.addEventListener('mouseleave', function() { paused = false; resumeProgress(); });
@@ -798,8 +810,15 @@
 
       var ioGallery = new IntersectionObserver(function(entries) {
         entries.forEach(function(e) {
-          if (e.isIntersecting) { paused = false; startProgress(); startKenBurns(slides[active]); }
-          else { paused = true; pauseProgress(); }
+          if (e.isIntersecting) {
+            paused = false;
+            // First time it enters view: kick off. Re-entry: resume, never stack a 2nd Ken Burns.
+            if (!progressAnim) { stopKenBurns(); startKenBurns(slides[active]); startProgress(); }
+            else { resumeProgress(); }
+          } else {
+            paused = true;
+            pauseProgress();
+          }
         });
       }, { threshold: 0.4 });
       ioGallery.observe(cinema);
