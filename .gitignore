@@ -9,3 +9,6 @@ node_modules/
 
 # Local-only image masters (originals of EX-opt/QA-opt)
 assets/Uncompressed images/
+
+# Stray export, intentionally untracked
+assets/ChatGPT Image *.png
