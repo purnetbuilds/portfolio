@@ -6,3 +6,6 @@ assets/Mockups/.agents/
 assets/Mockups/skills-lock.json
 node_modules/
 .vercel
+
+# Local-only image masters (originals of EX-opt/QA-opt)
+assets/Uncompressed images/
