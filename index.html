@@ -62,6 +62,14 @@
   ::selection { background: var(--ink); color: var(--paper); }
   :focus-visible { outline: dashed 2px var(--ink); outline-offset: 3px; }
 
+  /* Thin, branded scrollbar (replaces the chunky default) */
+  html { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  *    { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+  *::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
+
   /* ── Custom cursor ─────────────────────────────────────────────────── */
   .cursor-dot {
     position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
