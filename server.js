@@ -16,16 +16,24 @@ const MIME = {
   '.woff2':'font/woff2',
   '.woff': 'font/woff',
   '.ttf':  'font/ttf',
+  '.pdf':  'application/pdf',
 };
 
 http.createServer((req, res) => {
   let url = decodeURIComponent(req.url.split('?')[0]);
   if (url === '/') url = '/index.html';
-  const filePath = path.join(ROOT, url);
+  const filePath = path.normalize(path.join(ROOT, url));
+  if (filePath !== ROOT && !filePath.startsWith(ROOT + path.sep)) {
+    res.writeHead(403, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end('<h1>403 — Forbidden</h1>');
+    return;
+  }
   const ext = path.extname(filePath).toLowerCase();
   try {
     const data = fs.readFileSync(filePath);
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+    const head = { 'Content-Type': MIME[ext] || 'application/octet-stream' };
+    if (ext === '.pdf') head['Content-Disposition'] = 'attachment';
+    res.writeHead(200, head);
     res.end(data);
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
