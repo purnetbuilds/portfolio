@@ -19,613 +19,461 @@
 <meta name="twitter:title" content="Purnet Moirangthem — Product Design & Design Engineering" />
 <meta name="twitter:description" content="Product designer & builder. I design with engineering constraints and edge cases in mind — so the ideas on the Figma board actually survive the trip to production." />
 <meta name="twitter:image" content="https://purnet-portfolio.vercel.app/assets/og-image-v2.png" />
-<meta name="theme-color" content="#F2EFE7" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#F2F2F2" />
 <style>
-:root {
-  --canvas: #f2efe7;
-  --paper: #fbfaf6;
-  --ink: #11110f;
-  --muted: #68665f;
-  --cobalt: #2457ff;
-  --acid: #d9ff57;
-  --line: rgba(17, 17, 15, .16);
-  --line-light: rgba(255, 255, 255, .2);
-  --display: "Instrument Serif", Georgia, serif;
-  --sans: "DM Sans", Arial, sans-serif;
-  --mono: "IBM Plex Mono", monospace;
-  --ease: cubic-bezier(.22, 1, .36, 1);
-  --max: 1500px;
-  --gutter: clamp(20px, 3vw, 48px);
+@font-face{font-family:"Plus Jakarta Sans:Bold";src:url("https://static.figma.com/font/PlusJakartaSans_wght__2") format("woff2");font-style:normal;font-weight:700}
+@font-face{font-family:"Plus Jakarta Sans:Medium";src:url("https://static.figma.com/font/PlusJakartaSans_wght__2") format("woff2");font-style:normal;font-weight:500}
+@font-face{font-family:"Plus Jakarta Sans:SemiBold";src:url("https://static.figma.com/font/PlusJakartaSans_wght__2") format("woff2");font-style:normal;font-weight:600}
+@font-face{font-family:"Roboto Mono:Regular";src:url("https://static.figma.com/font/RobotoMono_wght__2") format("woff2");font-style:normal;font-weight:400}
+@font-face{font-family:"Roboto Serif:Medium";src:url("https://static.figma.com/font/RobotoSerif_GRAD_opsz_wdth_wght__2") format("woff2");font-style:normal;font-weight:500}
+@font-face{font-family:"Roboto Serif:Regular";src:url("https://static.figma.com/font/RobotoSerif_GRAD_opsz_wdth_wght__2") format("woff2");font-style:normal;font-weight:400}
+@font-face{font-family:"Roboto Serif:SemiBold";src:url("https://static.figma.com/font/RobotoSerif_GRAD_opsz_wdth_wght__2") format("woff2");font-style:normal;font-weight:600}
+:root{--page:#f2f2f2;--surface:#fafafa;--white:#fff;--ink:#222;--muted:#555;--quiet:#999;--line:#d6d6d6;--coral:#ed7454;--accent:#c0305e;--green:#789578;--cream:#f7eeda;--sans:"Plus Jakarta Sans:Medium",Arial,sans-serif;--sans-semi:"Plus Jakarta Sans:SemiBold",Arial,sans-serif;--sans-bold:"Plus Jakarta Sans:Bold",Arial,sans-serif;--mono:"Roboto Mono:Regular",monospace;--serif:"Roboto Serif:Regular",Georgia,serif;--serif-medium:"Roboto Serif:Medium",Georgia,serif;--serif-semi:"Roboto Serif:SemiBold",Georgia,serif;--ease:cubic-bezier(.22,1,.36,1);--gutter:clamp(18px,3vw,32px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-weight:500;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.menu-open{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+img{display:block;max-width:100%}
+p,h1,h2,h3,ul{margin:0}
+ul{padding:0;list-style:none}
+::selection{background:var(--coral);color:var(--ink)}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.skip-link{position:fixed;z-index:1000;top:10px;left:10px;padding:12px 16px;background:var(--cream);transform:translateY(-160%);transition:transform .2s}
+.skip-link:focus{transform:none}
+.narrow{width:min(100%,768px);margin-inline:auto;padding-inline:24px}
+.wide{width:min(100%,1200px);margin-inline:auto;padding-inline:24px}
+.section-line{border-top:1px solid var(--line)}
+.kicker{font:700 12px/1.6 var(--sans-bold);letter-spacing:.08em;text-transform:uppercase;color:var(--quiet)}
+.section-title{font:600 clamp(32px,5vw,44px)/1.08 var(--sans-semi);letter-spacing:-.025em}
+.serif{font-family:var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.pill{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:10px 22px;border:1px solid transparent;border-radius:999px;font:600 14px/1.5 var(--sans-semi);transition:transform .2s var(--ease),background .2s}
+.pill:hover{transform:translateY(-2px)}
+.pill-dark{background:var(--ink);color:var(--page)}
+.pill-light{background:#e9e9e9;border-color:var(--line)}
+.pill-accent{background:var(--accent);color:#fff}
+.text-link{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font:600 14px/1.5 var(--serif-semi);text-decoration:underline;text-underline-offset:4px;font-variation-settings:"GRAD" 0,"wdth" 100}
+.masthead{position:fixed;z-index:100;top:16px;left:50%;width:min(calc(100% - 32px),720px);height:54px;transform:translateX(-50%);border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(17,17,17,.84);box-shadow:0 8px 30px rgba(0,0,0,.12);backdrop-filter:blur(14px)}
+.nav{display:flex;height:100%;align-items:center;padding:5px}
+.nav-brand{display:grid;width:44px;height:44px;place-items:center;border-radius:5px;background:var(--coral);color:#171717;font:700 16px/1 var(--sans-bold)}
+.nav-links{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:2px}
+.nav-links a{display:flex;min-height:34px;align-items:center;padding:0 11px;color:rgba(255,255,255,.45);font:600 11px/1.6 var(--sans-semi);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.resume-link{margin-left:4px;border-radius:5px;background:rgba(255,255,255,.1)}
+.menu-button{display:none;width:44px;height:44px;margin-left:auto;border:0;border-radius:5px;background:transparent;color:#fff}
+.menu-button span,.menu-button::before,.menu-button::after{display:block;width:20px;height:2px;margin:4px auto;background:currentColor;content:"";transition:transform .2s,opacity .2s}
+.menu-button[aria-expanded=true] span{opacity:0}
+.menu-button[aria-expanded=true]::before{transform:translateY(6px) rotate(45deg)}
+.menu-button[aria-expanded=true]::after{transform:translateY(-6px) rotate(-45deg)}
+.hero{padding-top:92px}
+.desk{position:relative;height:430px;overflow:hidden;border:1px solid #c8c8c8;border-radius:16px;background-color:#e8e6df;background-image:radial-gradient(#bbb 1.3px,transparent 1.3px);background-size:22px 22px;box-shadow:inset 0 0 60px rgba(34,34,34,.06);touch-action:none}
+.desk::after{position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 45%,rgba(120,149,120,.08));content:""}
+.desk-controls{position:absolute;z-index:40;right:12px;bottom:12px;display:flex;gap:8px}
+.desk-controls button{min-height:44px;padding:0 14px;border:1px solid var(--ink);border-radius:999px;background:rgba(247,238,218,.92);font:600 12px/1 var(--sans-semi);cursor:pointer}
+.desk-object{position:absolute;z-index:2;display:grid;place-items:center;width:var(--w);height:var(--h);border:0;background:transparent;cursor:grab;user-select:none;touch-action:none;transform:translate3d(0,0,0) rotate(var(--r));filter:drop-shadow(0 9px 8px rgba(35,30,27,.18));transition:filter .2s,transform .45s var(--ease)}
+.desk-object.dragging{cursor:grabbing;filter:drop-shadow(0 16px 12px rgba(35,30,27,.25));transition:filter .2s}
+.desk-object img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.object-caption{position:absolute;left:50%;bottom:-5px;min-width:max-content;padding:5px 8px;border:1px solid var(--ink);background:var(--cream);font:400 10px/1.2 var(--mono);transform:translateX(-50%) rotate(calc(var(--r) * -1))}
+.object-copy{position:absolute;inset:20% 16%;display:flex;flex-direction:column;justify-content:center;text-align:center;pointer-events:none;font:400 10px/1.25 var(--mono)}
+.book-copy{inset:23% 12% 14% 29%;font-family:var(--serif-semi);font-size:12px;font-variation-settings:"GRAD" 0,"wdth" 100}
+.notes-copy{inset:23% 15% 18% 11%;align-items:flex-start;gap:11px;text-align:left;font-size:9px;transform:rotate(-5deg)}
+.terminal-copy{inset:28% 10% 9% 10%;align-items:flex-start;justify-content:flex-start;color:var(--cream);font-size:8px;text-align:left}
+.terminal-copy span{color:var(--coral)}
+.intro{display:flex;flex-direction:column;gap:24px;padding-block:30px 34px}
+.intro h1{font:600 clamp(38px,6vw,56px)/1.15 var(--sans-semi);letter-spacing:-.025em}
+.intro h1 em{color:var(--coral);font-style:normal}
+.intro>p{max-width:680px;color:var(--muted);font-size:16px;line-height:1.65}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.experience{padding-block:20px}
+.experience-label{margin-bottom:10px;color:var(--quiet);font:700 11px/1.4 var(--sans-bold);letter-spacing:.08em;text-transform:uppercase}
+.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:marquee 22s linear infinite}
+.company-list{display:flex;align-items:center;gap:54px;padding-right:54px}
+.company-item{display:flex;height:76px;align-items:center;justify-content:center;opacity:.68}
+.company-item img{flex:none;filter:grayscale(1) brightness(.28) contrast(1.4)}
+.company-item:focus-within,.company-item:hover{opacity:1}
+.marquee:hover .marquee-track,.marquee:focus-within .marquee-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.featured{padding-block:24px 42px}
+.feature-heading{display:flex;flex-direction:column;gap:7px;padding-bottom:20px}
+.feature-media{position:relative;overflow:hidden;min-height:405px;border-radius:8px;background:var(--coral)}
+.feature-media .mockup{width:100%;height:100%;min-height:405px;object-fit:cover;mix-blend-mode:multiply;opacity:.92}
+.feature-media .screen{position:absolute;right:4%;bottom:-2%;width:47%;border:8px solid var(--ink);border-bottom:0;border-radius:8px 8px 0 0;box-shadow:0 12px 30px rgba(0,0,0,.2)}
+.feature-copy{display:flex;flex-direction:column;gap:22px;padding-block:24px}
+.feature-id{display:flex;align-items:center;gap:14px}
+.feature-mark{display:grid;width:56px;height:56px;place-items:center;border-radius:8px;background:var(--ink);color:var(--coral);font:400 22px/1 var(--mono)}
+.feature-id strong{display:block;font:600 17px/1.5 var(--sans-semi)}
+.feature-id span{color:var(--muted);font-size:14px}
+.feature-copy>p{color:var(--muted);font-size:16px;line-height:1.65}
+.feature-copy>p strong{color:var(--ink);font-family:var(--sans-semi)}
+.impact-heading{margin:2px 0 -6px;font:600 14px/1.4 var(--sans-semi)}
+.impact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.impact-card{min-height:140px;padding:16px;border:1px solid #e5e5e5;border-radius:8px;background:#fff}
+.evidence-type{display:inline-flex;margin-bottom:12px;padding:3px 7px;border-radius:99px;background:#f0ece7;color:var(--muted);font:400 10px/1.4 var(--mono);text-transform:uppercase}
+.impact-card strong{display:block;margin-bottom:4px;font:400 29px/1 var(--mono)}
+.impact-card h3{font:600 14px/1.4 var(--sans-semi)}
+.impact-card p{margin-top:4px;color:#666;font:400 12px/1.5 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.projects{padding-block:58px 72px;background:#eee}
+.projects-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px}
+.projects-head p{max-width:440px;color:var(--muted);font:400 14px/1.6 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.project-card{overflow:hidden;border-radius:24px;background:var(--surface);box-shadow:0 2px 8px rgba(44,36,32,.06),0 4px 24px rgba(44,36,32,.04)}
+.project-media{position:relative;aspect-ratio:1.6;overflow:hidden;background:#ddd}
+.project-media>img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.project-card:hover .project-media>img{transform:scale(1.025)}
+.project-body{display:flex;min-height:350px;flex-direction:column;padding:28px}
+.project-meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px;color:var(--accent);font:600 12px/1.5 var(--serif-semi);letter-spacing:.05em;text-transform:uppercase;font-variation-settings:"GRAD" 0,"wdth" 100}
+.project-meta span:last-child{color:var(--quiet);font-family:var(--serif);font-weight:400;text-transform:none}
+.project-card h3{margin-bottom:12px;font:400 22px/1.4 var(--mono)}
+.project-desc{min-height:92px;color:#666;font:400 14px/1.6 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.tag{padding:4px 11px;border:1px solid #e0e0e0;border-radius:999px;background:var(--page);color:#666;font:500 12px/1.5 var(--serif-medium);font-variation-settings:"GRAD" 0,"wdth" 100}
+.evidence{margin-bottom:20px;padding-top:14px;border-top:1px solid #e0e0e0;color:#666;font:400 12px/1.5 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.evidence strong{color:var(--ink);font-family:var(--serif-semi)}
+.project-body .text-link{margin-top:auto}
+.lab-fallback{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,var(--cream),#f3c4b7)}
+.lab-fallback::before{width:56%;height:58%;border:2px solid var(--ink);border-radius:18px;background:var(--surface);box-shadow:12px 12px 0 var(--coral);content:""}
+.lab-fallback span{position:absolute;font:400 clamp(22px,4vw,42px)/1 var(--mono)}
+.lab-preview{position:absolute;inset:0;width:160%;height:160%;border:0;pointer-events:none;transform:scale(.625);transform-origin:0 0;background:transparent}
+.about{padding-block:68px}
+.about-main{display:grid;grid-template-columns:minmax(220px,.8fr) 1.35fr;gap:24px}
+.portrait{position:relative;min-height:480px;overflow:hidden;border-radius:24px;background:var(--coral)}
+.portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:saturate(.8)}
+.about-copy{display:flex;flex-direction:column;gap:18px;padding:28px;border-radius:24px;background:var(--surface)}
+.about-copy>p{color:var(--muted);font-size:16px;line-height:1.65}
+.about-copy strong{color:var(--ink);font-family:var(--sans-semi)}
+.profile-panel{display:grid;grid-template-columns:1fr auto;gap:18px;margin-top:auto;padding:20px;border-radius:16px;background:var(--ink);color:#fff}
+.profile-panel p{color:#bbb;font-size:13px;line-height:1.5}
+.profile-actions{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.profile-actions a{color:var(--coral);font:600 13px/1.4 var(--sans-semi)}
+.about-folds{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.fold{padding:26px;border:1px solid var(--line);border-radius:24px;background:#ececec}
+.fold h3{margin:5px 0 20px;font:400 24px/1.35 var(--mono)}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{display:flex;min-height:52px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font:600 14px/1.4 var(--sans-semi);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{font:400 18px/1 var(--mono);content:"+"}
+details[open] summary::after{content:"−"}
+details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.tool-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tool{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--surface)}
+.tool-icon{display:grid;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:8px}
+.tool-icon img,.tool-icon svg{width:20px;height:20px}
+.tool h4{margin:0 0 2px;font:600 13px/1.3 var(--sans-semi)}
+.tool p{color:var(--muted);font:400 10px/1.35 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.contact{padding-block:0 72px}
+.contact-panel{display:flex;min-height:360px;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;border-radius:24px;background:#e9e9e9;text-align:center}
+.contact-panel h2{max-width:700px;margin:8px 0 16px;font:600 clamp(36px,6vw,60px)/1.08 var(--sans-semi);letter-spacing:-.025em}
+.contact-panel h2 em{color:var(--coral);font-style:normal}
+.contact-panel>p{max-width:620px;margin-bottom:22px;color:var(--muted);font:400 15px/1.6 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.contact-secondary{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:18px;color:var(--muted);font:600 12px/1.5 var(--sans-semi)}
+.footer-collage{position:relative;height:200px;overflow:hidden;border-top:1px solid var(--line);background:var(--green)}
+.footer-collage img{position:absolute;filter:drop-shadow(0 8px 7px rgba(0,0,0,.18))}
+.footer-collage img:nth-child(1){left:7%;bottom:-38px;width:180px;transform:rotate(-8deg)}
+.footer-collage img:nth-child(2){left:32%;top:20px;width:130px;transform:rotate(9deg)}
+.footer-collage img:nth-child(3){right:30%;bottom:-36px;width:170px;transform:rotate(-5deg)}
+.footer-collage img:nth-child(4){right:7%;top:28px;width:155px;transform:rotate(8deg)}
+.footer-main{padding-block:34px}
+.footer-grid{display:grid;grid-template-columns:1.3fr repeat(2,1fr);gap:28px}
+.footer-brand{font:600 18px/1.3 var(--sans-semi)}
+.footer-brand p{margin-top:8px;color:var(--muted);font:400 12px/1.5 var(--serif)}
+.footer-grid h3{margin-bottom:10px;color:var(--quiet);font:700 11px/1.4 var(--sans-bold);letter-spacing:.08em;text-transform:uppercase}
+.footer-grid li+li{margin-top:7px}
+.footer-grid a{font-size:13px;color:var(--muted)}
+.footer-grid a:hover{color:var(--accent)}
+.footer-bottom{display:flex;justify-content:space-between;gap:20px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--quiet);font:400 11px/1.5 var(--serif)}
+.legal{display:flex;gap:14px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:860px){
+  .nav-links a{padding-inline:7px;font-size:10px}
+  .desk{height:400px}
+  .project-grid,.about-folds{grid-template-columns:1fr}
+  .projects-head{align-items:start;flex-direction:column;gap:12px}
+  .about-main{grid-template-columns:.8fr 1.2fr}
+  .project-body{min-height:0}
+  .project-desc{min-height:0}
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 82px; }
-body { background: var(--canvas); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-body.menu-open { overflow: hidden; }
-a { color: inherit; text-decoration: none; }
-button { color: inherit; font: inherit; }
-img { display: block; max-width: 100%; }
-::selection { background: var(--acid); color: var(--ink); }
-:focus-visible { outline: 3px solid var(--acid); outline-offset: 4px; }
-.skip-link { position: fixed; z-index: 1000; top: 10px; left: 10px; padding: 12px 16px; background: var(--acid); color: var(--ink); transform: translateY(-150%); transition: transform .2s; }
-.skip-link:focus { transform: translateY(0); }
-.container { width: min(100%, var(--max)); margin-inline: auto; padding-inline: var(--gutter); }
-.eyebrow { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; line-height: 1.4; text-transform: uppercase; }
-.eyebrow::before { content: ""; width: 8px; height: 8px; background: currentColor; }
-.display { font-family: var(--display); font-weight: 400; letter-spacing: -.045em; line-height: .9; }
-.italic { font-style: italic; }
-.rule { height: 1px; background: currentColor; opacity: .16; }
-.btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 18px; padding: 0 20px; border: 1px solid currentColor; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; transition: background .25s, color .25s, transform .25s; }
-.btn::after { content: "↗"; font-size: 16px; line-height: 1; }
-.btn:hover { transform: translateY(-3px); }
-.btn--ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.btn--ink:hover { background: var(--cobalt); border-color: var(--cobalt); }
-.btn--paper { background: var(--paper); color: var(--ink); }
-.btn--paper:hover { background: var(--acid); }
-.btn--ghost { background: transparent; }
-.btn--ghost:hover { background: var(--paper); color: var(--ink); }
-
-/* Masthead */
-.masthead { position: fixed; z-index: 500; inset: 0 0 auto; height: 76px; border-bottom: 1px solid transparent; transition: background .35s, border-color .35s, color .35s; }
-.masthead.scrolled { background: rgba(242, 239, 231, .92); border-color: var(--line); backdrop-filter: blur(18px); }
-.masthead__inner { height: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 30px; padding-inline: var(--gutter); max-width: var(--max); margin: auto; }
-.brand { display: flex; align-items: center; gap: 11px; width: max-content; font-size: 14px; font-weight: 600; letter-spacing: -.02em; }
-.brand__mark { display: grid; place-items: center; width: 31px; height: 31px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 19px; border-radius: 50%; transition: transform .35s var(--ease); }
-.brand:hover .brand__mark { transform: rotate(-12deg); }
-.nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
-.nav-links a { position: relative; padding-block: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.nav-links a::after { content: ""; position: absolute; inset: auto 0 4px; height: 2px; background: var(--cobalt); transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease); }
-.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); transform-origin: left; }
-.nav-contact { justify-self: end; display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.nav-contact span { width: 9px; height: 9px; background: var(--cobalt); border-radius: 50%; box-shadow: 0 0 0 0 rgba(36, 87, 255, .4); animation: pulse 2.4s infinite; }
-.menu-button { display: none; justify-self: end; width: 42px; height: 42px; border: 1px solid var(--line); background: var(--canvas); align-items: center; justify-content: center; cursor: pointer; }
-.menu-button i, .menu-button i::before { display: block; width: 18px; height: 1px; background: var(--ink); transition: transform .25s; }
-.menu-button i::before { content: ""; transform: translateY(6px); }
-.menu-button[aria-expanded="true"] i { transform: rotate(45deg); }
-.menu-button[aria-expanded="true"] i::before { transform: rotate(-90deg); }
-.masthead__progress { position: absolute; inset: auto 0 0; height: 2px; background: var(--cobalt); transform: scaleX(0); transform-origin: left; }
-
-/* Hero */
-.hero { min-height: 100svh; position: relative; display: flex; align-items: flex-end; padding: 150px 0 34px; overflow: clip; }
-.hero::before { content: ""; position: absolute; top: 76px; bottom: 0; left: calc(25% - 1px); width: 1px; background: var(--line); }
-.hero::after { content: ""; position: absolute; top: 76px; bottom: 0; left: calc(75% - 1px); width: 1px; background: var(--line); }
-.hero__grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(14px, 2vw, 30px); align-items: end; }
-.hero__kicker { grid-column: 1 / 5; align-self: start; padding-top: 8px; }
-.hero__title { grid-column: 1 / 13; font-size: clamp(76px, 11.4vw, 174px); white-space: nowrap; }
-.hero__title .line { display: block; overflow: hidden; }
-.hero__title .line > span { display: block; transform: translateY(108%); animation: lineIn 1.1s var(--ease) forwards; }
-.hero__title .line:nth-child(2) { padding-left: 16.5%; }
-.hero__title .line:nth-child(2) > span { animation-delay: .12s; }
-.hero__title em { color: var(--cobalt); font-weight: 400; }
-.hero__statement { grid-column: 1 / 5; max-width: 430px; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.35; letter-spacing: -.025em; }
-.hero__actions { grid-column: 9 / 13; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-.hero__preview { grid-column: 5 / 13; position: relative; height: clamp(155px, 16vw, 245px); margin-top: 28px; border-top: 1px solid var(--line); overflow: hidden; }
-.hero__preview img { position: absolute; width: 42%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 7px solid var(--paper); box-shadow: 0 18px 50px rgba(17,17,15,.16); opacity: 0; animation: imageIn 1s var(--ease) forwards; }
-.hero__preview img:nth-child(1) { left: 0; top: 32px; transform: rotate(-3deg); animation-delay: .45s; }
-.hero__preview img:nth-child(2) { left: 30%; top: 12px; z-index: 2; transform: rotate(2deg); animation-delay: .58s; }
-.hero__preview img:nth-child(3) { right: 0; top: 45px; transform: rotate(-1deg); animation-delay: .7s; }
-.hero__scroll { grid-column: 1 / 4; align-self: end; padding-bottom: 5px; color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.hero__scroll span { display: inline-block; width: 45px; height: 1px; margin-right: 12px; background: currentColor; vertical-align: middle; transform-origin: left; animation: breathe 2s ease-in-out infinite; }
-
-/* Work */
-.work { background: var(--paper); padding: clamp(100px, 12vw, 180px) 0; scroll-margin-top: 75px; }
-.section-intro { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(14px, 2vw, 30px); align-items: end; margin-bottom: clamp(90px, 10vw, 150px); }
-.section-intro .eyebrow { grid-column: 1 / 4; align-self: start; }
-.section-intro h2 { grid-column: 4 / 10; font-size: clamp(58px, 7vw, 108px); }
-.section-intro > p { grid-column: 10 / 13; font-size: 15px; line-height: 1.6; color: var(--muted); }
-.atlas { display: grid; grid-template-columns: minmax(210px, 3fr) minmax(0, 9fr); gap: clamp(34px, 6vw, 100px); }
-.atlas-nav { position: sticky; top: 110px; align-self: start; padding-top: 20px; border-top: 1px solid var(--ink); }
-.atlas-nav__label { margin-bottom: 34px; color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.atlas-nav ol { list-style: none; }
-.atlas-nav a { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; transition: color .25s, padding .25s; }
-.atlas-nav a span:first-child { font-family: var(--mono); font-size: 9px; }
-.atlas-nav a::after { content: ""; width: 8px; height: 8px; border: 1px solid currentColor; border-radius: 50%; transition: background .25s, transform .25s; }
-.atlas-nav a:hover, .atlas-nav a.active { color: var(--ink); padding-left: 8px; }
-.atlas-nav a.active::after { background: var(--cobalt); border-color: var(--cobalt); transform: scale(1.25); }
-.project { min-height: 92svh; display: grid; align-content: start; grid-template-columns: repeat(9, 1fr); gap: 24px; padding: 22px 0 clamp(110px, 13vw, 190px); border-top: 1px solid var(--ink); }
-.project:last-child { padding-bottom: 0; }
-.project__meta { grid-column: 1 / 3; font-family: var(--mono); font-size: 10px; line-height: 1.7; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.project__copy { grid-column: 3 / 10; }
-.project__brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; font-size: 14px; font-weight: 600; }
-.project__brand b { display: grid; width: 32px; height: 32px; place-items: center; background: var(--cobalt); color: white; font-family: var(--display); font-size: 18px; font-weight: 400; border-radius: 50%; }
-.project h3 { max-width: 1050px; font-family: var(--display); font-size: clamp(42px, 5.2vw, 80px); font-weight: 400; letter-spacing: -.04em; line-height: .98; }
-.project h3 em { color: var(--cobalt); font-weight: 400; }
-.project__body { max-width: 700px; margin-top: 28px; color: var(--muted); font-size: 16px; line-height: 1.65; }
-.project__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
-.project__visual { grid-column: 1 / 10; position: relative; min-height: clamp(440px, 52vw, 750px); margin-top: clamp(42px, 6vw, 90px); background: #e5e1d7; overflow: hidden; isolation: isolate; }
-.project__visual::after { content: ""; position: absolute; inset: 0; z-index: 20; background: var(--ink); transform-origin: right; transform: scaleX(var(--cover, 1)); transition: transform 1.1s var(--ease); pointer-events: none; }
-.project.in-view .project__visual::after { --cover: 0; }
-.project__visual img { will-change: transform; }
-
-/* Project-specific art direction */
-.visual-lab { display: grid; place-items: center; background: var(--ink); color: var(--paper); }
-.lab-grid { position: absolute; inset: 0; opacity: .15; background-image: linear-gradient(var(--line-light) 1px, transparent 1px), linear-gradient(90deg, var(--line-light) 1px, transparent 1px); background-size: 42px 42px; }
-.lab-orbit { position: absolute; width: min(58vw, 660px); aspect-ratio: 1; border: 1px solid rgba(217,255,87,.3); border-radius: 50%; animation: orbit 20s linear infinite; }
-.lab-orbit::before, .lab-orbit::after { content: ""; position: absolute; border: 1px solid rgba(36,87,255,.65); border-radius: 50%; }
-.lab-orbit::before { inset: 13%; }
-.lab-orbit::after { inset: 29%; }
-.lab-terminal { position: relative; z-index: 2; width: min(88%, 700px); background: rgba(17,17,15,.86); border: 1px solid var(--line-light); box-shadow: 28px 28px 0 var(--cobalt); }
-.lab-terminal__bar { display: flex; justify-content: space-between; padding: 15px 18px; border-bottom: 1px solid var(--line-light); font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
-.live { color: var(--acid); }
-.lab-terminal pre { min-height: 230px; padding: 32px; white-space: pre-wrap; font-family: var(--mono); font-size: clamp(11px, 1.2vw, 15px); line-height: 1.8; color: #c9c9c0; }
-.visual-ex { background: #ded8ff; }
-.visual-ex .screen-main { position: absolute; width: 76%; top: 12%; left: 12%; border: 9px solid var(--paper); box-shadow: 0 32px 70px rgba(17,17,15,.2); transform: translate3d(0, calc(var(--parallax, 0) * -32px), 0); }
-.visual-ex .screen-side { position: absolute; width: 43%; border: 7px solid var(--paper); box-shadow: 0 22px 50px rgba(17,17,15,.18); }
-.visual-ex .screen-side.one { left: 2%; bottom: -5%; transform: rotate(-5deg) translate3d(0, calc(var(--parallax, 0) * 28px), 0); }
-.visual-ex .screen-side.two { right: 0; bottom: 2%; transform: rotate(4deg) translate3d(0, calc(var(--parallax, 0) * 42px), 0); }
-.visual-qa { background: var(--cobalt); display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: clamp(25px, 5vw, 72px); }
-.visual-qa .qa-main, .visual-qa .qa-stack img { width: 100%; border: 7px solid var(--paper); box-shadow: 0 22px 50px rgba(17,17,15,.24); }
-.visual-qa .qa-main { align-self: center; transform: translate3d(0, calc(var(--parallax, 0) * -24px), 0); }
-.qa-stack { display: grid; align-content: center; gap: 20px; }
-.qa-stack img:first-child { transform: translate3d(0, calc(var(--parallax, 0) * 28px), 0); }
-.qa-stack img:last-child { transform: translate3d(0, calc(var(--parallax, 0) * 44px), 0); }
-.visual-wise { background: var(--acid); overflow: hidden; }
-.visual-wise::before { content: "WiseWay"; position: absolute; left: -1%; bottom: -4%; font-family: var(--display); font-size: clamp(110px, 19vw, 290px); letter-spacing: -.06em; line-height: .75; color: rgba(17,17,15,.08); }
-.wise-phone { position: absolute; z-index: 2; width: min(32%, 330px); top: 7%; left: 50%; transform: translate3d(-50%, calc(var(--parallax, 0) * -32px), 0); filter: drop-shadow(0 28px 28px rgba(17,17,15,.22)); }
-.annotation { position: absolute; z-index: 3; width: 200px; padding-top: 10px; border-top: 1px solid var(--ink); font-family: var(--mono); font-size: 10px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
-.annotation::before { content: ""; position: absolute; top: -4px; width: 7px; height: 7px; background: var(--ink); border-radius: 50%; }
-.annotation.a1 { top: 19%; left: 8%; }
-.annotation.a2 { top: 57%; left: 12%; }
-.annotation.a3 { top: 24%; right: 7%; text-align: right; }
-.annotation.a3::before, .annotation.a4::before { right: 0; }
-.annotation.a4 { top: 65%; right: 10%; text-align: right; }
-
-/* About */
-.about { background: var(--cobalt); color: white; padding: clamp(90px, 10vw, 160px) 0; scroll-margin-top: 75px; overflow: hidden; }
-.about__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(14px, 2vw, 30px); align-items: center; }
-.about__portrait { grid-column: 1 / 6; position: relative; height: min(72vw, 760px); overflow: hidden; background: #173cbe; }
-.about__portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; transform: scale(1.04) translate3d(0, calc(var(--parallax, 0) * -18px), 0); }
-.about__portrait::after { content: "Based in\A Bangalore, India"; white-space: pre; position: absolute; right: 18px; bottom: 18px; padding: 12px 15px; background: var(--acid); color: var(--ink); font-family: var(--mono); font-size: 9px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
-.about__copy { grid-column: 7 / 13; }
-.about__copy h2 { margin: 40px 0 50px; font-size: clamp(64px, 7vw, 108px); }
-.about__copy p { max-width: 680px; padding: 19px 0; border-top: 1px solid var(--line-light); font-size: clamp(17px, 1.45vw, 22px); line-height: 1.45; letter-spacing: -.02em; }
-.about__copy p strong { color: var(--acid); font-weight: 500; }
-.about__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
-
-/* Principles */
-.principles { padding: clamp(100px, 12vw, 190px) 0; scroll-margin-top: 75px; }
-.principles__head { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: clamp(80px, 10vw, 150px); }
-.principles__head .eyebrow { grid-column: 1 / 4; }
-.principles__head h2 { grid-column: 4 / 11; font-size: clamp(60px, 7vw, 108px); }
-.principles__head > p { grid-column: 9 / 13; margin-top: 38px; color: var(--muted); font-size: 15px; line-height: 1.65; }
-.manifesto { border-top: 1px solid var(--ink); }
-.principle { display: grid; grid-template-columns: 1fr 2fr 4fr 5fr; gap: 24px; align-items: baseline; padding: clamp(28px, 4vw, 55px) 0; border-bottom: 1px solid var(--line); transition: background .35s, padding .35s; }
-.principle:hover { background: var(--acid); padding-inline: 24px; }
-.principle__num, .principle__type { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.principle h3 { font-family: var(--display); font-size: clamp(32px, 3vw, 48px); font-weight: 400; letter-spacing: -.035em; }
-.principle p { max-width: 650px; color: var(--muted); font-size: 15px; line-height: 1.6; }
-
-/* Tools */
-.tools { background: var(--ink); color: var(--paper); padding: clamp(100px, 12vw, 180px) 0; scroll-margin-top: 75px; }
-.tools__head { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: clamp(70px, 9vw, 130px); }
-.tools__head .eyebrow { grid-column: 1 / 4; color: var(--acid); }
-.tools__head h2 { grid-column: 4 / 11; font-size: clamp(60px, 7vw, 108px); }
-.tools__head > p { grid-column: 9 / 13; margin-top: 38px; color: #aaa89f; font-size: 15px; line-height: 1.65; }
-.tool-list { border-top: 1px solid var(--line-light); }
-.tool { display: grid; grid-template-columns: 60px 90px minmax(180px, 1.5fr) minmax(260px, 3fr); gap: 24px; align-items: center; min-height: 115px; border-bottom: 1px solid var(--line-light); transition: color .3s, padding .3s, background .3s; }
-.tool:hover, .tool:focus-within { background: var(--cobalt); padding-inline: 22px; }
-.tool__index { font-family: var(--mono); font-size: 10px; color: #86847c; }
-.tool__icon { display: grid; place-items: center; width: 46px; height: 46px; background: var(--paper); border-radius: 50%; overflow: hidden; }
-.tool__icon img { width: 26px; height: 26px; object-fit: contain; }
-.tool__icon svg { width: 24px; height: 24px; fill: var(--ink); }
-.tool h3 { font-family: var(--display); font-size: clamp(34px, 3.4vw, 52px); font-weight: 400; }
-.tool p { max-width: 680px; color: #aaa89f; font-size: 14px; line-height: 1.6; transition: color .3s; }
-.tool:hover p { color: white; }
-
-/* Footer */
-.footer { background: var(--acid); color: var(--ink); }
-.footer__lead { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: clamp(90px, 12vw, 180px) var(--gutter); max-width: var(--max); margin: auto; }
-.footer__lead .eyebrow { grid-column: 1 / 4; }
-.footer__lead h2 { grid-column: 1 / 9; margin-top: 60px; font-size: clamp(72px, 10vw, 150px); }
-.footer__lead p { grid-column: 9 / 13; align-self: end; margin-bottom: 18px; font-size: 16px; line-height: 1.6; }
-.footer__lead .btn { grid-column: 9 / 13; justify-self: start; }
-.footer__links { border-top: 1px solid var(--ink); padding: 38px var(--gutter); }
-.footer__links-inner { max-width: var(--max); margin: auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
-.footer__social { display: flex; gap: 9px; margin-top: 20px; }
-.footer__social a { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--ink); font-family: var(--mono); font-size: 10px; transition: background .2s, color .2s; }
-.footer__social a:hover { background: var(--ink); color: var(--acid); }
-.link-column h3 { margin-bottom: 18px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.link-column ul { list-style: none; }
-.link-column li + li { margin-top: 9px; }
-.link-column a { font-size: 13px; }
-.link-column a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.footer__bottom { display: flex; justify-content: space-between; gap: 30px; padding: 20px var(--gutter); border-top: 1px solid var(--ink); font-family: var(--mono); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
-.footer__legal { display: flex; gap: 22px; }
-
-.scroll-top { position: fixed; z-index: 300; right: 24px; bottom: 24px; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(15px); transition: opacity .25s, transform .25s; }
-.scroll-top.visible { opacity: 1; pointer-events: auto; transform: none; }
-
-/* Reveal states */
-.reveal { opacity: 0; transform: translateY(38px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
-.reveal.in { opacity: 1; transform: none; }
-.principle.reveal:nth-child(even), .tool.reveal:nth-child(even) { transition-delay: .08s; }
-@keyframes lineIn { to { transform: none; } }
-@keyframes imageIn { from { opacity: 0; translate: 0 40px; } to { opacity: 1; translate: 0 0; } }
-@keyframes pulse { 60% { box-shadow: 0 0 0 7px rgba(36,87,255,0); } 100% { box-shadow: 0 0 0 0 rgba(36,87,255,0); } }
-@keyframes breathe { 50% { transform: scaleX(.45); } }
-@keyframes orbit { to { transform: rotate(360deg); } }
-
-@media (max-width: 1100px) {
-  .hero__title { font-size: clamp(67px, 11vw, 120px); }
-  .section-intro h2, .principles__head h2, .tools__head h2 { grid-column: 4 / 13; }
-  .section-intro > p, .principles__head > p, .tools__head > p { grid-column: 7 / 13; }
-  .atlas { grid-template-columns: 210px minmax(0, 1fr); gap: 42px; }
-  .project { grid-template-columns: repeat(7, 1fr); }
-  .project__copy { grid-column: 2 / 8; }
-  .project__visual { grid-column: 1 / 8; }
-  .project__meta { grid-column: 1; }
-  .about__portrait { grid-column: 1 / 6; }
-  .about__copy { grid-column: 6 / 13; }
-  .principle { grid-template-columns: .6fr 1.3fr 3fr 5fr; }
+@media(max-width:700px){
+  .masthead{top:10px;width:calc(100% - 20px)}
+  .menu-button{display:block}
+  .nav-links{position:absolute;top:60px;right:0;left:0;display:none;flex-direction:column;align-items:stretch;padding:8px;border-radius:8px;background:rgba(17,17,17,.96);box-shadow:0 16px 28px rgba(0,0,0,.2)}
+  .nav-links.open{display:flex}
+  .nav-links a{min-height:44px;padding-inline:14px;font-size:11px}
+  .resume-link{margin:2px 0 0}
+  .hero{padding-top:76px}
+  .desk{height:350px;border-radius:12px}
+  .desk-object{scale:.78;transform-origin:top left}
+  .object-caption{font-size:9px}
+  .intro h1{font-size:39px}
+  .feature-media,.feature-media .mockup{min-height:300px}
+  .feature-media .screen{width:54%}
+  .impact-grid{gap:10px}
+  .impact-card{min-height:150px}
+  .projects{padding-block:46px 56px}
+  .project-grid{grid-template-columns:1fr}
+  .project-body{padding:22px}
+  .lab-preview{display:none}
+  .about{padding-block:52px}
+  .about-main{grid-template-columns:1fr}
+  .portrait{min-height:420px}
+  .profile-panel{grid-template-columns:1fr}
+  .profile-actions{flex-direction:row}
+  .contact{padding-bottom:52px}
+  .contact-panel{min-height:330px}
+  .footer-collage img:nth-child(2){display:none}
+  .footer-collage img:nth-child(3){right:28%}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
 }
-
-@media (max-width: 800px) {
-  html { scroll-padding-top: 64px; }
-  .masthead { height: 64px; }
-  .masthead__inner { grid-template-columns: 1fr auto; }
-  .nav-contact { display: none; }
-  .menu-button { display: flex; }
-  .nav-links { position: fixed; inset: 64px 0 auto; display: grid; gap: 0; background: var(--canvas); border-bottom: 1px solid var(--ink); transform: translateY(-120%); opacity: 0; pointer-events: none; transition: transform .45s var(--ease), opacity .25s; }
-  .nav-links.open { transform: none; opacity: 1; pointer-events: auto; }
-  .nav-links li { border-top: 1px solid var(--line); }
-  .nav-links a { display: block; padding: 22px var(--gutter); font-family: var(--display); font-size: 38px; letter-spacing: -.03em; text-transform: none; }
-  .nav-links a::after { display: none; }
-  .hero { min-height: auto; padding: 120px 0 36px; }
-  .hero::before, .hero::after { display: none; }
-  .hero__grid { grid-template-columns: repeat(4, 1fr); }
-  .hero__kicker, .hero__title, .hero__statement, .hero__actions, .hero__preview { grid-column: 1 / 5; }
-  .hero__title { font-size: clamp(60px, 18vw, 108px); margin: 42px 0 26px; white-space: normal; }
-  .hero__title .line:nth-child(2) { padding-left: 11%; }
-  .hero__statement { max-width: 520px; }
-  .hero__actions { justify-content: flex-start; margin-top: 22px; }
-  .hero__preview { height: 220px; margin-top: 58px; }
-  .hero__preview img { width: 62%; }
-  .hero__preview img:nth-child(1) { left: -9%; }
-  .hero__preview img:nth-child(2) { left: 23%; }
-  .hero__preview img:nth-child(3) { right: -18%; }
-  .hero__scroll { display: none; }
-  .work, .principles, .tools { padding-block: 92px; }
-  .section-intro, .principles__head, .tools__head { grid-template-columns: repeat(4, 1fr); margin-bottom: 76px; }
-  .section-intro .eyebrow, .principles__head .eyebrow, .tools__head .eyebrow { grid-column: 1 / 5; }
-  .section-intro h2, .principles__head h2, .tools__head h2 { grid-column: 1 / 5; margin-top: 32px; font-size: clamp(52px, 15vw, 84px); }
-  .section-intro > p, .principles__head > p, .tools__head > p { grid-column: 1 / 5; margin-top: 18px; }
-  .atlas { display: block; }
-  .atlas-nav { position: relative; top: auto; z-index: 5; display: block; margin-bottom: 62px; padding: 0; border: 0; overflow-x: auto; scrollbar-width: none; }
-  .atlas-nav::-webkit-scrollbar { display: none; }
-  .atlas-nav__label { margin-bottom: 14px; }
-  .atlas-nav ol { display: flex; width: max-content; }
-  .atlas-nav a { display: flex; min-height: 44px; padding: 11px 20px 11px 0; margin-right: 18px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  .atlas-nav a:hover, .atlas-nav a.active { padding-left: 0; color: var(--cobalt); }
-  .atlas-nav a::after { display: none; }
-  .project { min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: 110px; }
-  .project__meta { grid-column: 1 / 5; }
-  .project__copy { grid-column: 1 / 5; margin-top: 18px; }
-  .project__visual { grid-column: 1 / 5; min-height: clamp(360px, 100vw, 600px); }
-  .project h3 { font-size: clamp(42px, 12vw, 70px); }
-  .lab-terminal { box-shadow: 14px 14px 0 var(--cobalt); }
-  .lab-terminal pre { padding: 22px; }
-  .visual-ex .screen-main { width: 90%; left: 5%; }
-  .visual-ex .screen-side { width: 54%; }
-  .visual-qa { grid-template-columns: 1fr; padding: 26px; }
-  .qa-stack { display: none; }
-  .wise-phone { width: min(48%, 310px); }
-  .annotation { width: 125px; font-size: 8px; }
-  .about { padding-block: 92px; }
-  .about__grid { grid-template-columns: repeat(4, 1fr); }
-  .about__portrait, .about__copy { grid-column: 1 / 5; }
-  .about__portrait { height: min(126vw, 680px); margin-bottom: 70px; }
-  .about__copy h2 { margin: 34px 0; }
-  .principle { grid-template-columns: 50px 1fr; gap: 12px 18px; }
-  .principle__num { grid-row: 1 / 3; }
-  .principle__type { grid-column: 2; }
-  .principle h3 { grid-column: 2; }
-  .principle p { grid-column: 2; margin-top: 8px; }
-  .principle:hover { padding-inline: 12px; }
-  .tool { grid-template-columns: 45px 50px 1fr; gap: 12px; padding: 22px 0; }
-  .tool p { grid-column: 3; }
-  .tool:hover { padding-inline: 10px; }
-  .footer__lead { grid-template-columns: repeat(4, 1fr); }
-  .footer__lead .eyebrow, .footer__lead h2, .footer__lead p, .footer__lead .btn { grid-column: 1 / 5; }
-  .footer__lead h2 { margin-top: 50px; }
-  .footer__lead p { margin-top: 40px; }
-  .footer__links-inner { grid-template-columns: 1fr 1fr; }
-  .footer__brand { grid-column: 1 / 3; }
+@media(max-width:440px){
+  .narrow,.wide{padding-inline:16px}
+  .desk{height:320px}
+  .desk-controls{right:8px;bottom:8px}
+  .desk-controls button{padding-inline:10px;font-size:11px}
+  .impact-grid,.tool-list{grid-template-columns:1fr}
+  .impact-card{min-height:0}
+  .project-meta{flex-direction:column;gap:3px}
+  .footer-collage{height:160px}
+  .footer-collage img:nth-child(1){left:-4%;width:140px}
+  .footer-collage img:nth-child(3){right:27%;width:130px}
+  .footer-collage img:nth-child(4){right:-4%;width:120px}
+  .footer-bottom{flex-direction:column}
 }
-
-@media (max-width: 520px) {
-  .brand { font-size: 12px; }
-  .brand__mark { width: 28px; height: 28px; }
-  .hero__title { font-size: clamp(54px, 17.5vw, 82px); }
-  .hero__title .line:nth-child(2) { padding-left: 0; }
-  .hero__actions .btn { flex: 1; }
-  .hero__preview { height: 180px; }
-  .project__visual { min-height: 360px; }
-  .visual-wise { min-height: 500px; }
-  .annotation.a1, .annotation.a2 { left: 4%; }
-  .annotation.a3, .annotation.a4 { right: 4%; }
-  .wise-phone { width: 55%; }
-  .about__copy p { font-size: 16px; }
-  .about__actions .btn { width: 100%; }
-  .principle { grid-template-columns: 38px 1fr; }
-  .tool { grid-template-columns: 38px 45px 1fr; }
-  .tool__icon { width: 40px; height: 40px; }
-  .tool h3 { font-size: 31px; }
-  .footer__links-inner { grid-template-columns: 1fr; }
-  .footer__brand { grid-column: auto; }
-  .footer__bottom { flex-direction: column; }
-  .footer__legal { flex-wrap: wrap; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .hero__title .line > span { transform: none; }
-  .hero__preview img { opacity: 1; translate: none; }
-  .reveal { opacity: 1; transform: none; }
-  .project__visual::after { display: none; }
-  [style*="--parallax"] { --parallax: 0 !important; }
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .marquee-track{width:auto;animation:none}
+  .marquee .company-list[aria-hidden=true]{display:none}
+  .company-list{width:100%;flex-wrap:wrap;justify-content:center;padding:0}
 }
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-
-<header class="masthead" id="masthead">
-  <div class="masthead__inner">
-    <a class="brand" href="#top" aria-label="Purnet Moirangthem, home">
-      <span class="brand__mark">P</span>
-      <span>Purnet Moirangthem</span>
-    </a>
-    <nav aria-label="Primary navigation">
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#principles">Skills</a></li>
-        <li><a href="#tools">Tools</a></li>
-      </ul>
-    </nav>
-    <a class="nav-contact" href="contact.html"><span aria-hidden="true"></span>Get in touch</a>
-    <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-controls="navLinks" aria-expanded="false"><i aria-hidden="true"></i></button>
-  </div>
-  <div class="masthead__progress" id="pageProgress" aria-hidden="true"></div>
+<header class="masthead">
+  <nav class="nav" aria-label="Primary navigation">
+    <a class="nav-brand" href="#top" aria-label="Purnet Moirangthem, home">P</a>
+    <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#work">Work</a>
+      <a href="#highlight">Highlight</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <a class="resume-link" href="assets/Purnet_resume.pdf">Resume</a>
+    </div>
+  </nav>
 </header>
-
 <main id="main">
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="container hero__grid">
-      <p class="eyebrow hero__kicker">Design Engineer — Portfolio '26</p>
-      <h1 class="display hero__title" id="hero-title">
-        <span class="line"><span><em>Design</em> systems</span></span>
-        <span class="line"><span>that hold up.</span></span>
-      </h1>
-      <p class="hero__statement">I design with engineering constraints and edge cases in mind — so ideas actually ship.</p>
-      <div class="hero__actions">
-        <a class="btn btn--ink" href="#work">View work</a>
-        <a class="btn btn--paper" href="build-lab.html">Build Lab</a>
-      </div>
-      <p class="hero__scroll"><span></span>Scroll through the atlas</p>
-      <div class="hero__preview" aria-hidden="true">
-        <img src="assets/EX-opt/Dashboard.png" alt="" width="2000" height="1125">
-        <img src="assets/QA-opt/Agent view.png" alt="" width="2000" height="1125">
-        <img src="assets/Thumbnails/WiseWay 2.png" alt="" width="3840" height="2160">
+  <section class="hero narrow" id="top" aria-labelledby="hero-title">
+    <div class="desk" id="desk" aria-label="Interactive maker's desk. Drag the objects, or focus one and use the arrow keys.">
+      <div class="desk-object" tabindex="0" role="button" aria-label="Music production controller: years producing music shaped an interest in complex systems and signal flow." data-x="3" data-y="13" style="--w:190px;--h:112px;--r:-7deg"><img src="assets/hero/midi-controller.svg" width="240" height="142" alt=""><span class="object-caption">signal flow</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Camera: travel, cafe photography, video, and visual storytelling." data-x="67" data-y="8" style="--w:145px;--h:110px;--r:6deg"><img src="assets/hero/camera.svg" width="174" height="132" alt=""><span class="object-caption">frame the story</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Game controller: downtime and an interest in tactile interface physics." data-x="38" data-y="62" style="--w:155px;--h:103px;--r:4deg"><img src="assets/hero/game-controller.svg" width="190" height="126" alt=""><span class="object-caption">tactile UI</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="The Paradox of Choice: a reminder to simplify systems and reduce decision fatigue." data-x="25" data-y="4" style="--w:110px;--h:142px;--r:7deg"><img src="assets/hero/book.svg" width="152" height="196" alt=""><span class="object-copy book-copy">The Paradox<br>of Choice</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Cup: energy for rapid iteration and hands-on building sessions." data-x="77" data-y="62" style="--w:108px;--h:100px;--r:-5deg"><img src="assets/hero/cup.svg" width="142" height="132" alt=""><span class="object-caption">one more pass</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Bengaluru marker: connected to India's startup and technology ecosystem." data-x="53" data-y="23" style="--w:88px;--h:110px;--r:3deg"><img src="assets/hero/bengaluru-pin.svg" width="132" height="166" alt=""><span class="object-caption">Bengaluru</span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Sticky notes: reduce the choice, test the edge, ship the system." data-x="2" data-y="62" style="--w:145px;--h:118px;--r:-2deg"><img src="assets/hero/sticky-notes.svg" width="190" height="154" alt=""><span class="object-copy notes-copy"><span>reduce the choice</span><span>test the edge</span><span>ship the system</span></span></div>
+      <div class="desk-object" tabindex="0" role="button" aria-label="Terminal: turning product hypotheses into testable working software." data-x="55" data-y="69" style="--w:175px;--h:112px;--r:-3deg"><img src="assets/hero/terminal.svg" width="238" height="152" alt=""><span class="object-copy terminal-copy">$ scenario.expand()<br><span>edge_cases: ready</span><br>$ ship --clarity</span></div>
+      <div class="desk-controls"><button id="shuffleDesk" type="button">Shuffle desk</button><button id="resetDesk" type="button">Reset</button></div>
+    </div>
+    <ul class="sr-only">
+      <li>A MIDI controller represents music production and systems thinking.</li><li>A camera represents visual storytelling.</li><li>A game controller represents tactile interaction.</li><li>The Paradox of Choice represents subtractive taste.</li><li>A cup represents rapid iteration.</li><li>A map pin represents Bengaluru.</li><li>Notes represent practical design heuristics.</li><li>A terminal represents building working products.</li>
+    </ul>
+    <div class="intro">
+      <h1 id="hero-title">Design systems<br>that <em>hold up.</em></h1>
+      <p>I design with engineering constraints and edge cases in mind — so ideas actually ship.</p>
+      <div class="actions"><a class="pill pill-dark" href="#work">View my work</a><a class="pill pill-light" href="assets/Purnet_resume.pdf">View resume</a></div>
+    </div>
+  </section>
+
+  <section class="experience section-line" id="experience" aria-label="Companies and teams">
+    <div class="narrow"><p class="experience-label">Companies and teams I’ve worked with</p></div>
+    <div class="marquee" tabindex="0">
+      <div class="marquee-track">
+        <ul class="company-list">
+          <li class="company-item" style="width:118px"><img src="assets/companies/prime-focus.svg" alt="Prime Focus Technologies" width="51.405" height="46"></li>
+          <li class="company-item" style="width:130px"><img src="assets/companies/horus-music.svg" alt="Horus Music" width="66.0729" height="27.37"></li>
+          <li class="company-item" style="width:110px"><img src="assets/companies/dentsu-creative.svg" alt="Dentsu Creative" width="43.93" height="37.26"></li>
+          <li class="company-item" style="width:145px"><a href="https://www.kapture.cx/" target="_blank" rel="noopener"><img src="assets/companies/kapture-cx.svg" alt="Kapture CX" width="82.3324" height="22.885"></a></li>
+        </ul>
+        <ul class="company-list" aria-hidden="true">
+          <li class="company-item" style="width:118px"><img src="assets/companies/prime-focus.svg" alt="" width="51.405" height="46"></li>
+          <li class="company-item" style="width:130px"><img src="assets/companies/horus-music.svg" alt="" width="66.0729" height="27.37"></li>
+          <li class="company-item" style="width:110px"><img src="assets/companies/dentsu-creative.svg" alt="" width="43.93" height="37.26"></li>
+          <li class="company-item" style="width:145px"><img src="assets/companies/kapture-cx.svg" alt="" width="82.3324" height="22.885"></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="work" id="work" aria-labelledby="work-title">
-    <div class="container">
-      <div class="section-intro reveal">
-        <p class="eyebrow">Featured work · 01 / 04</p>
-        <h2 class="display" id="work-title">AI explorations,<br><span class="italic">deep</span> case studies.</h2>
-        <p>Systems-first thinking, built with engineering constraints, shipped end-to-end with the teams responsible for the outcome.</p>
+  <section class="featured section-line" id="work" aria-labelledby="featured-title">
+    <div class="narrow">
+      <div class="feature-heading" id="highlight"><p class="kicker">Featured Project</p><h2 class="section-title" id="featured-title">Auto QA</h2></div>
+      <div class="feature-media">
+        <img class="mockup" src="assets/Mockups/comp-qa.jpg" alt="Auto QA product shown across desktop screens" width="3158" height="2382">
+        <img class="screen" src="assets/QA-opt/Agent view.png" alt="Auto QA agent performance view" width="2000" height="1125">
       </div>
-
-      <div class="atlas">
-        <aside class="atlas-nav" aria-label="Project index">
-          <p class="atlas-nav__label">Project index</p>
-          <ol>
-            <li><a href="#project-lab" class="active"><span>01</span><span>Build Lab</span></a></li>
-            <li><a href="#project-ex"><span>02</span><span>Employee Experience</span></a></li>
-            <li><a href="#project-qa"><span>03</span><span>Auto QA</span></a></li>
-            <li><a href="#project-wise"><span>04</span><span>WiseWay</span></a></li>
-          </ol>
-        </aside>
-
-        <div class="atlas__projects">
-          <article class="project" id="project-lab" data-project="project-lab">
-            <p class="project__meta">01 / 04<br>AI explorations<br>Working product</p>
-            <div class="project__copy reveal">
-              <div class="project__brand"><b>B</b>Build Lab</div>
-              <h3>Testing ideas from prototype to <em>working product.</em></h3>
-              <p class="project__body">Build Lab is where I use AI to close the gap between sketch and shippable — turning rough hypotheses into tangible, testable product in days, not quarters.</p>
-              <div class="project__actions"><a class="btn btn--ink" href="build-lab.html">View explorations</a></div>
-            </div>
-            <div class="project__visual visual-lab">
-              <div class="lab-grid" aria-hidden="true"></div>
-              <div class="lab-orbit" aria-hidden="true"></div>
-              <div class="lab-terminal">
-                <div class="lab-terminal__bar"><span>build-lab@2.26.0</span><span class="live">● LIVE</span></div>
-                <pre id="labTerminal" aria-label="Build Lab process">&gt; init build-lab@2.26.0
-&gt; scenario-expand            ×40
-&gt; prototype.gen( ... )      ready
-&gt; run-test user-flow          ok
-&gt; ship candidate v2          ...
-&gt; deploy staging            done</pre>
-              </div>
-            </div>
-          </article>
-
-          <article class="project" id="project-ex" data-project="project-ex">
-            <p class="project__meta">02 / 04<br>Desktop<br>Product system</p>
-            <div class="project__copy reveal">
-              <div class="project__brand"><b>E</b>Employee Experience</div>
-              <h3>Designed a multi-persona workspace balancing <em>productivity</em>, automation, and system scalability.</h3>
-              <div class="project__actions">
-                <a class="btn btn--ink" href="work/employee-experience.html">Case study</a>
-                <a class="btn btn--paper" href="https://www.kapture.cx/employee-experience-platform/" target="_blank" rel="noopener">Visit website</a>
-              </div>
-            </div>
-            <div class="project__visual visual-ex" data-parallax>
-              <img class="screen-main" src="assets/EX-opt/Dashboard.png" alt="Employee Experience dashboard" loading="lazy" width="2000" height="1125">
-              <img class="screen-side one" src="assets/EX-opt/Home.png" alt="Employee Experience home view" loading="lazy" width="2000" height="1125">
-              <img class="screen-side two" src="assets/EX-opt/Library.png" alt="Employee Experience library view" loading="lazy" width="2000" height="1125">
-            </div>
-          </article>
-
-          <article class="project" id="project-qa" data-project="project-qa">
-            <p class="project__meta">03 / 04<br>Desktop<br>Quality system</p>
-            <div class="project__copy reveal">
-              <div class="project__brand"><b>A</b>Auto QA</div>
-              <h3>Designed a system for agent QA and <em>self-improvement</em>, aligned with real workflow constraints.</h3>
-              <div class="project__actions">
-                <a class="btn btn--ink" href="work/auto-qa.html">Case study</a>
-                <a class="btn btn--paper" href="https://www.kapture.cx/conversation-intelligence/auto-qa/" target="_blank" rel="noopener">Visit website</a>
-              </div>
-            </div>
-            <div class="project__visual visual-qa" data-parallax>
-              <img class="qa-main" src="assets/QA-opt/Agent view.png" alt="Auto QA agent view" loading="lazy" width="2000" height="1125">
-              <div class="qa-stack">
-                <img src="assets/QA-opt/Conversations.png" alt="Auto QA conversations" loading="lazy" width="2000" height="1125">
-                <img src="assets/QA-opt/Dashboard.png" alt="Auto QA dashboard" loading="lazy" width="2000" height="1125">
-              </div>
-            </div>
-          </article>
-
-          <article class="project" id="project-wise" data-project="project-wise">
-            <p class="project__meta">04 / 04<br>Mobile<br>Accessible mobility</p>
-            <div class="project__copy reveal">
-              <div class="project__brand"><b>W</b>WiseWay</div>
-              <h3>Simplified mobility <em>experience</em> for seniors with a focus on trust and cognitive ease.</h3>
-              <div class="project__actions">
-                <a class="btn btn--ink" href="work/wiseway.html">Case study</a>
-                <a class="btn btn--paper" href="https://www.behance.net/gallery/189412123/WiseWay-Cab-UXUI-Case-Study" target="_blank" rel="noopener">View on Behance</a>
-              </div>
-            </div>
-            <div class="project__visual visual-wise" data-parallax>
-              <img class="wise-phone" src="assets/Mockups/comp-ww.jpg" alt="WiseWay app home screen mockup" loading="lazy" width="722" height="1470">
-              <p class="annotation a1">Built for senior eyes</p>
-              <p class="annotation a2">NGO-backed assistance</p>
-              <p class="annotation a3">Medicine reminders</p>
-              <p class="annotation a4">Ads made for seniors</p>
-            </div>
-          </article>
+      <div class="feature-copy">
+        <div class="feature-id"><span class="feature-mark">A</span><div><strong>Auto QA</strong><span>AI-powered quality evaluation</span></div></div>
+        <p><strong>Designed a system for agent QA and self-improvement, aligned with real workflow constraints.</strong> Auto QA evaluates customer-support conversations at scale, turning quality feedback into something continuous, structured, and actionable—with human-readable scoring and override controls.</p>
+        <h3 class="impact-heading">Impact &amp; scale <span class="kicker">— evidence type shown on each card</span></h3>
+        <div class="impact-grid">
+          <article class="impact-card"><span class="evidence-type">Verified outcome</span><strong>100%</strong><h3>Workflow adoption</h3></article>
+          <article class="impact-card"><span class="evidence-type">Project scope</span><strong>2</strong><h3>Core personas designed in parallel</h3><p>Evaluators and agents</p></article>
+          <article class="impact-card"><span class="evidence-type">Project scope</span><strong>6</strong><h3>Core product capabilities</h3></article>
+          <article class="impact-card"><span class="evidence-type">System capability</span><strong>100s</strong><h3>Conversations supported in batch review</h3></article>
         </div>
+        <div class="actions"><a class="pill pill-dark" href="work/auto-qa.html">Read case study</a><a class="pill pill-light" href="https://www.kapture.cx/conversation-intelligence/auto-qa/" target="_blank" rel="noopener">Visit website</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" aria-labelledby="projects-title">
+    <div class="wide">
+      <div class="projects-head"><div><p class="kicker">Selected work</p><h2 class="section-title" id="projects-title">Projects I’m proud of</h2></div><p>Product systems, accessible mobility, and AI experiments built to move from idea to evidence.</p></div>
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-media"><img src="assets/Mockups/comp-ex.jpg" alt="Employee Experience product dashboard" loading="lazy" width="3158" height="2382"></div>
+          <div class="project-body"><div class="project-meta"><span>Product system</span><span>Design &amp; systems</span></div><h3>Employee Experience</h3><p class="project-desc">Designed a multi-persona workspace balancing productivity, automation, and system scalability.</p><div class="tags"><span class="tag">4 personas</span><span class="tag">60+ components</span><span class="tag">8 layout patterns</span></div><p class="evidence"><strong>Verified outcome:</strong> ~25% boost in team efficiency</p><a class="text-link" href="work/employee-experience.html">Read case study <span aria-hidden="true">→</span></a></div>
+        </article>
+        <article class="project-card">
+          <div class="project-media"><img src="assets/Thumbnails/WiseWay 2.png" alt="WiseWay accessible mobility app shown on a phone" loading="lazy" width="3840" height="2160"></div>
+          <div class="project-body"><div class="project-meta"><span>Accessible mobility</span><span>Academic project</span></div><h3>WiseWay</h3><p class="project-desc">Simplified mobility experience for seniors with a focus on trust and cognitive ease.</p><div class="tags"><span class="tag">3-step booking</span><span class="tag">56px touch targets</span><span class="tag">WCAG AA</span></div><p class="evidence"><strong>Design specification:</strong> clarity, assistance, and confidence at every touchpoint.</p><a class="text-link" href="work/wiseway.html">Read case study <span aria-hidden="true">→</span></a></div>
+        </article>
+        <article class="project-card">
+          <div class="project-media"><div class="lab-fallback"><span>Calora</span></div><iframe class="lab-preview" src="https://calora-ten.vercel.app" title="Calora project preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+          <div class="project-body"><div class="project-meta"><span>AI product exploration</span><span>Build Lab</span></div><h3>Calora</h3><p class="project-desc">Calora is a dessert e-commerce experience with smart recommendations and search. It personalizes product discovery while keeping the experience simple and intuitive. Built to explore how AI can enhance discovery without overwhelming users.</p><div class="tags"><span class="tag">AI</span><span class="tag">E-commerce</span><span class="tag">Discovery</span></div><a class="text-link" href="build-lab/calora.html">View project <span aria-hidden="true">→</span></a></div>
+        </article>
+        <article class="project-card">
+          <div class="project-media"><div class="lab-fallback"><span>SpendSmart</span></div><iframe class="lab-preview" src="https://spendsmart-pink.vercel.app" title="SpendSmart project preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+          <div class="project-body"><div class="project-meta"><span>Financial advisor</span><span>Build Lab</span></div><h3>SpendSmart</h3><p class="project-desc">Spendsmart is a financial advisor that uses real data to generate personalized insights. It helps users understand spending patterns, optimize subscriptions, and make better financial decisions. Built to explore how AI can move from mock responses to real, usable guidance.</p><div class="tags"><span class="tag">Personalization</span><span class="tag">Claude API</span><span class="tag">FinTech</span></div><a class="text-link" href="build-lab/spendsmart.html">View project <span aria-hidden="true">→</span></a></div>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="about" id="about" aria-labelledby="about-title">
-    <div class="container about__grid">
-      <div class="about__portrait reveal" data-parallax>
-        <img src="assets/profilepic.png" alt="Portrait of Purnet Moirangthem" loading="lazy" width="768" height="1344">
+    <div class="wide">
+      <div class="about-main">
+        <div class="portrait"><img src="assets/profilepic.png" alt="Portrait of Purnet Moirangthem" loading="lazy" width="768" height="1344"></div>
+        <div class="about-copy"><p class="kicker">A bit about me</p><h2 class="section-title" id="about-title">Hi, I’m Purnet</h2><p>I started in <strong>account management</strong>, understanding how businesses and customers think.</p><p>Moved into <strong>product design</strong> to build systems that scale.</p><p>Today, I work across <strong>design, edge cases, and engineering constraints</strong> — using AI to explore more scenarios and ship with clarity.</p><div class="profile-panel"><div><strong>Design Engineer / Product Designer</strong><p>Bengaluru, India</p></div><div class="profile-actions"><a href="contact.html">Contact me →</a><a href="assets/Purnet_resume.pdf">View resume →</a></div></div></div>
       </div>
-      <div class="about__copy reveal">
-        <p class="eyebrow">About · 02 / 04</p>
-        <h2 class="display" id="about-title">Hi, I'm <span class="italic">Purnet</span> <span aria-hidden="true">👋</span></h2>
-        <p>I started in <strong>account management</strong>, understanding how businesses and customers think.</p>
-        <p>Moved into <strong>product design</strong> to build systems that scale.</p>
-        <p>Today, I work across <strong>design, edge cases, and engineering constraints</strong> — using AI to explore more scenarios and ship with clarity.</p>
-        <div class="about__actions">
-          <a class="btn btn--paper" href="contact.html">Send me a message</a>
-          <a class="btn btn--ghost" href="assets/Purnet_resume.pdf" download="Purnet_Resume.pdf">Download CV</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="principles" id="principles" aria-labelledby="principles-title">
-    <div class="container">
-      <div class="principles__head reveal">
-        <p class="eyebrow">How I think · 03 / 04</p>
-        <h2 class="display" id="principles-title">Skills I use to design<br>systems that <span class="italic">ship.</span></h2>
-        <p>Six heuristics I keep returning to — from first sketch to the Tuesday-morning fire drill after launch.</p>
-      </div>
-      <div class="manifesto">
-        <article class="principle reveal"><span class="principle__num">01</span><span class="principle__type">Foundations</span><h3>Systems thinking</h3><p>Architecture before screens. Think in components, states, and relationships — less rework later.</p></article>
-        <article class="principle reveal"><span class="principle__num">02</span><span class="principle__type">Exploration</span><h3>AI-assisted breadth</h3><p>More scenarios, explored faster. AI as a co-pilot for breadth, not a shortcut for depth.</p></article>
-        <article class="principle reveal"><span class="principle__num">03</span><span class="principle__type">Craft</span><h3>Build-ready design</h3><p>Implementation constraints baked in from the first sketch. No designs that can't be built.</p></article>
-        <article class="principle reveal"><span class="principle__num">04</span><span class="principle__type">Partnership</span><h3>Strategic collaboration</h3><p>Balance user needs with business goals. Partnership with PM and Eng — not a handoff.</p></article>
-        <article class="principle reveal"><span class="principle__num">05</span><span class="principle__type">Business</span><h3>Business-aware design</h3><p>Feasibility, metrics, long-term strategy shape every decision — not just the happy path.</p></article>
-        <article class="principle reveal"><span class="principle__num">06</span><span class="principle__type">Cadence</span><h3>Rapid iteration</h3><p>Fast feedback loops. Short cycles. Small bets. Quick refinement over grand reveals.</p></article>
+      <div class="about-folds">
+        <section class="fold" id="principles" aria-labelledby="principles-title"><p class="kicker">How I work</p><h3 id="principles-title">Six working principles</h3>
+          <details open><summary>Systems thinking</summary><p>Architecture before screens. Think in components, states, and relationships — less rework later.</p></details>
+          <details><summary>AI-assisted breadth</summary><p>More scenarios, explored faster. AI as a co-pilot for breadth, not a shortcut for depth.</p></details>
+          <details><summary>Build-ready design</summary><p>Implementation constraints baked in from the first sketch. No designs that can't be built.</p></details>
+          <details><summary>Strategic collaboration</summary><p>Balance user needs with business goals. Partnership with PM and Eng — not a handoff.</p></details>
+          <details><summary>Business-aware design</summary><p>Feasibility, metrics, long-term strategy shape every decision — not just the happy path.</p></details>
+          <details><summary>Rapid iteration</summary><p>Fast feedback loops. Short cycles. Small bets. Quick refinement over grand reveals.</p></details>
+        </section>
+        <section class="fold" id="tools" aria-labelledby="tools-title"><p class="kicker">Toolkit</p><h3 id="tools-title">Design to validation to shipping</h3>
+          <div class="tool-list">
+            <article class="tool"><span class="tool-icon"><img src="assets/Tools/figma.svg" alt=""></span><div><h4>Figma</h4><p>Variables, components, prototypes.</p></div></article>
+            <article class="tool"><span class="tool-icon"><img src="assets/Tools/claude.svg" alt=""></span><div><h4>Claude</h4><p>Ideation and edge-case exploration.</p></div></article>
+            <article class="tool"><span class="tool-icon"><img src="assets/Tools/framer.svg" alt=""></span><div><h4>Framer</h4><p>Responsive web shipping.</p></div></article>
+            <article class="tool"><span class="tool-icon"><img src="assets/Tools/chatgpt-icon.svg" alt=""></span><div><h4>ChatGPT</h4><p>UX writing and microcopy.</p></div></article>
+            <article class="tool"><span class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12.02c0 4.42 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.35-3.37-1.35-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.04 1.53 1.04.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84c.85 0 1.69.12 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.02C22 6.48 17.52 2 12 2Z"/></svg></span><div><h4>GitHub</h4><p>Branches, commits, diffs.</p></div></article>
+            <article class="tool"><span class="tool-icon"><svg viewBox="0 0 76 65" aria-hidden="true"><path d="M37.5 0 75 65H0L37.5 0Z"/></svg></span><div><h4>Vercel</h4><p>Previews and production pushes.</p></div></article>
+          </div>
+        </section>
       </div>
     </div>
   </section>
 
-  <section class="tools" id="tools" aria-labelledby="tools-title">
-    <div class="container">
-      <div class="tools__head reveal">
-        <p class="eyebrow">Tools · 04 / 04</p>
-        <h2 class="display" id="tools-title">From design to validation<br>to <span class="italic">shipping.</span></h2>
-        <p>From design to validation to shipping — with collaboration at every step.</p>
-      </div>
-      <div class="tool-list">
-        <article class="tool reveal"><span class="tool__index">01 / 06</span><span class="tool__icon"><img src="assets/Tools/figma.svg" alt="" width="28" height="28"></span><h3>Figma</h3><p>Design systems with variables &amp; components, from token to prototype.</p></article>
-        <article class="tool reveal"><span class="tool__index">02 / 06</span><span class="tool__icon"><img src="assets/Tools/claude.svg" alt="" width="28" height="28"></span><h3>Claude</h3><p>AI-powered ideation &amp; edge-case exploration. Breadth, critique, rewrites.</p></article>
-        <article class="tool reveal"><span class="tool__index">03 / 06</span><span class="tool__icon"><img src="assets/Tools/framer.svg" alt="" width="28" height="28"></span><h3>Framer</h3><p>Web design &amp; responsive shipping. Portfolio + marketing surfaces.</p></article>
-        <article class="tool reveal"><span class="tool__index">04 / 06</span><span class="tool__icon"><img src="assets/Tools/chatgpt-icon.svg" alt="" width="28" height="28"></span><h3>ChatGPT</h3><p>UX writing, microcopy refinement, error-state wording at speed.</p></article>
-        <article class="tool reveal"><span class="tool__index">05 / 06</span><span class="tool__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.56 9.56 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg></span><h3>GitHub</h3><p>Branches, commits, diffs — version control is part of the process.</p></article>
-        <article class="tool reveal"><span class="tool__index">06 / 06</span><span class="tool__icon"><svg viewBox="0 0 76 65" aria-hidden="true"><path d="M37.5274 0 75.0548 65H0L37.5274 0Z"/></svg></span><h3>Vercel</h3><p>Deploy previews and production pushes, straight from the branch.</p></article>
-      </div>
-    </div>
+  <section class="contact wide" id="contact" aria-labelledby="contact-title">
+    <div class="contact-panel"><p class="kicker">Start a conversation</p><h2 id="contact-title">Have a project <em>in mind?</em></h2><p>Taking on a small number of product-design engagements for 2026 — systems work, zero-to-one, or the messy middle.</p><a class="pill pill-accent" href="contact.html">Get in touch</a><div class="contact-secondary"><a href="https://www.linkedin.com/in/purnet-moirangthem-460a63b3/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.behance.net/purnetmoirang" target="_blank" rel="noopener">Behance</a><a href="assets/Purnet_resume.pdf">Resume</a></div></div>
   </section>
 </main>
 
-<footer class="footer" id="contact">
-  <div class="footer__lead">
-    <p class="eyebrow">Start a conversation</p>
-    <h2 class="display">Have a project<br>in <span class="italic">mind?</span></h2>
-    <p>Taking on a small number of product-design engagements for 2026 — systems work, zero-to-one, or the messy middle.</p>
-    <a class="btn btn--ink" href="contact.html">Get in touch</a>
-  </div>
-  <div class="footer__links">
-    <div class="footer__links-inner">
-      <div class="footer__brand">
-        <a class="brand" href="#top"><span class="brand__mark">P</span><span>Purnet Moirangthem</span></a>
-        <div class="footer__social">
-          <a href="https://www.behance.net/purnetmoirang" target="_blank" rel="noopener" aria-label="Behance">Be</a>
-          <a href="https://www.linkedin.com/in/purnet-moirangthem-460a63b3/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-          <a href="contact.html" aria-label="Email">@</a>
-        </div>
-      </div>
-      <div class="link-column">
-        <h3>Navigate</h3>
-        <ul><li><a href="#top">Home</a></li><li><a href="#work">Work</a></li><li><a href="#tools">Tools</a></li><li><a href="#principles">Skills</a></li><li><a href="#about">About me</a></li></ul>
-      </div>
-      <div class="link-column">
-        <h3>Case studies</h3>
-        <ul><li><a href="build-lab.html">Build Lab</a></li><li><a href="work/employee-experience.html">Employee Experience</a></li><li><a href="work/auto-qa.html">Auto QA</a></li><li><a href="work/wiseway.html">WiseWay</a></li></ul>
-      </div>
-    </div>
-  </div>
-  <div class="footer__bottom">
-    <span>© 2026 — Purnet Moirangthem</span>
-    <span class="footer__legal"><a href="#">Privacy Policy</a><a href="#">Cookies</a><a href="#">Terms &amp; Conditions</a></span>
+<footer>
+  <div class="footer-collage" aria-hidden="true"><img src="assets/hero/midi-controller.svg" alt=""><img src="assets/hero/camera.svg" alt=""><img src="assets/hero/book.svg" alt=""><img src="assets/hero/game-controller.svg" alt=""></div>
+  <div class="footer-main wide">
+    <div class="footer-grid"><div class="footer-brand">Purnet Moirangthem<p>Design Engineer based in Bengaluru, India.</p></div><div><h3>Navigate</h3><ul><li><a href="#top">Home</a></li><li><a href="#work">Work</a></li><li><a href="#about">About me</a></li><li><a href="#tools">Tools</a></li></ul></div><div><h3>Case studies</h3><ul><li><a href="work/auto-qa.html">Auto QA</a></li><li><a href="work/employee-experience.html">Employee Experience</a></li><li><a href="work/wiseway.html">WiseWay</a></li><li><a href="build-lab.html">Build Lab</a></li></ul></div></div>
+    <div class="footer-bottom"><span>© 2026 — Purnet Moirangthem</span><div class="legal"><a href="#">Privacy Policy</a><a href="#">Cookies</a><a href="#">Terms &amp; Conditions</a></div><div><a href="https://github.com/purnetbuilds" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/purnet-moirangthem-460a63b3/" target="_blank" rel="noopener">LinkedIn</a></div></div>
   </div>
 </footer>
-
-<button class="scroll-top" id="scrollTop" type="button" aria-label="Back to top">↑</button>
-
 <script>
 (() => {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const masthead = document.getElementById('masthead');
-  const progress = document.getElementById('pageProgress');
-  const scrollTopButton = document.getElementById('scrollTop');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const desk = document.getElementById('desk');
+  const objects = [...desk.querySelectorAll('.desk-object')];
+  let topZ = 10;
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const place = (item, x, y, animate = false) => {
+    const maxX = Math.max(0, desk.clientWidth - item.offsetWidth);
+    const maxY = Math.max(0, desk.clientHeight - item.offsetHeight);
+    item.dataset.px = clamp(x, 0, maxX);
+    item.dataset.py = clamp(y, 0, maxY);
+    if (!animate || reduceMotion) item.style.transition = 'none';
+    item.style.left = `${item.dataset.px}px`;
+    item.style.top = `${item.dataset.py}px`;
+    requestAnimationFrame(() => { item.style.transition = ''; });
+  };
+  const reset = () => objects.forEach((item, index) => {
+    const maxX = Math.max(0, desk.clientWidth - item.offsetWidth);
+    const maxY = Math.max(0, desk.clientHeight - item.offsetHeight);
+    item.style.zIndex = String(index + 2);
+    place(item, maxX * Number(item.dataset.x) / 100, maxY * Number(item.dataset.y) / 100, true);
+  });
+  const bringFront = item => { item.style.zIndex = String(++topZ); };
+  objects.forEach(item => {
+    let active = false;
+    let startX = 0;
+    let startY = 0;
+    let originX = 0;
+    let originY = 0;
+    item.addEventListener('pointerdown', event => {
+      active = true;
+      bringFront(item);
+      startX = event.clientX;
+      startY = event.clientY;
+      originX = Number(item.dataset.px || 0);
+      originY = Number(item.dataset.py || 0);
+      item.classList.add('dragging');
+      item.setPointerCapture(event.pointerId);
+    });
+    item.addEventListener('pointermove', event => {
+      if (!active) return;
+      place(item, originX + event.clientX - startX, originY + event.clientY - startY);
+    });
+    const stop = event => {
+      if (!active) return;
+      active = false;
+      item.classList.remove('dragging');
+      if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+    };
+    item.addEventListener('pointerup', stop);
+    item.addEventListener('pointercancel', stop);
+    item.addEventListener('focus', () => bringFront(item));
+    item.addEventListener('keydown', event => {
+      const directions = {ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+      if (!directions[event.key]) return;
+      event.preventDefault();
+      const amount = event.shiftKey ? 20 : 5;
+      const [x, y] = directions[event.key];
+      place(item, Number(item.dataset.px || 0) + x * amount, Number(item.dataset.py || 0) + y * amount);
+    });
+  });
+  document.getElementById('shuffleDesk').addEventListener('click', () => objects.forEach(item => {
+    const maxX = Math.max(0, desk.clientWidth - item.offsetWidth);
+    const maxY = Math.max(0, desk.clientHeight - item.offsetHeight);
+    bringFront(item);
+    place(item, Math.random() * maxX, Math.random() * maxY, true);
+  }));
+  document.getElementById('resetDesk').addEventListener('click', reset);
+  let resizeFrame;
+  addEventListener('resize', () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => objects.forEach(item => place(item, Number(item.dataset.px || 0), Number(item.dataset.py || 0))));
+  });
+  reset();
+
   const menuButton = document.getElementById('menuButton');
   const navLinks = document.getElementById('navLinks');
-
-  const updateChrome = () => {
-    const y = window.scrollY;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    masthead.classList.toggle('scrolled', y > 24);
-    scrollTopButton.classList.toggle('visible', y > window.innerHeight * .75);
-    progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-  };
-  updateChrome();
-  window.addEventListener('scroll', updateChrome, { passive: true });
-
   const closeMenu = () => {
     navLinks.classList.remove('open');
     menuButton.setAttribute('aria-expanded', 'false');
@@ -639,63 +487,17 @@ img { display: block; max-width: 100%; }
     document.body.classList.toggle('menu-open', open);
   });
   navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-  document.addEventListener('click', event => {
-    if (!menuButton.contains(event.target) && !navLinks.contains(event.target)) closeMenu();
-  });
+  document.addEventListener('click', event => { if (!menuButton.contains(event.target) && !navLinks.contains(event.target)) closeMenu(); });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
-  const sectionLinks = [...document.querySelectorAll('.nav-links a')];
+  const sectionLinks = [...navLinks.querySelectorAll('a[href^="#"]')];
   const sections = sectionLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-  const sectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      sectionLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
-    });
-  }, { rootMargin: '-25% 0px -65% 0px' });
-  sections.forEach(section => sectionObserver.observe(section));
-
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: .12 });
-  document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
-
-  const projectLinks = [...document.querySelectorAll('.atlas-nav a')];
-  const projects = [...document.querySelectorAll('[data-project]')];
-  const projectObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('in-view');
-      projectLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
-    });
-  }, { rootMargin: '-25% 0px -50% 0px', threshold: .08 });
-  projects.forEach(project => projectObserver.observe(project));
-
-  if (!reduceMotion && window.matchMedia('(min-width: 801px)').matches) {
-    const parallaxItems = [...document.querySelectorAll('[data-parallax]')];
-    let ticking = false;
-    const updateParallax = () => {
-      parallaxItems.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-        const center = rect.top + rect.height / 2;
-        const value = Math.max(-1, Math.min(1, (center - window.innerHeight / 2) / window.innerHeight));
-        item.style.setProperty('--parallax', value.toFixed(3));
-      });
-      ticking = false;
-    };
-    const requestParallax = () => {
-      if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
-    };
-    updateParallax();
-    window.addEventListener('scroll', requestParallax, { passive: true });
-  }
-
-  scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
+  const observer = new IntersectionObserver(entries => {
+    const current = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!current) return;
+    sectionLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${current.target.id}`));
+  }, {rootMargin:'-20% 0px -60%',threshold:[0,.2,.6]});
+  sections.forEach(section => observer.observe(section));
 })();
 </script>
 </body>
