@@ -1,1 +1,10 @@
-<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Framer</title><path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/></svg>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Image" clip-path="url(#clip0_0_11)">
+<path id="Vector" d="M3.33333 2.38419e-07H16.6667V6.66667H10L3.33333 2.38419e-07ZM3.33333 6.66667H10L16.6667 13.3333H3.33333V6.66667ZM3.33333 13.3333H10V20L3.33333 13.3333Z" fill="black"/>
+</g>
+<defs>
+<clipPath id="clip0_0_11">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>
