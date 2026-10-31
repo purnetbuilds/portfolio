@@ -1,0 +1,10 @@
+{
+  "description": "A setup-focused tool that bootstraps imported projects and verifies deployment readiness, helping teams prepare reliable production and preview releases.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
