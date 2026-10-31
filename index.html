@@ -143,11 +143,16 @@ ul{padding:0;list-style:none}
 .about-copy{display:flex;flex-direction:column;gap:18px;padding:28px;border-radius:24px;background:var(--surface)}
 .about-copy>p{color:var(--muted);font-size:16px;line-height:1.65}
 .about-copy strong{color:var(--ink);font-family:var(--sans-semi)}
-.profile-panel{display:grid;grid-template-columns:1fr auto;gap:18px;margin-top:auto;padding:20px;border-radius:16px;background:var(--ink);color:#fff}
-.profile-panel p{color:#bbb;font-size:13px;line-height:1.5}
-.profile-actions{display:flex;flex-direction:column;gap:8px;justify-content:center}
-.profile-actions a{color:var(--coral);font:600 13px/1.4 var(--sans-semi)}
-.about-folds{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.about-toolkit{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.about-toolkit-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}
+.about-toolkit-head h3{font:400 18px/1.35 var(--mono)}
+.tool-marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.tool-track{display:flex;width:max-content;animation:tool-scroll 24s linear infinite}
+.tool-row{display:flex;gap:10px;padding-right:10px}
+.tool-chip{display:grid;width:190px;grid-template-columns:36px 1fr;align-items:center;gap:10px;padding:10px;border:1px solid #e4e4e4;border-radius:12px;background:#fff}
+.tool-marquee:hover .tool-track,.tool-marquee:focus-within .tool-track{animation-play-state:paused}
+@keyframes tool-scroll{to{transform:translateX(-50%)}}
+.about-folds{margin-top:24px}
 .fold{padding:26px;border:1px solid var(--line);border-radius:24px;background:#ececec}
 .fold h3{margin:5px 0 20px;font:400 24px/1.35 var(--mono)}
 details{border-top:1px solid var(--line)}
@@ -157,12 +162,10 @@ summary::-webkit-details-marker{display:none}
 summary::after{font:400 18px/1 var(--mono);content:"+"}
 details[open] summary::after{content:"−"}
 details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
-.tool-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.tool{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--surface)}
 .tool-icon{display:grid;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:8px}
 .tool-icon img,.tool-icon svg{width:20px;height:20px}
-.tool h4{margin:0 0 2px;font:600 13px/1.3 var(--sans-semi)}
-.tool p{color:var(--muted);font:400 10px/1.35 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
+.tool-chip h4{margin:0 0 2px;font:600 13px/1.3 var(--sans-semi)}
+.tool-chip p{color:var(--muted);font:400 10px/1.35 var(--serif);font-variation-settings:"GRAD" 0,"wdth" 100}
 .contact{padding-block:0 72px}
 .contact-panel{display:flex;min-height:360px;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;border-radius:24px;background:#e9e9e9;text-align:center}
 .contact-panel h2{max-width:700px;margin:8px 0 16px;font:600 clamp(36px,6vw,60px)/1.08 var(--sans-semi);letter-spacing:-.025em}
@@ -189,7 +192,7 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
 @media(max-width:860px){
   .nav-links a{padding-inline:7px;font-size:10px}
   .desk{height:400px}
-  .project-grid,.about-folds{grid-template-columns:1fr}
+  .project-grid{grid-template-columns:1fr}
   .projects-head{align-items:start;flex-direction:column;gap:12px}
   .about-main{grid-template-columns:.8fr 1.2fr}
   .project-body{min-height:0}
@@ -218,8 +221,6 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
   .about{padding-block:52px}
   .about-main{grid-template-columns:1fr}
   .portrait{min-height:420px}
-  .profile-panel{grid-template-columns:1fr}
-  .profile-actions{flex-direction:row}
   .contact{padding-bottom:52px}
   .contact-panel{min-height:330px}
   .footer-collage img:nth-child(2){display:none}
@@ -232,7 +233,7 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
   .desk{height:320px}
   .desk-controls{right:8px;bottom:8px}
   .desk-controls button{padding-inline:10px;font-size:11px}
-  .impact-grid,.tool-list{grid-template-columns:1fr}
+  .impact-grid{grid-template-columns:1fr}
   .impact-card{min-height:0}
   .project-meta{flex-direction:column;gap:3px}
   .footer-collage{height:160px}
@@ -247,6 +248,9 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
   .marquee-track{width:auto;animation:none}
   .marquee .company-list[aria-hidden=true]{display:none}
   .company-list{width:100%;flex-wrap:wrap;justify-content:center;padding:0}
+  .tool-track{width:auto;animation:none}
+  .tool-row{width:100%;flex-wrap:wrap;justify-content:center;padding:0}
+  .tool-row[aria-hidden=true]{display:none}
 }
 </style>
 </head>
@@ -359,7 +363,36 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
     <div class="wide">
       <div class="about-main">
         <div class="portrait"><img src="assets/profilepic.png" alt="Portrait of Purnet Moirangthem" loading="lazy" width="768" height="1344"></div>
-        <div class="about-copy"><p class="kicker">A bit about me</p><h2 class="section-title" id="about-title">Hi, I’m Purnet</h2><p>I started in <strong>account management</strong>, understanding how businesses and customers think.</p><p>Moved into <strong>product design</strong> to build systems that scale.</p><p>Today, I work across <strong>design, edge cases, and engineering constraints</strong> — using AI to explore more scenarios and ship with clarity.</p><div class="profile-panel"><div><strong>Design Engineer / Product Designer</strong><p>Bengaluru, India</p></div><div class="profile-actions"><a href="contact.html">Contact me →</a><a href="assets/Purnet_resume.pdf">View resume →</a></div></div></div>
+        <div class="about-copy">
+          <p class="kicker">A bit about me</p>
+          <h2 class="section-title" id="about-title">Hi, I’m Purnet</h2>
+          <p>I started in <strong>account management</strong>, understanding how businesses and customers think.</p>
+          <p>Moved into <strong>product design</strong> to build systems that scale.</p>
+          <p>Today, I work across <strong>design, edge cases, and engineering constraints</strong> — using AI to explore more scenarios and ship with clarity.</p>
+          <div class="about-toolkit" id="tools" aria-labelledby="tools-title">
+            <div class="about-toolkit-head"><div><p class="kicker">Toolkit</p><h3 id="tools-title">Design to validation to shipping</h3></div></div>
+            <div class="tool-marquee" tabindex="0">
+              <div class="tool-track">
+                <ul class="tool-row">
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/figma.svg" alt=""></span><div><h4>Figma</h4><p>Variables, components, prototypes.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/claude.svg" alt=""></span><div><h4>Claude</h4><p>Ideation and edge-case exploration.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/framer.svg" alt=""></span><div><h4>Framer</h4><p>Responsive web shipping.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/chatgpt-icon.svg" alt=""></span><div><h4>ChatGPT</h4><p>UX writing and microcopy.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12.02c0 4.42 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.35-3.37-1.35-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.04 1.53 1.04.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84c.85 0 1.69.12 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.02C22 6.48 17.52 2 12 2Z"/></svg></span><div><h4>GitHub</h4><p>Branches, commits, diffs.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><svg viewBox="0 0 76 65" aria-hidden="true"><path d="M37.5 0 75 65H0L37.5 0Z"/></svg></span><div><h4>Vercel</h4><p>Previews and production pushes.</p></div></li>
+                </ul>
+                <ul class="tool-row" aria-hidden="true">
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/figma.svg" alt=""></span><div><h4>Figma</h4><p>Variables, components, prototypes.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/claude.svg" alt=""></span><div><h4>Claude</h4><p>Ideation and edge-case exploration.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/framer.svg" alt=""></span><div><h4>Framer</h4><p>Responsive web shipping.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><img src="assets/Tools/chatgpt-icon.svg" alt=""></span><div><h4>ChatGPT</h4><p>UX writing and microcopy.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12.02c0 4.42 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.35-3.37-1.35-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.04 1.53 1.04.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84c.85 0 1.69.12 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.02C22 6.48 17.52 2 12 2Z"/></svg></span><div><h4>GitHub</h4><p>Branches, commits, diffs.</p></div></li>
+                  <li class="tool-chip"><span class="tool-icon"><svg viewBox="0 0 76 65" aria-hidden="true"><path d="M37.5 0 75 65H0L37.5 0Z"/></svg></span><div><h4>Vercel</h4><p>Previews and production pushes.</p></div></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="about-folds">
         <section class="fold" id="principles" aria-labelledby="principles-title"><p class="kicker">How I work</p><h3 id="principles-title">Six working principles</h3>
@@ -369,16 +402,6 @@ details p{padding:0 22px 16px 0;color:var(--muted);font:400 13px/1.55 var(--seri
           <details><summary>Strategic collaboration</summary><p>Balance user needs with business goals. Partnership with PM and Eng — not a handoff.</p></details>
           <details><summary>Business-aware design</summary><p>Feasibility, metrics, long-term strategy shape every decision — not just the happy path.</p></details>
           <details><summary>Rapid iteration</summary><p>Fast feedback loops. Short cycles. Small bets. Quick refinement over grand reveals.</p></details>
-        </section>
-        <section class="fold" id="tools" aria-labelledby="tools-title"><p class="kicker">Toolkit</p><h3 id="tools-title">Design to validation to shipping</h3>
-          <div class="tool-list">
-            <article class="tool"><span class="tool-icon"><img src="assets/Tools/figma.svg" alt=""></span><div><h4>Figma</h4><p>Variables, components, prototypes.</p></div></article>
-            <article class="tool"><span class="tool-icon"><img src="assets/Tools/claude.svg" alt=""></span><div><h4>Claude</h4><p>Ideation and edge-case exploration.</p></div></article>
-            <article class="tool"><span class="tool-icon"><img src="assets/Tools/framer.svg" alt=""></span><div><h4>Framer</h4><p>Responsive web shipping.</p></div></article>
-            <article class="tool"><span class="tool-icon"><img src="assets/Tools/chatgpt-icon.svg" alt=""></span><div><h4>ChatGPT</h4><p>UX writing and microcopy.</p></div></article>
-            <article class="tool"><span class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12.02c0 4.42 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.35-3.37-1.35-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.04 1.53 1.04.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84c.85 0 1.69.12 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.02C22 6.48 17.52 2 12 2Z"/></svg></span><div><h4>GitHub</h4><p>Branches, commits, diffs.</p></div></article>
-            <article class="tool"><span class="tool-icon"><svg viewBox="0 0 76 65" aria-hidden="true"><path d="M37.5 0 75 65H0L37.5 0Z"/></svg></span><div><h4>Vercel</h4><p>Previews and production pushes.</p></div></article>
-          </div>
         </section>
       </div>
     </div>
